@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///D:/FEUP/ESOF/inquirescape/lib/pages/TabbedPage.dart';
+import 'package:inquirescape/pages/TabbedPage.dart';
 
 void main() {
   runApp(MyApp());
