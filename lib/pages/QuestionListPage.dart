@@ -6,6 +6,8 @@ class QuestionListPage extends StatelessWidget {
 
   final Function goToFullQuestionTab;
 
+  final List<Question> questions = [Question.sampleQuestion(1), Question.sampleQuestion(3), Question.sampleQuestion(2), Question.sampleQuestion(0), Question.sampleQuestion(1), Question.sampleQuestion(0), Question.sampleQuestion(2), Question.sampleQuestion(3)];
+
   QuestionListPage({this.goToFullQuestionTab});
 
   @override
@@ -14,7 +16,7 @@ class QuestionListPage extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             itemCount: 8,
             itemBuilder: (BuildContext context, int index) {
-              return QuestionCard(question: Question.sampleQuestion(), onClick: goToFullQuestionTab,);
+              return QuestionCard(question: questions[index], onClick: goToFullQuestionTab,);
             });
   }
 }

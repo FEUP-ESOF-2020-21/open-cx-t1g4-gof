@@ -10,9 +10,13 @@ class Question {
   Question(this.userName, this.platform, this.description,
       this.rating);
 
-  static Question sampleQuestion() {
+  static Question randomQuestion() {
     Random r = Random();
-    switch (r.nextInt(4)) {
+    return sampleQuestion(r.nextInt(4));
+  }
+
+  static Question sampleQuestion(int index) {
+    switch (index) {
       case 0:
         return Question("Ademar Aguiar", "Twitch", "Gosto muito de viaturas e estava interessado em comprar um automóvel de quatro rodas. Andei a considerar várias marcas, mas nem todas são boas o suficiente para mim. Seria melhor conduzir um BMW ou um Mercedes?", 5);
       case 1:
@@ -23,4 +27,25 @@ class Question {
         return Question("Maria Pia", "Twitch", "Estou indecisa entre um carro híbrido ou elétrico. Qual é que acha melhor para conduzir de casa para o trabalho?", 3.8);
     }
   }
+
+  Question clone() {
+    return Question(userName, platform, description, rating);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Question &&
+          runtimeType == other.runtimeType &&
+          userName == other.userName &&
+          platform == other.platform &&
+          description == other.description &&
+          rating == other.rating;
+
+  @override
+  int get hashCode =>
+      userName.hashCode ^
+      platform.hashCode ^
+      description.hashCode ^
+      rating.hashCode;
 }

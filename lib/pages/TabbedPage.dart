@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/pages/QuestionFullPage.dart';
@@ -16,9 +18,13 @@ class _TabbedPageState extends State<TabbedPage>
   TabController _controller;
 
   void goToFullQuestionTab(Question question) {
-    setState(() {
+    this.setState(() {
       _question = question;
     });
+    Timer(Duration(milliseconds: 20), tmp);
+  }
+
+  void tmp() {
     _controller.animateTo(1);
   }
 
