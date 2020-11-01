@@ -1,18 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/Question.dart';
+import 'package:inquirescape/pages/EditQuestionPage.dart';
 
-class QuestionFullPage extends StatelessWidget {
-  final Question question;
-
-  QuestionFullPage(this.question);
+class QuestionFullPage extends StatefulWidget {
+  final Question _question;
+  QuestionFullPage(this._question);
 
   @override
+  _QuestionFullPageState createState() => _QuestionFullPageState();
+}
+
+class _QuestionFullPageState extends State<QuestionFullPage> {
+  @override
   Widget build(BuildContext context) {
-    if (question != null)
+    if (widget._question != null)
       return Scaffold(
         appBar: AppBar(
-          title: Text(question.userName),
+          title: Text(widget._question.userName),
+          centerTitle: true,
         ),
         body: Container(
             padding:
@@ -20,14 +26,8 @@ class QuestionFullPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                    padding: EdgeInsetsDirectional.only(top: 2, bottom: 8),
-                    child: Text(
-                      question.userName,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    )),
-                Text(question.description, style: TextStyle(fontSize: 16)),
+                Text(widget._question.description,
+                    style: TextStyle(fontSize: 20)),
                 Expanded(
                   child: FittedBox(
                     fit: BoxFit.contain, // otherwise the logo will be tiny
@@ -36,15 +36,21 @@ class QuestionFullPage extends StatelessWidget {
                 ),
               ],
             )),
+        persistentFooterButtons: [editButton(context)],
       );
-    else
-      return Align(
-        alignment: Alignment.center,
-        child: Text(
-          "No question focused",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18),
-        ),
-      );
+  }
+
+  Widget editButton(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.edit),
+      backgroundColor: Colors.blue,
+      foregroundColor: Colors.white,
+      onPressed: () => {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (ctx) => EditQuestionPage(widget._question)))
+      },
+    );
   }
 }

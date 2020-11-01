@@ -31,6 +31,7 @@ class QuestionListPageState extends State<QuestionListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Questions Page"),
+        centerTitle: true,
       ),
       body: _questionList(),
     );
@@ -39,7 +40,7 @@ class QuestionListPageState extends State<QuestionListPage> {
   Widget _questionList() {
     return ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: 8,
+        itemCount: 4,
         itemBuilder: (BuildContext context, int index) {
           return QuestionCard(
             question: questions[index],

@@ -25,7 +25,7 @@ class QuestionCard extends StatelessWidget {
           }
         },
         child: ListTile(
-            leading: const Icon(Icons.announcement_rounded),
+            // leading: const Icon(Icons.announcement_rounded),
             title: Text(question.userName),
             subtitle: Text(question.description,
                 overflow: TextOverflow.ellipsis, maxLines: 3)),
