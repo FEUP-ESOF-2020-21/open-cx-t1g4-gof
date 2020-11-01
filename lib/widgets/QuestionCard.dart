@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:inquirescape/Question.dart';
+import 'package:inquirescape/pages/QuestionFullPage.dart';
 
 class QuestionCard extends StatelessWidget {
-
   final Question question;
-  final Function onClick;
+  // final Function onClick;
 
-  QuestionCard({Key key, @required this.question, this.onClick}) : super(key: key);
+  QuestionCard({Key key, @required this.question}) : super(key: key);
+
+  onClick(BuildContext ctx) {
+    Navigator.push(ctx,
+        MaterialPageRoute(builder: (ctx) => QuestionFullPage(this.question)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class QuestionCard extends StatelessWidget {
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
           if (onClick != null) {
-            onClick(question);
+            onClick(context);
           }
         },
         child: ListTile(

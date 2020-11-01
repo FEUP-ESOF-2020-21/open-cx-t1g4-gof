@@ -6,14 +6,12 @@ import 'package:inquirescape/pages/QuestionFullPage.dart';
 import 'package:inquirescape/Question.dart';
 
 class TabbedPage extends StatefulWidget {
-
   @override
   _TabbedPageState createState() => _TabbedPageState();
 }
 
 class _TabbedPageState extends State<TabbedPage>
     with SingleTickerProviderStateMixin {
-
   Question _question;
   TabController _controller;
 
@@ -41,8 +39,8 @@ class _TabbedPageState extends State<TabbedPage>
         controller: _controller,
         children: <Widget>[
           QuestionListPage(
-            goToFullQuestionTab: goToFullQuestionTab,
-          ),
+              // goToFullQuestionTab: goToFullQuestionTab,
+              ),
           QuestionFullPage(_question),
         ],
       ),
