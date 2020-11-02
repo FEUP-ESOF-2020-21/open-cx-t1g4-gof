@@ -49,7 +49,7 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (ctx) => EditQuestionPage(widget._question)))
+                builder: (ctx) => EditQuestionPage(widget._question))),
       },
     );
   }
