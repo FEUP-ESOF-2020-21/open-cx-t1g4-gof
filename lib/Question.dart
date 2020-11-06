@@ -1,6 +1,34 @@
 import 'dart:core';
 import 'dart:math';
 
+class Questions {
+
+  List<Question> _questions;
+
+  Questions() {
+    this._questions = [
+      Question.sampleQuestion(1),
+      Question.sampleQuestion(3),
+      Question.sampleQuestion(2),
+      Question.sampleQuestion(0),
+      Question.sampleQuestion(1),
+      Question.sampleQuestion(0),
+      Question.sampleQuestion(2),
+      Question.sampleQuestion(3)
+    ];
+  }
+
+  Question getQuestion(int index) {
+    if (index < 0 || index > this._questions.length)
+        return null;
+    return this._questions[index];
+  }
+
+  /// Getter (number of items)
+  int get numQuestions => _questions.length;
+
+}
+
 class Question {
   String userName, platform;
   String description;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-import 'package:inquirescape/Question.dart';
 import 'package:inquirescape/widgets/QuestionCard.dart';
+import 'package:inquirescape/widgets/QuestionsHolder.dart';
 
 class QuestionListPage extends StatefulWidget {
   @override
@@ -11,20 +10,6 @@ class QuestionListPage extends StatefulWidget {
 }
 
 class QuestionListPageState extends State<QuestionListPage> {
-  // final Function goToFullQuestionTab;
-
-  final List<Question> questions = [
-    Question.sampleQuestion(1),
-    Question.sampleQuestion(3),
-    Question.sampleQuestion(2),
-    Question.sampleQuestion(0),
-    Question.sampleQuestion(1),
-    Question.sampleQuestion(0),
-    Question.sampleQuestion(2),
-    Question.sampleQuestion(3)
-  ];
-
-  // QuestionListPage({this.goToFullQuestionTab});
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +18,20 @@ class QuestionListPageState extends State<QuestionListPage> {
         title: Text("Questions Page"),
         centerTitle: true,
       ),
-      body: _questionList(),
+      body: _questionList(context),
     );
   }
 
-  Widget _questionList() {
+  Widget _questionList(BuildContext context) {
+    QuestionsHolderState questionsHolder = QuestionsHolder.of(context);
+
     return ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: 4,
+        itemCount: questionsHolder.questions.numQuestions,
         itemBuilder: (BuildContext context, int index) {
           return QuestionCard(
-            question: questions[index],
+            question: questionsHolder.questions.getQuestion(index),
+            questionIndex: index,
             // onClick: goToFullQuestionTab,
           );
         });

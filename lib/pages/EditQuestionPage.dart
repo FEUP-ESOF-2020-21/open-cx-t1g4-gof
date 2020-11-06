@@ -4,7 +4,9 @@ import 'package:inquirescape/Question.dart';
 
 class EditQuestionPage extends StatefulWidget {
   final Question _question;
-  EditQuestionPage(this._question);
+  final String oldDescript;
+
+  EditQuestionPage(this._question) : this.oldDescript = _question.description;
 
   @override
   _EditQuestionPage createState() => _EditQuestionPage();
@@ -40,8 +42,10 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                   }
                 },
                 onSaved: (String value) {
-                  widget._question.updateDescription(value);
-                  Navigator.pop(context);
+                  bool hasChanged = value != this.widget.oldDescript;
+                  if (hasChanged)
+                    widget._question.updateDescription(value);
+                  Navigator.pop(context, hasChanged);
                 }),
           ],
         ),

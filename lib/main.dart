@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inquirescape/pages/TabbedPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
+import 'package:inquirescape/widgets/QuestionsHolder.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +29,8 @@ class MyApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: QuestionListPage());
+        home: QuestionsHolder(
+          child: QuestionListPage(),
+        ));
   }
 }
