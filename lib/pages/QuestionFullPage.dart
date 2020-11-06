@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class QuestionFullPage extends StatefulWidget {
   final Question _question;
+
   QuestionFullPage(this._question);
 
   @override
@@ -36,8 +38,22 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
                 ),
               ],
             )),
-        persistentFooterButtons: [editButton(context)],
+        persistentFooterButtons: [ratingBar(context), editButton(context)],
       );
+  }
+
+  Widget ratingBar(BuildContext context) {
+    return RatingBarIndicator(
+      rating: widget._question.rating,
+      itemBuilder: (context, index) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemCount: 5,
+      itemSize: 30.0,
+      unratedColor: Colors.amber.withAlpha(50),
+      direction: Axis.horizontal,
+    );
   }
 
   Widget editButton(BuildContext context) {
@@ -47,10 +63,10 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
       foregroundColor: Colors.white,
       onPressed: () => {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (ctx) => EditQuestionPage(widget._question))
-        ).then((value) => {if (value) this.setState(() {})}),
+                context,
+                MaterialPageRoute(
+                    builder: (ctx) => EditQuestionPage(widget._question)))
+            .then((value) => {if (value) this.setState(() {})}),
       },
     );
   }
