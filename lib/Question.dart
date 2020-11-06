@@ -14,12 +14,14 @@ class Questions {
       Question.sampleQuestion(1),
       Question.sampleQuestion(0),
       Question.sampleQuestion(2),
-      Question.sampleQuestion(3)
+      Question.sampleQuestion(3),
+      Question.sampleQuestion(0),
+      Question.sampleQuestion(1),
     ];
   }
 
   Question getQuestion(int index) {
-    if (index < 0 || index > this._questions.length)
+    if (index < 0 || index >= this._questions.length)
         return null;
     return this._questions[index];
   }
