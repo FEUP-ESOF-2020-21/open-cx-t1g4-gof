@@ -1,15 +1,13 @@
 # InquireScape
 
----
-
-- Business Modeling
+- [Business Modeling](#business-modeling)
   - [Product Vision](#product-vision)
   - [Elevator Pitch](#elevator-pitch)
-- Requirements
+- [Requirements](#requirements)
   - [Use Cases](#use-cases)
   - [User Stories](#user-stories)
   - [Problem Domain](#problem-domain)
-- Architecture and design
+- [Architecture and design](#architecture-and-design)
   - [Logical Architecture](#logical-architecture)
   - [Physical Architecture](#physical-architecture)
 - [Implementation](#implementation)
@@ -18,14 +16,19 @@
 - [Project Management](#project-management)
 
 ---
+
+# Business Modeling
+
 ## Product Vision
 The app aims to remove the need for attendees to use a third-party app to post questions, while giving a moderation team a platform to hilghlight the best questions and relay them to the speaker.
 
----
+
 ## Elevator Pitch
 Lots of speakers in conferences have a hard time managing the questions asked by the attendees and the presentation itself, wasting time that could be used to enrich the conference. Our application aims to solve that broken link by giving a platform for attendees to post their questions, where a moderation team will review, sort by relevance and redirect them to the speaker. Using our app, wasted time gets converted into productive time.
 
 ---
+
+# Requirements
 
 ## Use Cases
 ![Use Cases UML](./docs/use_cases.svg)
@@ -88,7 +91,7 @@ Lots of speakers in conferences have a hard time managing the questions asked by
   - **Alternative Flows and Exceptions**:
     1. TBD
 
----
+
 ## User Stories
 
 ### **View All Questions**
@@ -171,10 +174,12 @@ Value: Could have
 
 Effort: M
 
----
+
 ## Problem Domain
 
 ---
+
+# Architecture and design
 
 ## Logical Architecture
 
@@ -182,31 +187,31 @@ Effort: M
 
 ---
 
-## Implementation
+# Implementation
+
+## Project Iteration 1
+**Changelog:**
+- Added a page to list all questions
+- Added a page to focus on a single question
+- Added a page to edit a questions and locally save its changes
+
+**Screenshots:**
+![Question listing page](docs/increment_1_question_list.png)
+![Focused question page](docs/increment_1_full_page_question.png)
+![Question editing page](docs/increment_1_edit.png)
 
 ---
 
-## Test
+# Test
 
 ---
 
-## Configuration and Change Management
+# Configuration and Change Management
 
 ---
 
-## Project Management
+# Project Management
+
+To plan and manage our project we are using [GitHub Projects](https://github.com/FEUP-ESOF-2020-21/open-cx-t1g4-gof/projects/1).
 
 ---
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
