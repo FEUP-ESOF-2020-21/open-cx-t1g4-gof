@@ -17,40 +17,45 @@ class _EditQuestionPage extends State<EditQuestionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Question'),
-        centerTitle: true,
-      ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextFormField(
-                keyboardType: TextInputType.multiline,
-                style: TextStyle(fontSize: 20),
-                decoration: InputDecoration(
-                  contentPadding:
-                      new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
-                ),
-                maxLines: null,
-                initialValue: widget._question.description,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return "Empty description.";
-                  }
-                },
-                onSaved: (String value) {
-                  bool hasChanged = value != this.widget.oldDescript;
-                  if (hasChanged)
-                    widget._question.updateDescription(value);
-                  Navigator.pop(context, hasChanged);
-                }),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Edit Question'),
+          centerTitle: true,
         ),
+        body: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  style: TextStyle(fontSize: 20),
+                  decoration: InputDecoration(
+                    contentPadding:
+                        new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
+                  ),
+                  minLines: 6,
+                  maxLines: null,
+                  initialValue: widget._question.description,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return "Empty description.";
+                    }
+                  },
+                  onSaved: (String value) {
+                    bool hasChanged = value != this.widget.oldDescript;
+                    if (hasChanged) widget._question.updateDescription(value);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        persistentFooterButtons: [saveButton(context)],
       ),
-      persistentFooterButtons: [saveButton(context)],
     );
   }
 
