@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/widgets/QuestionsHolder.dart';
 
@@ -35,9 +37,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: SafeArea(
-        child: QuestionsHolder(
-          child: QuestionListPage(),
-        ),
+        child: LoginPage(FirebaseController()),
       ),
     );
   }
