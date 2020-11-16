@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 Icon(
-                  Icons.accessibility_sharp,
+                  Icons.person,
                   size: 200.0,
                 ),
                 Container(
