@@ -1,49 +1,60 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:inquirescape/model/Conference.dart';
+import 'package:inquirescape/model/Moderator.dart';
+import 'package:inquirescape/model/Question.dart';
+import 'package:inquirescape/model/User.dart';
 
 class FirebaseController {
-    static final FirebaseAuth _auth = FirebaseAuth.instance;
+    static final FirebaseFirestore firebase = FirebaseFirestore.instance;
 
-    static User _user;
+    FirebaseController();
 
-    Future<String> signUp(String email, String password) async {
-      try {
-        UserCredential userCreds = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-
-        _user = _auth.currentUser;
-
-        if (!_user.emailVerified) {
-          await _user.sendEmailVerification();
+    Future<DocumentReference> addModerator(Moderator moderator) async {
+        return await firebase.collection("moderators").
+            add({   'email': moderator.email,
+                    'username': moderator.username,
+                    'name': moderator.name
+                });
+    }
+    
+    Future<DocumentReference> addConference(Conference conference) async {
+        List<DocumentReference> modRefs = List();
+        for (int i = 0; i < conference.moderators.length; i++) {
+            modRefs.add(conference.moderators[i].docRef);
         }
 
-      } on FirebaseAuthException catch (exception) {
-        if (exception.code == 'weak-password') {
-          return "Your password is too weak";
-        }
-        else if (exception.code == 'email-already-in-use') {
-          return "Email is already being used";
-        }
-      }
-      catch (exception) {
-        return exception.toString();
-      }
-
-      return null;
+        return await firebase.collection("conferences").
+            add({   'title': conference.title,
+                    'startDate': conference.startDate,
+                    'description': conference.description,
+                    'moderators': modRefs,
+                    'topics': conference.topics
+                });
     }
 
-    Future<String> signIn(String email, String password) async {
-      try {
-        UserCredential userCreds = await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-      } on FirebaseAuthException catch (exception) {
-        if (exception.code == 'user-not-found') {
-          return "Email or password incorrect";
-        } else if (exception.code == 'wrong-password') {
-          return "Email or password incorrect";
-        }
-      }
-      return null;
+    Future<DocumentReference> addQuestion(Question question) async {
+        return await firebase.collection("questions").
+            add({   'poster': question.poster.docRef,
+                    'content': question.content,
+                    'postDate': question.postDate,
+                    'conference': question.conference.docRef,
+                    'ratings': {},
+                    'avgRating': 0.0
+                });
     }
 
+    Future<DocumentReference> addUser(User user) async {
+        return await firebase.collection("users").
+            add({   'username': user.username,
+                    'platform': user.platform
+                });
+    }
+
+    Future<Moderator> getModeratorFromDatabase(DocumentSnapshot document) async {
+        DocumentReference docRef = document.reference;
+        Map data = document.data();
+        if (data == null) return Moderator.invalid();
+        return Moderator(data['username'], data['email'], data['name'], docRef);
+    }
 }
