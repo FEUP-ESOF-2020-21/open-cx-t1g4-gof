@@ -71,6 +71,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
                           initialTime: TimeOfDay.now(),
                           context: context,
                         );
+                        timeController.text = selectedTime.format(context);
                       },
                     ),
                   ),
@@ -79,16 +80,20 @@ class _AddConferencePageState extends State<AddConferencePage> {
                     margin: EdgeInsetsDirectional.only(
                         top: 20.0, start: 20.0, end: 20.0),
                     alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(5)),
+
                     child: TextFormField(
                       keyboardType: TextInputType.multiline,
                       style: TextStyle(fontSize: 20),
                       decoration: InputDecoration(
                         contentPadding: new EdgeInsets.symmetric(
                             vertical: 25.0, horizontal: 8),
+                        hintText: 'Description',
                       ),
                       minLines: 6,
                       maxLines: null,
-                      initialValue: 'Description',
                       validator: (String value) {
                         if (value.isEmpty) {
                           return "Empty description.";
@@ -101,6 +106,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
                   Container(
                     child: FlatButton(
                       child: Text("Add", style: TextStyle(fontSize: 20.0)),
+                      color: Colors.blue,
                       onPressed: () {
                         start.add(new Duration(
                             hours: selectedTime.hour,
