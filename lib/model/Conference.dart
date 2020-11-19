@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inquirescape/model/Moderator.dart';
 
 class Conference {
   DocumentReference docRef;
 
   String title;
   String description;
+  String author;
   DateTime startDate;
 
-  List<Moderator> moderators;
   List<String> topics;
 
-  Conference(this.title, this.description, this.startDate, this.moderators, this.topics);
+  Conference(this.title, this.description, this.author, this.startDate, this.topics);
 
   @override
   bool operator ==(Object other) =>
