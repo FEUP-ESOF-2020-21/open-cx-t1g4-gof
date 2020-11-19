@@ -4,6 +4,8 @@ import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/widgets/QuestionsHolder.dart';
 
+import 'package:inquirescape/pages/InquireScapeHome.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -13,6 +15,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  static final FirebaseController firebaseController = FirebaseController();
 
   // This widget is the root of your application.
   @override
@@ -36,9 +39,17 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SafeArea(
-        child: LoginPage(FirebaseController()),
-      ),
+      // on the FirstScreen widget.
+      initialRoute: '/',
+      routes: {
+        '/': (context) => InquireScapeHome(),
+        '/login': (context) => LoginPage(firebaseController),
+        '/questions': (context) => SafeArea(
+              child: QuestionsHolder(
+                child: QuestionListPage(),
+              ),
+            ),
+      },
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 
 class LoginPage extends StatefulWidget {
   final FirebaseController _fbController;
@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
           title: Text("Login"),
           centerTitle: true,
         ),
+        drawer: InquireScapeDrawer(),
         body: Container(
           margin: EdgeInsetsDirectional.only(top: 10.0, bottom: 10.0),
           child: SingleChildScrollView(
