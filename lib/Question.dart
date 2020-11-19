@@ -70,6 +70,8 @@ class Question {
             "Estou indecisa entre um carro híbrido ou elétrico. Qual é que acha melhor para conduzir de casa para o trabalho?",
             3.8);
     }
+
+    return null;
   }
 
   Question clone() {

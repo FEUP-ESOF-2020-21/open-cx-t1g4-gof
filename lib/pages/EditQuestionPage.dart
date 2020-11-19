@@ -43,6 +43,7 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                     if (value.isEmpty) {
                       return "Empty description.";
                     }
+                    return null;
                   },
                   onSaved: (String value) {
                     bool hasChanged = value != this.widget.oldDescript;

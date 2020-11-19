@@ -16,32 +16,31 @@ class QuestionFullPage extends StatefulWidget {
 class _QuestionFullPageState extends State<QuestionFullPage> {
   @override
   Widget build(BuildContext context) {
-    if (widget._question != null)
-      return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget._question.userName),
-            centerTitle: true,
-          ),
-          body: Container(
-            padding:
-                EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    widget._question.description,
-                    style: TextStyle(fontSize: 20),
-                    maxLines: null,
-                  ),
-                ],
-              ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget._question.userName),
+          centerTitle: true,
+        ),
+        body: Container(
+          padding:
+              EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  widget._question.description,
+                  style: TextStyle(fontSize: 20),
+                  maxLines: null,
+                ),
+              ],
             ),
           ),
-          persistentFooterButtons: [ratingBar(context), editButton(context)],
         ),
-      );
+        persistentFooterButtons: [ratingBar(context), editButton(context)],
+      ),
+    );
   }
 
   Widget ratingBar(BuildContext context) {

@@ -1,18 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/model/User.dart';
 
 class Question {
   DocumentReference docRef;
 
-  Conference conference;
   String content;
   DateTime postDate;
   double avgRating;
-  User poster;
+  int totalRatings;
+  String authorId, authorDisplayName, authorPlatform;
 
-  Question(this.docRef, this.conference, this.content, this.postDate,
-      this.avgRating, this.poster);
+  Question(this.content, this.postDate,
+      this.avgRating, this.totalRatings, this.authorId, this.authorDisplayName, this.authorPlatform, this.docRef);
+
+  Question.withoutRef(this.content, this.postDate, this.authorId, this.authorDisplayName, this.authorPlatform) {
+    this.avgRating = 0;
+    this.totalRatings = 0;
+  }
 
   @override
   bool operator ==(Object other) =>

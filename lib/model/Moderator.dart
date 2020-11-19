@@ -9,9 +9,7 @@ class Moderator {
 
   Moderator(this.username, this.email, this.name, this.docRef);
 
-  Moderator.invalid() {
-    this.username = "Invalid moderator";
-  }
+  Moderator.withoutRef(this.username, this.email, this.name);
 
   @override
   bool operator ==(Object other) =>
