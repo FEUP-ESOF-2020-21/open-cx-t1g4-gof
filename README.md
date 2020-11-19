@@ -200,6 +200,17 @@ Effort: M
 ![Focused question page](docs/increment_1_full_page_question.png)
 ![Question editing page](docs/increment_1_edit.png)
 
+## Project Iteration 2
+**Changelog:**
+- Introduced Firebase database management
+- Added application login page
+- Added a drawer to facilitate page navigation 
+
+**Screenshots:**
+![Login Page](docs/increment_1_question_list.png)
+![Navigation Drawer](docs/increment_1_full_page_question.png)
+![Question editing page](docs/increment_1_edit.png)
+
 ---
 
 # Test
