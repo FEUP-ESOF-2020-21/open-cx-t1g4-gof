@@ -5,12 +5,12 @@ class Conference {
 
   String title;
   String description;
-  String author;
+  String speaker;
   DateTime startDate;
 
   List<String> topics;
 
-  Conference(this.title, this.description, this.author, this.startDate, this.topics);
+  Conference(this.title, this.description, this.speaker, this.startDate, this.topics, this.docRef);
 
   @override
   bool operator ==(Object other) =>

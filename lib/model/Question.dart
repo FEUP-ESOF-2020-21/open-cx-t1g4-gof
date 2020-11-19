@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inquirescape/model/User.dart';
 
 class Question {
   DocumentReference docRef;
@@ -8,10 +7,10 @@ class Question {
   DateTime postDate;
   double avgRating;
   int totalRatings;
-  User poster;
+  String authorId, authorDisplayName, authorPlatform;
 
   Question(this.docRef, this.content, this.postDate,
-      this.avgRating, this.totalRatings, this.poster);
+      this.avgRating, this.totalRatings, this.authorId, this.authorDisplayName, this.authorPlatform);
 
   @override
   bool operator ==(Object other) =>

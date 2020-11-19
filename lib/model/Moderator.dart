@@ -9,10 +9,6 @@ class Moderator {
 
   Moderator(this.username, this.email, this.name, this.docRef);
 
-  Moderator.invalid() {
-    this.username = "Invalid moderator";
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
