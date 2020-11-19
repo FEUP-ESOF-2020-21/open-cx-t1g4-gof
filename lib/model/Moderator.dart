@@ -9,6 +9,8 @@ class Moderator {
 
   Moderator(this.username, this.email, this.name, this.docRef);
 
+  Moderator.withoutRef(this.username, this.email, this.name);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

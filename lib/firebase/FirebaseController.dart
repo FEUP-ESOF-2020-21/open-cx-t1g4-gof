@@ -8,10 +8,10 @@ class FirebaseController {
 
   FirebaseController();
 
-  Future<DocumentReference> addModerator(Moderator moderator, String uid) async {
+  Future<Moderator> addModerator(Moderator moderator, String uid) async {
     moderator.docRef = firebase.collection("moderators").doc(uid);
     await moderator.docRef.set({'email': moderator.email, 'username': moderator.username, 'name': moderator.name});
-    return moderator.docRef;
+    return moderator;
   }
 
   Future<DocumentReference> addConferenceToModerator(Conference conference, Moderator moderator) async {
@@ -20,7 +20,7 @@ class FirebaseController {
     return ref;
   }
 
-  Future<DocumentReference> addConference(Conference conference) async {
+  Future<Conference> addConference(Conference conference) async {
     conference.docRef = await firebase.collection("conferences").add({
       'title': conference.title,
       'startDate': conference.startDate,
@@ -28,10 +28,10 @@ class FirebaseController {
       'speaker': conference.speaker,
       'topics': conference.topics
     });
-    return conference.docRef;
+    return conference;
   }
 
-  Future<DocumentReference> addQuestion(Conference conference, Question question) async {
+  Future<Question> addQuestion(Conference conference, Question question) async {
     question.docRef = await conference.docRef.collection("questions").add({
       'content': question.content,
       'postDate': question.postDate,
@@ -41,7 +41,7 @@ class FirebaseController {
       'authorDisplayName': question.authorDisplayName,
       'authorPlatform': question.authorPlatform
     });
-    return question.docRef;
+    return question;
   }
 
   Future<void> updateQuestionContent(Question question) async {
@@ -84,8 +84,8 @@ class FirebaseController {
       Map<String, dynamic> data = result.data();
       if (data == null) return null;
 
-      Question q = Question(result.reference, data["content"], data["postDate"], data["avgRating"],
-          data["totalRatings"], data["authorID"], data["authorDisplayName"], data["authorPlatform"]);
+      Question q = Question(data["content"], data["postDate"], data["avgRating"],
+          data["totalRatings"], data["authorID"], data["authorDisplayName"], data["authorPlatform"], result.reference);
       questions.add(q);
     });
 
@@ -107,4 +107,5 @@ class FirebaseController {
     if (data == null) return null;
     return Moderator(data["username"], data["email"], data["name"], modDocRef);
   }
+
 }

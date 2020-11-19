@@ -12,6 +12,9 @@ class Conference {
 
   Conference(this.title, this.description, this.speaker, this.startDate, this.topics, this.docRef);
 
+  Conference.withoutRef(this.title, this.description, this.speaker, this.startDate, this.topics);
+
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
