@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 Icon(
-                  Icons.person,
+                  Icons.account_circle_rounded,
                   size: 200.0,
                 ),
                 Container(
