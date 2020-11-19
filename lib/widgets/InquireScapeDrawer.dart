@@ -148,7 +148,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
               ],
             ),
           ),
-          _DrawerEntry(Icons.mic, "Conference", "/login"),
+          _DrawerEntry(Icons.mic, "Conference", "/conference"),
           _DrawerEntry(Icons.notes_rounded, "Questions", "/questions"),
         ],
       ),

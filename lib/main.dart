@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/pages/AddConferencePage.dart';
 import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/widgets/QuestionsHolder.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
                 child: QuestionListPage(),
               ),
             ),
+        '/conference': (context) => AddConferencePage(),
       },
     );
   }
