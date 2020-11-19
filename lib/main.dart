@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/pages/AddConferencePage.dart';
+import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/widgets/QuestionsHolder.dart';
 
-void main() {
+import 'package:inquirescape/pages/InquireScapeHome.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static final FirebaseController firebaseController = FirebaseController();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,11 +40,18 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SafeArea(
-        child: QuestionsHolder(
-          child: QuestionListPage(),
-        ),
-      ),
+      // on the FirstScreen widget.
+      initialRoute: '/',
+      routes: {
+        '/': (context) => InquireScapeHome(),
+        '/login': (context) => LoginPage(firebaseController),
+        '/questions': (context) => SafeArea(
+              child: QuestionsHolder(
+                child: QuestionListPage(),
+              ),
+            ),
+        '/conference': (context) => AddConferencePage(),
+      },
     );
   }
 }
