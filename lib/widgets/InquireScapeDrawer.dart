@@ -10,16 +10,12 @@ class _DrawerEntry extends StatelessWidget {
   final IconData icon;
   final String text;
   final void Function() onTap;
-  String desc;
 
-  _DrawerEntry(this.icon, this.text, this.onTap) {
-    this.desc = this.text.trim();
-  }
+  _DrawerEntry(this.icon, this.text, this.onTap);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key: Key(desc),
       leading: Icon(this.icon),
       title: Text(
         this.text,
