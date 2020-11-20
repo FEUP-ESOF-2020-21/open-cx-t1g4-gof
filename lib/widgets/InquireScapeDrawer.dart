@@ -10,12 +10,16 @@ class _DrawerEntry extends StatelessWidget {
   final IconData icon;
   final String text;
   final void Function() onTap;
+  String desc;
 
-  _DrawerEntry(this.icon, this.text, this.onTap);
+  _DrawerEntry(this.icon, this.text, this.onTap) {
+    this.desc = this.text.trim();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key: Key(desc),
       leading: Icon(this.icon),
       title: Text(
         this.text,
@@ -41,7 +45,8 @@ class InquireScapeDrawer extends StatefulWidget {
   _InquireScapeDrawerState createState() => _InquireScapeDrawerState();
 }
 
-class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements FirebaseListener {
+class _InquireScapeDrawerState extends State<InquireScapeDrawer>
+    implements FirebaseListener {
   static bool _expanded = false;
 
   bool loggedIn = false;
@@ -67,11 +72,14 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
 
   @override
   Widget build(BuildContext context) {
-    return this.loggedIn ? this.buildLoggedIn(context) : this.buildLoggedOff(context);
+    return this.loggedIn
+        ? this.buildLoggedIn(context)
+        : this.buildLoggedOff(context);
   }
 
   Widget buildLoggedOff(BuildContext context) {
     return Drawer(
+      key: Key("drawerLogOff"),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -100,7 +108,8 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
               ],
             ),
           ),
-          _DrawerEntry(Icons.login, "Log In", () => Navigator.pushReplacementNamed(context, "/login")),
+          _DrawerEntry(Icons.login, "Log In",
+              () => Navigator.pushReplacementNamed(context, "/login")),
         ],
       ),
     );
@@ -108,6 +117,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
 
   Widget buildLoggedIn(BuildContext context) {
     return Drawer(
+      key: Key("drawerLogIn"),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -160,29 +170,57 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
               ],
             ),
           ),
-          _DrawerEntry(Icons.home, "Home", () => Navigator.pushReplacementNamed(context, "/")),
+          _DrawerEntry(Icons.home, "Home",
+              () => Navigator.pushReplacementNamed(context, "/")),
           ExpansionTile(
             initiallyExpanded: _InquireScapeDrawerState._expanded,
-            onExpansionChanged: (value) => _InquireScapeDrawerState._expanded = value,
+            onExpansionChanged: (value) =>
+                _InquireScapeDrawerState._expanded = value,
             title: _DrawerEntry(Icons.mic, "Conference", null),
             children: [
-              _DrawerEntry(Icons.subdirectory_arrow_right_rounded, "Current", () => Navigator.pushReplacementNamed(context, "/conference/current")),
-              _DrawerEntry(Icons.hourglass_empty_rounded, "Questions", () => Navigator.pushReplacementNamed(context, "/conference/questions")),
-              _DrawerEntry(Icons.note, "Post Question", () => Navigator.pushReplacementNamed(context, "/conference/postQuestion")),
-              _DrawerEntry(Icons.format_list_bulleted, "My Conferences", () => Navigator.pushReplacementNamed(context, "/conference/myConferences")),
-              _DrawerEntry(Icons.insert_invitation, "Invites", () => Navigator.pushReplacementNamed(context, "/conference/invites")),
-              _DrawerEntry(Icons.add_box_outlined, "Create New", () => Navigator.pushReplacementNamed(context, "/conference/create")),
+              _DrawerEntry(
+                  Icons.subdirectory_arrow_right_rounded,
+                  "Current",
+                  () => Navigator.pushReplacementNamed(
+                      context, "/conference/current")),
+              _DrawerEntry(
+                  Icons.hourglass_empty_rounded,
+                  "Questions",
+                  () => Navigator.pushReplacementNamed(
+                      context, "/conference/questions")),
+              _DrawerEntry(
+                  Icons.note,
+                  "Post Question",
+                  () => Navigator.pushReplacementNamed(
+                      context, "/conference/postQuestion")),
+              _DrawerEntry(
+                  Icons.format_list_bulleted,
+                  "My Conferences",
+                  () => Navigator.pushReplacementNamed(
+                      context, "/conference/myConferences")),
+              _DrawerEntry(
+                  Icons.insert_invitation,
+                  "Invites",
+                  () => Navigator.pushReplacementNamed(
+                      context, "/conference/invites")),
+              _DrawerEntry(
+                  Icons.add_box_outlined,
+                  "Create New",
+                  () => Navigator.pushReplacementNamed(
+                      context, "/conference/create")),
             ],
           ),
-          _DrawerEntry(Icons.account_circle_rounded, "Profile", () => Navigator.pushReplacementNamed(context, "/profile")),
-          _DrawerEntry(Icons.logout, "Log Out", () => this.widget._fbController.logout()),
+          _DrawerEntry(Icons.account_circle_rounded, "Profile",
+              () => Navigator.pushReplacementNamed(context, "/profile")),
+          _DrawerEntry(Icons.logout, "Log Out",
+              () => this.widget._fbController.logout()),
         ],
       ),
     );
   }
 
   @override
-  void onLoginIncorrect() { }
+  void onLoginIncorrect() {}
 
   @override
   void onLoginSuccess() {
@@ -194,13 +232,13 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
   }
 
   @override
-  void onRegisterDuplicate() { }
+  void onRegisterDuplicate() {}
 
   @override
-  void onRegisterSuccess() { }
+  void onRegisterSuccess() {}
 
   @override
-  void onDataChanged() { }
+  void onDataChanged() {}
 
   @override
   void onLogout() {

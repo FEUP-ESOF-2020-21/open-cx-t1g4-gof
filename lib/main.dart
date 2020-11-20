@@ -20,7 +20,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   static final FirebaseController firebaseController = FirebaseController();
-  Widget drawer =  InquireScapeDrawer(firebaseController);
+  Widget drawer = InquireScapeDrawer(firebaseController);
 
   // This widget is the root of your application.
   @override
@@ -48,17 +48,26 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => InquireScapeHome(firebaseController, this.drawer),
-        '/login': (context) => LoginPage(firebaseController, this.drawer),
+        '/login': (context) => LoginPage(
+              key: Key("LoginPage"),
+              fbController: firebaseController,
+              drawer: this.drawer,
+            ),
         '/conference/questions': (context) => SafeArea(
               child: QuestionsHolder(
                 child: QuestionListPage(firebaseController, this.drawer),
               ),
             ),
-        '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),
-        '/conference/myConferences': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/invites': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/current': (context) => ConferenceFullPage(firebaseController, this.drawer),
-        '/conference/postQuestion': (context) => MyConferencesPage(firebaseController, this.drawer),
+        '/conference/create': (context) =>
+            AddConferencePage(firebaseController, this.drawer),
+        '/conference/myConferences': (context) =>
+            MyConferencesPage(firebaseController, this.drawer),
+        '/conference/invites': (context) =>
+            MyConferencesPage(firebaseController, this.drawer),
+        '/conference/current': (context) =>
+            ConferenceFullPage(firebaseController, this.drawer),
+        '/conference/postQuestion': (context) =>
+            MyConferencesPage(firebaseController, this.drawer),
       },
     );
   }
