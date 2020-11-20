@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class TagDisplayer extends StatelessWidget {
   final List<String> tags;
   final double tagSize;
+  final Color borderColor, tagColor;
 
-  TagDisplayer({Key key, @required this.tags, this.tagSize = 16}) : super(key: key);
+  TagDisplayer({Key key, @required this.tags, this.tagSize = 16, this.borderColor = Colors.grey, this.tagColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,10 @@ class TagDisplayer extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              color: this.tagColor,
+              border: Border.all(color: this.borderColor),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
             margin: EdgeInsets.only(left: 4, right: 4),
             child: Text(
               "  " + this.tags[index] + "  ",
