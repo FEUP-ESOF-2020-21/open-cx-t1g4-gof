@@ -8,38 +8,24 @@ import 'package:inquirescape/model/Moderator.dart';
 // ---------------
 class _DrawerEntry extends StatelessWidget {
   final IconData icon;
-  final String text, path;
+  final String text;
+  final void Function() onTap;
 
-  _DrawerEntry(this.icon, this.text, this.path);
+  _DrawerEntry(this.icon, this.text, this.onTap);
 
   @override
   Widget build(BuildContext context) {
-    if (this.path != null) {
-      return ListTile(
-        leading: Icon(this.icon),
-        title: Text(
-          this.text,
-          style: TextStyle(
-            fontSize: 22,
-            color: Colors.black54,
-          ),
+    return ListTile(
+      leading: Icon(this.icon),
+      title: Text(
+        this.text,
+        style: TextStyle(
+          fontSize: 22,
+          color: Colors.black54,
         ),
-        onTap: () {
-          Navigator.pushReplacementNamed(context, this.path);
-        },
-      );
-    } else {
-      return ListTile(
-        leading: Icon(this.icon),
-        title: Text(
-          this.text,
-          style: TextStyle(
-            fontSize: 22,
-            color: Colors.black54,
-          ),
-        ),
-      );
-    }
+      ),
+      onTap: this.onTap,
+    );
   }
 }
 
@@ -56,6 +42,8 @@ class InquireScapeDrawer extends StatefulWidget {
 }
 
 class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements FirebaseListener {
+  static bool _expanded = false;
+
   bool loggedIn = false;
   Moderator mod;
 
@@ -112,7 +100,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
               ],
             ),
           ),
-          _DrawerEntry(Icons.login, "Log In", "/login"),
+          _DrawerEntry(Icons.login, "Log In", () => Navigator.pushReplacementNamed(context, "/login")),
         ],
       ),
     );
@@ -172,8 +160,22 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
               ],
             ),
           ),
-          _DrawerEntry(Icons.mic, "Conference", "/login"),
-          _DrawerEntry(Icons.notes_rounded, "Questions", "/questions"),
+          _DrawerEntry(Icons.home, "Home", () => Navigator.pushReplacementNamed(context, "/")),
+          ExpansionTile(
+            initiallyExpanded: _InquireScapeDrawerState._expanded,
+            onExpansionChanged: (value) => _InquireScapeDrawerState._expanded = value,
+            title: _DrawerEntry(Icons.mic, "Conference", null),
+            children: [
+              _DrawerEntry(Icons.subdirectory_arrow_right_rounded, "Current", () => Navigator.pushReplacementNamed(context, "/conference/current")),
+              _DrawerEntry(Icons.hourglass_empty_rounded, "Questions", () => Navigator.pushReplacementNamed(context, "/conference/questions")),
+              _DrawerEntry(Icons.note, "Post Question", () => Navigator.pushReplacementNamed(context, "/conference/postQuestion")),
+              _DrawerEntry(Icons.format_list_bulleted, "My Conferences", () => Navigator.pushReplacementNamed(context, "/conference/myConferences")),
+              _DrawerEntry(Icons.insert_invitation, "Invites", () => Navigator.pushReplacementNamed(context, "/conference/invites")),
+              _DrawerEntry(Icons.add_box_outlined, "Create New", () => Navigator.pushReplacementNamed(context, "/conference/create")),
+            ],
+          ),
+          _DrawerEntry(Icons.account_circle_rounded, "Profile", () => Navigator.pushReplacementNamed(context, "/profile")),
+          _DrawerEntry(Icons.logout, "Log Out", () => print("Dunno what to do :upside_down:")),
         ],
       ),
     );
