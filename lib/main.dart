@@ -4,6 +4,7 @@ import 'package:inquirescape/pages/AddConferencePage.dart';
 import 'package:inquirescape/pages/ConferenceFullPage.dart';
 import 'package:inquirescape/pages/MyConferencesPage.dart';
 import 'package:inquirescape/pages/LoginPage.dart';
+import 'package:inquirescape/pages/PostQuestionPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/QuestionsHolder.dart';
@@ -20,7 +21,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   static final FirebaseController firebaseController = FirebaseController();
-  Widget drawer =  InquireScapeDrawer(firebaseController);
+  Widget drawer = InquireScapeDrawer(firebaseController);
 
   // This widget is the root of your application.
   @override
@@ -54,11 +55,16 @@ class MyApp extends StatelessWidget {
                 child: QuestionListPage(firebaseController, this.drawer),
               ),
             ),
-        '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),
-        '/conference/myConferences': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/invites': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/current': (context) => ConferenceFullPage(firebaseController, this.drawer),
-        '/conference/postQuestion': (context) => MyConferencesPage(firebaseController, this.drawer),
+        '/conference/create': (context) =>
+            AddConferencePage(firebaseController, this.drawer),
+        '/conference/myConferences': (context) =>
+            MyConferencesPage(firebaseController, this.drawer),
+        '/conference/invites': (context) =>
+            MyConferencesPage(firebaseController, this.drawer),
+        '/conference/current': (context) =>
+            ConferenceFullPage(firebaseController, this.drawer),
+        '/conference/postQuestion': (context) =>
+            PostQuestionPage(firebaseController, this.drawer),
       },
     );
   }
