@@ -59,13 +59,13 @@ class _LoginPageState extends State<LoginPage> {
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
           child: _loginTextInput(
-              'Enter your email', Icons.email, _emailController, "emailfield"),
+              'Enter your email', Icons.email, _emailController),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
           child: _loginTextInput('Enter your password', Icons.vpn_key,
-              _passowrdController, "passfield",
+              _passowrdController,
               isPassword: true),
         ),
         Container(
@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         Container(
-          child: _loginSubmit("Login", Icons.login, 'LoginButton', () {
+          child: _loginSubmit("Login", Icons.login, () {
             showDialog(
                 context: context,
                 builder: (context) => _LoginAlert(this.widget.fbController,
@@ -103,27 +103,27 @@ class _LoginPageState extends State<LoginPage> {
                 EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
             alignment: Alignment.centerLeft,
             child: _loginTextInput('Enter your email', Icons.email,
-                _registerEmailController, "emailregfield",
+                _registerEmailController,
                 validator: Validators.emailValidator())),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
           child: _loginTextInput('Enter your username', Icons.person,
-              _registerUsernameController, 'userregfield',
+              _registerUsernameController,
               validator: Validators.usernameValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
           child: _loginTextInput('Enter your password', Icons.vpn_key,
-              _registerPassowrdController, 'passregfield',
+              _registerPassowrdController,
               isPassword: true, validator: Validators.passwordValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
           child: _loginTextInput('Confirm your password', Icons.vpn_key,
-              _confirmPassowrdController, 'passregconffield',
+              _confirmPassowrdController,
               isPassword: true,
               validator:
                   Validators.confirmPasswordValidator(_passowrdController)),
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         Container(
-          child: _loginSubmit("Register", Icons.login, 'regbutton', () {
+          child: _loginSubmit("Register", Icons.login, () {
             showDialog(
                 context: context,
                 builder: (context) => _LoginAlert(
@@ -162,10 +162,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginTextInput(String hintText, IconData icon,
-      TextEditingController textController, String desc,
+      TextEditingController textController,
       {bool isPassword: false, FormFieldValidator<String> validator}) {
     return TextFormField(
-        key: Key(desc),
         decoration: InputDecoration(
           icon: Icon(icon),
           hintText: hintText,
@@ -178,9 +177,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginSubmit(
-      String buttonText, IconData icon, String desc, Function onSubmit) {
+      String buttonText, IconData icon, Function onSubmit) {
     return TextButton(
-      key: Key(desc),
       onPressed: onSubmit,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +241,7 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
 
   Widget _alertButton(String buttonText, Function onPressed) {
     return TextButton(
-        key: Key("AlertPopUp"), child: Text(buttonText), onPressed: onPressed);
+        child: Text(buttonText), onPressed: onPressed);
   }
 
   @override

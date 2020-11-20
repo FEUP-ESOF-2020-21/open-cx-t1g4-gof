@@ -1,5 +1,5 @@
 Feature: Home Screen Drawer Navigation
-    Scenario: when email and password are in specified format and login is clicked
+    Scenario: when I am logged out and open the drawer and click the login button, I should go to the login page
         Given I have "drawerLogOff" and "LoginButton"
         When I open the drawer
         Then I tap the widget that contains the text "Log In"

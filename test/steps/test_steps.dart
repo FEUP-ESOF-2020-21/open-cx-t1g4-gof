@@ -6,10 +6,10 @@ class CheckGivenWidgets extends Given2WithWorld<String, String, FlutterWorld> {
   @override
   Future<void> executeStep(String input1, String input2) async {
     // TODO: implement executeStepfinal textinput1 = find.byValueKey(input1);
-    final emailField = find.byValueKey(input1);
-    final passField = find.byValueKey(input2);
-    await FlutterDriverUtils.isPresent(world.driver, emailField);
-    await FlutterDriverUtils.isPresent(world.driver, passField);
+    final drawerLogOff = find.byValueKey(input1);
+    final loginButton = find.byValueKey(input2);
+    await FlutterDriverUtils.isPresent(world.driver, drawerLogOff);
+    await FlutterDriverUtils.isPresent(world.driver, loginButton);
   }
 
   @override
