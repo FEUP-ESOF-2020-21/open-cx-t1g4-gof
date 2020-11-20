@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inquirescape/Question.dart';
+import 'package:inquirescape/model/Question.dart';
 
 class EditQuestionPage extends StatefulWidget {
   final Question _question;
   final String oldDescript;
 
-  EditQuestionPage(this._question) : this.oldDescript = _question.description;
+  EditQuestionPage(this._question) : this.oldDescript = _question.content;
 
   @override
   _EditQuestionPage createState() => _EditQuestionPage();
@@ -38,7 +38,7 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                   ),
                   minLines: 6,
                   maxLines: null,
-                  initialValue: widget._question.description,
+                  initialValue: widget._question.content,
                   validator: (String value) {
                     if (value.isEmpty) {
                       return "Empty description.";
@@ -46,8 +46,8 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                     return null;
                   },
                   onSaved: (String value) {
-                    bool hasChanged = value != this.widget.oldDescript;
-                    if (hasChanged) widget._question.updateDescription(value);
+                    // bool hasChanged = value != this.widget.oldDescript;
+                    // if (hasChanged) widget._question.updateContent(value);
                     Navigator.pop(context);
                   },
                 ),

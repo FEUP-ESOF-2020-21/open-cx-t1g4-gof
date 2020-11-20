@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:inquirescape/Question.dart';
+import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/QuestionFullPage.dart';
-
-import 'QuestionsHolder.dart';
 
 class QuestionCard extends StatelessWidget {
   final Question question;
@@ -19,8 +17,7 @@ class QuestionCard extends StatelessWidget {
           child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () async {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionFullPage(this.question)))
-              .then((value) => QuestionsHolder.of(context).update());
+          Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionFullPage(this.question)));
         },
         child: Padding(
             padding: EdgeInsets.only(left: 4, top: 8, right: 4, bottom: 8),
@@ -29,13 +26,13 @@ class QuestionCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      question.userName,
+                      question.authorDisplayName,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     Row(
                       children: [
                         Text(
-                          question.rating.toStringAsFixed(1),
+                          question.avgRating.toStringAsFixed(1),
                           style: TextStyle(fontSize: 14),
                         ),
                         Icon(Icons.star, color: Colors.amber, size: 22),
@@ -45,7 +42,7 @@ class QuestionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 ),
                 Text(
-                  question.description,
+                  question.content,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   style: TextStyle(fontSize: 15),

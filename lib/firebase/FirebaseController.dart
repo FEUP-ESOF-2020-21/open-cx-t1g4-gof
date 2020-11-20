@@ -195,9 +195,9 @@ class FirebaseController {
     _conferenceIndex = value;
   }
 
-  static List<Question> get conferenceQuestions => _conferenceQuestions;
+  List<Question> get conferenceQuestions => _conferenceQuestions;
 
-  static int get conferenceQuestionsLoadedIndex => _conferenceQuestionsLoadedIndex;
+  int get conferenceQuestionsLoadedIndex => _conferenceQuestionsLoadedIndex;
 
   Future<void> reloadQuestions(void Function(List<Question>) onReload) async {
     if (_conferenceIndex == null || _myConferences == null || _conferenceIndex != _conferenceQuestionsLoadedIndex)

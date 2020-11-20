@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inquirescape/Question.dart';
+import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -19,7 +19,7 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget._question.userName),
+          title: Text(widget._question.authorDisplayName),
           centerTitle: true,
         ),
         body: Container(
@@ -30,7 +30,7 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  widget._question.description,
+                  widget._question.content,
                   style: TextStyle(fontSize: 20),
                   maxLines: null,
                 ),
@@ -45,7 +45,7 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
 
   Widget ratingBar(BuildContext context) {
     return RatingBarIndicator(
-      rating: widget._question.rating,
+      rating: widget._question.avgRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
         color: Colors.amber,
