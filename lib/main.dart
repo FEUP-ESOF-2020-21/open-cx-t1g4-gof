@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/pages/AddConferencePage.dart';
+import 'package:inquirescape/pages/MyConferencesPage.dart';
 import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/widgets/QuestionsHolder.dart';
@@ -45,12 +46,16 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => InquireScapeHome(),
         '/login': (context) => LoginPage(firebaseController),
-        '/questions': (context) => SafeArea(
+        '/conference/questions': (context) => SafeArea(
               child: QuestionsHolder(
                 child: QuestionListPage(),
               ),
             ),
-        '/conference': (context) => AddConferencePage(),
+        '/conference/create': (context) => AddConferencePage(),
+        '/conference/myConferences': (context) => MyConferencesPage(),
+        '/conference/invites': (context) => MyConferencesPage(),
+        '/conference/current': (context) => MyConferencesPage(),
+        '/conference/postQuestion': (context) => MyConferencesPage(),
       },
     );
   }

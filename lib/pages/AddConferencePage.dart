@@ -25,7 +25,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Add Conference"),
+          title: Text("New Conference"),
           centerTitle: true,
         ),
         drawer: InquireScapeDrawer(),
