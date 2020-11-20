@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:inquirescape/firebase/FirebaseAuthenticator.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/firebase/FirebaseListener.dart';
 import 'package:inquirescape/pages/Validators.dart';
@@ -9,8 +8,9 @@ import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 
 class LoginPage extends StatefulWidget {
   final FirebaseController _fbController;
+  final Widget _drawer;
 
-  LoginPage(this._fbController);
+  LoginPage(this._fbController, this._drawer);
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
@@ -20,8 +20,10 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _loginPage = true; // If true -> display Login; If false -> Display Register
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
   TextEditingController _passowrdController = TextEditingController();
+  TextEditingController _registerEmailController = TextEditingController();
+  TextEditingController _registerUsernameController = TextEditingController();
+  TextEditingController _registerPassowrdController = TextEditingController();
   TextEditingController _confirmPassowrdController = TextEditingController();
 
   @override
@@ -32,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           title: Text("InquireScape"),
           centerTitle: true,
         ),
-        drawer: InquireScapeDrawer(),
+        drawer: this.widget._drawer,
         body: Container(
           margin: EdgeInsetsDirectional.only(top: 10.0, bottom: 10.0),
           child: SingleChildScrollView(
@@ -74,7 +76,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         Container (
-          child: _loginSubmit("Login", Icons.login, () {}),
+          child: _loginSubmit("Login", Icons.login,
+                  () {
+                Navigator.push(context, MaterialPageRoute(builder:
+                    (context) => _LoginAlert(this.widget._fbController, true, _emailController.text, _passowrdController.text)));
+              }),
         ),
       ],
     );
@@ -84,26 +90,26 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: <Widget>[
         Icon(
-          Icons.person,
+          Icons.account_circle_rounded,
           size: 200.0,
         ),
         Container(
           margin: EdgeInsetsDirectional.only(
               top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput('Enter your email', Icons.email, _emailController, validator: Validators.emailValidator())
+          child: _loginTextInput('Enter your email', Icons.email, _registerEmailController, validator: Validators.emailValidator())
         ),
         Container(
             margin: EdgeInsetsDirectional.only(
                 top: 20.0, start: 20.0, end: 20.0),
             alignment: Alignment.centerLeft,
-            child: _loginTextInput('Enter your username', Icons.person, _usernameController, validator: Validators.usernameValidator()),
+            child: _loginTextInput('Enter your username', Icons.person, _registerUsernameController, validator: Validators.usernameValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(
               top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput('Enter your password', Icons.vpn_key, _passowrdController, isPassword: true, validator: Validators.passwordValidator()),
+          child: _loginTextInput('Enter your password', Icons.vpn_key, _registerPassowrdController, isPassword: true, validator: Validators.passwordValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(
@@ -122,7 +128,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         Container (
-          child: _loginSubmit("Register", Icons.login, () {}),
+          child: _loginSubmit("Register", Icons.login,
+                  () {
+                    Navigator.push(context, MaterialPageRoute(builder:
+                        (context) => _LoginAlert(this.widget._fbController, false, _registerEmailController.text, _registerPassowrdController.text, username: _registerUsernameController.text)));
+                  }),
         ),
       ],
     );
@@ -153,7 +163,8 @@ class _LoginPageState extends State<LoginPage> {
     return TextButton(
       onPressed: onSubmit,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget> [
           Icon(icon),
           Text(buttonText, style: TextStyle(fontSize: 20)),
@@ -192,10 +203,12 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
 
   @override
   void initState() {
+    super.initState();
     this._activeWidgets = [
       CircularProgressIndicator(),
       Text(this._isSignIn ? "Logging in..." : "Registering...")
     ];
+    this.widget.action(this);
   }
 
   @override
@@ -225,7 +238,13 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
 
   @override
   void onLoginSuccess() {
-    // TODO: implement onLoginSuccess
+    setState( () {
+      this._activeWidgets = [Text("Login successful"),
+        _alertButton("Proceed", () {
+          Navigator.of(context).pop();
+          Navigator.pushReplacementNamed(context, '/');
+        })];
+    });
   }
 
   @override
@@ -238,11 +257,18 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
   @override
   void onRegisterSuccess() {
     setState( () {
-      this._activeWidgets = [Text("This email already exists"),
-        _alertButton("Go Back", () {
+      this._activeWidgets = [Text("Account Registered"),
+        _alertButton("Proceed", () {
           Navigator.of(context).pop();
+          Navigator.pushReplacementNamed(context, '/');
         })];
     });
   }
+
+  @override
+  void onDataChanged() { }
+
+  @override
+  void onLogout() { }
 
 }

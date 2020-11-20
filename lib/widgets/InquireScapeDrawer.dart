@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/firebase/FirebaseListener.dart';
 import 'package:inquirescape/model/Moderator.dart';
 
 // ---------------
@@ -45,17 +47,39 @@ class _DrawerEntry extends StatelessWidget {
 //     DRAWER
 // ---------------
 class InquireScapeDrawer extends StatefulWidget {
-  final bool loggedIn = true;
-  final Moderator mod = Moderator.withoutRef("aaguiar", "aaguiar@fe.up.pt", "Ademar Aguiar");
+  final FirebaseController _fbController;
+
+  InquireScapeDrawer(this._fbController);
 
   @override
   _InquireScapeDrawerState createState() => _InquireScapeDrawerState();
 }
 
-class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
+class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements FirebaseListener {
+  bool loggedIn = false;
+  Moderator mod;
+
+  @override
+  void initState() {
+    super.initState();
+
+    this.widget._fbController.subscribeListener(this);
+
+    this.updateState();
+  }
+
+  Future<void> updateState() async {
+    return await this.widget._fbController.isLoggedIn().then((bool value) {
+      setState(() {
+        this.loggedIn = value;
+        this.mod = this.widget._fbController.currentMod;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return this.widget.loggedIn ? this.buildLoggedIn(context) : this.buildLoggedOff(context);
+    return this.loggedIn ? this.buildLoggedIn(context) : this.buildLoggedOff(context);
   }
 
   Widget buildLoggedOff(BuildContext context) {
@@ -125,7 +149,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
                       ),
                     ),
                     Text(
-                      this.widget.mod.username,
+                      this.mod.username,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -135,7 +159,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
                       maxLines: 2,
                     ),
                     Text(
-                      this.widget.mod.email,
+                      this.mod.email,
                       style: TextStyle(
                         color: Colors.grey[200],
                         fontSize: 14,
@@ -153,5 +177,35 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
         ],
       ),
     );
+  }
+
+  @override
+  void onLoginIncorrect() { }
+
+  @override
+  void onLoginSuccess() {
+    if (mounted)
+      setState(() {
+        this.loggedIn = true;
+        this.mod = this.widget._fbController.currentMod;
+      });
+  }
+
+  @override
+  void onRegisterDuplicate() { }
+
+  @override
+  void onRegisterSuccess() { }
+
+  @override
+  void onDataChanged() { }
+
+  @override
+  void onLogout() {
+    if (mounted)
+      setState(() {
+        this.loggedIn = true;
+        this.mod = this.widget._fbController.currentMod;
+      });
   }
 }

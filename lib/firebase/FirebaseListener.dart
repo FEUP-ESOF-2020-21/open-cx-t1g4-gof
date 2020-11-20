@@ -4,4 +4,7 @@ abstract class FirebaseListener {
 
     void onLoginSuccess();
     void onLoginIncorrect();
+    void onLogout();
+
+    void onDataChanged();
 }
