@@ -18,7 +18,7 @@ class _TagEditorWidgetState extends State<TagEditorWidget> {
       padding: EdgeInsets.all(4),
       child: Column(
         children: <Widget>[
-          if (!this.widget.tags.isEmpty)
+          if (this.widget.tags.isNotEmpty)
             Container(
               height: 30,
               color: Colors.transparent,
