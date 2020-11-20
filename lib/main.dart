@@ -54,11 +54,11 @@ class MyApp extends StatelessWidget {
                 child: QuestionListPage(firebaseController, this.drawer),
               ),
             ),
-        '/conference/create': (context) => AddConferencePage(),
-        '/conference/myConferences': (context) => MyConferencesPage(),
-        '/conference/invites': (context) => MyConferencesPage(),
-        '/conference/current': (context) => ConferenceFullPage(),
-        '/conference/postQuestion': (context) => MyConferencesPage(),
+        '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),
+        '/conference/myConferences': (context) => MyConferencesPage(firebaseController, this.drawer),
+        '/conference/invites': (context) => MyConferencesPage(firebaseController, this.drawer),
+        '/conference/current': (context) => ConferenceFullPage(firebaseController, this.drawer),
+        '/conference/postQuestion': (context) => MyConferencesPage(firebaseController, this.drawer),
       },
     );
   }

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/TagDisplayer.dart';
 
 class ConferenceFullPage extends StatelessWidget {
+  final FirebaseController _fbController;
+  final Widget _drawer;
+
+  ConferenceFullPage(this._fbController, this._drawer);
+
   final Conference conference = Conference.withoutRef(
       "Introdução a Flutter",
       "Uma breve introdução a uma simples ferramente para criar mobile apps e com uma documentação sem paralelo",
@@ -22,7 +28,7 @@ class ConferenceFullPage extends StatelessWidget {
           title: Text("Current Conference"),
           centerTitle: true,
         ),
-        drawer: InquireScapeDrawer(),
+        drawer: this._drawer,
         body: Container(
           padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
           child: SingleChildScrollView(

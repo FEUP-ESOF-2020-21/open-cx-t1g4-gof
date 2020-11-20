@@ -175,7 +175,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
             ],
           ),
           _DrawerEntry(Icons.account_circle_rounded, "Profile", () => Navigator.pushReplacementNamed(context, "/profile")),
-          _DrawerEntry(Icons.logout, "Log Out", () => print("Dunno what to do :upside_down:")),
+          _DrawerEntry(Icons.logout, "Log Out", () => this.widget._fbController.logout()),
         ],
       ),
     );
@@ -204,10 +204,12 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
 
   @override
   void onLogout() {
-    if (mounted)
+    if (mounted) {
       setState(() {
-        this.loggedIn = true;
+        this.loggedIn = false;
         this.mod = this.widget._fbController.currentMod;
       });
+      Navigator.pushReplacementNamed(context, "/");
+    }
   }
 }

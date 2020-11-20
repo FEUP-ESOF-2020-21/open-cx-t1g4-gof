@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
 
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/TagDisplayer.dart';
 
 class MyConferencesPage extends StatefulWidget {
+  final FirebaseController _fbController;
+  final Widget _drawer;
+
+  MyConferencesPage(this._fbController, this._drawer);
+
   @override
   _MyConferencesPageState createState() => _MyConferencesPageState();
 }
@@ -24,7 +30,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
           title: Text("My Conferences"),
           centerTitle: true,
         ),
-        drawer: InquireScapeDrawer(),
+        drawer: this.widget._drawer,
         body: _questionList(context),
       ),
       onRefresh: this._onRefresh,

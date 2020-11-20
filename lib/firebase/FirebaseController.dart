@@ -161,9 +161,9 @@ class FirebaseController {
   }
 
   Future<void> logout() async {
+      await FBAuthenticator.signOut();
       _currentMod = null;
       listeners.forEach((FirebaseListener listener) => listener.onLogout() );
-      return await FBAuthenticator.signOut();
   }
 
 

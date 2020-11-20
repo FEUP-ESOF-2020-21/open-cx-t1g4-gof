@@ -78,9 +78,11 @@ class _LoginPageState extends State<LoginPage> {
         Container (
           child: _loginSubmit("Login", Icons.login,
                   () {
-                Navigator.push(context, MaterialPageRoute(builder:
-                    (context) => _LoginAlert(this.widget._fbController, true, _emailController.text, _passowrdController.text)));
-              }),
+                    showDialog(
+                        context: context,
+                        builder: (context) => _LoginAlert(this.widget._fbController, true, _emailController.text, _passowrdController.text)
+                    );
+                }),
         ),
       ],
     );
@@ -130,8 +132,10 @@ class _LoginPageState extends State<LoginPage> {
         Container (
           child: _loginSubmit("Register", Icons.login,
                   () {
-                    Navigator.push(context, MaterialPageRoute(builder:
-                        (context) => _LoginAlert(this.widget._fbController, false, _registerEmailController.text, _registerPassowrdController.text, username: _registerUsernameController.text)));
+                    showDialog(
+                      context: context,
+                      builder: (context) => _LoginAlert(this.widget._fbController, false, _registerEmailController.text, _registerPassowrdController.text, username: _registerUsernameController.text)
+                    );
                   }),
         ),
       ],
@@ -216,6 +220,8 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
     return SafeArea(
       child: AlertDialog(
         content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: _activeWidgets,
         ),
       ),
@@ -241,7 +247,6 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
     setState( () {
       this._activeWidgets = [Text("Login successful"),
         _alertButton("Proceed", () {
-          Navigator.of(context).pop();
           Navigator.pushReplacementNamed(context, '/');
         })];
     });
@@ -259,7 +264,6 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
     setState( () {
       this._activeWidgets = [Text("Account Registered"),
         _alertButton("Proceed", () {
-          Navigator.of(context).pop();
           Navigator.pushReplacementNamed(context, '/');
         })];
     });
