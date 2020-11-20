@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: <Widget>[
         Icon(
-          Icons.person,
+          Icons.account_circle_rounded,
           size: 200.0,
         ),
         Container(
@@ -244,5 +244,5 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
         })];
     });
   }
-  
+
 }
