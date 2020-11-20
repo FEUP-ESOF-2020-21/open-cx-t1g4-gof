@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:inquirescape/firebase/FirebaseListener.dart';
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/model/Moderator.dart';
 import 'package:inquirescape/model/Question.dart';
+import 'package:inquirescape/firebase/FirebaseAuthenticator.dart';
+
 
 class FirebaseController {
   static final FirebaseFirestore firebase = FirebaseFirestore.instance;
+  static Moderator _currentMod;
 
   FirebaseController();
 
   Future<Moderator> addModerator(Moderator moderator, String uid) async {
     moderator.docRef = firebase.collection("moderators").doc(uid);
-    await moderator.docRef.set({'email': moderator.email, 'username': moderator.username, 'name': moderator.name});
+    await moderator.docRef.set({'email': moderator.email, 'username': moderator.username});
     return moderator;
   }
 
@@ -105,7 +110,57 @@ class FirebaseController {
     Map<String, dynamic> data = (await modDocRef.get()).data();
 
     if (data == null) return null;
-    return Moderator(data["username"], data["email"], data["name"], modDocRef);
+    return Moderator(data["username"], data["email"], modDocRef);
+  }
+
+  Future<void> login(String email, String password, FirebaseListener listener) async {
+      try {
+        String modUid = await FBAuthenticator.signIn(email, password);
+
+        _currentMod = await this.getModerator(modUid);
+        if (_currentMod == null) return listener.onLoginIncorrect();
+
+        return listener.onLoginSuccess();
+      }
+      on FirebaseAuthException catch(exception) {
+        return listener.onLoginIncorrect();
+      }
+  }
+
+  Future<void> register(String email, String username, String password, FirebaseListener listener) async {
+      try {
+        String modUid = await FBAuthenticator.signUp(email, password);
+        Moderator mod = Moderator.withoutRef(username, email);
+        _currentMod = await this.addModerator(mod, modUid);
+
+        return listener.onRegisterSuccess();
+      }
+      on FirebaseAuthException catch (exception) {
+        return listener.onRegisterDuplicate();
+      }
+  }
+
+  Future<void> logout() async {
+      _currentMod = null;
+      return await FBAuthenticator.signOut();
+  }
+
+  Moderator getCurrentMod() {
+    return _currentMod;
+  }
+
+  Future<bool> isLoggedIn() async {
+      User moderator = FBAuthenticator.getCurrentUser();
+      if (moderator == null) {
+        _currentMod = null;
+        return false;
+      }
+      _currentMod = await this.getModerator(moderator.uid);
+      if (_currentMod == null) {
+        FBAuthenticator.signOut();
+        return false;
+      }
+      return true;
   }
 
 }
