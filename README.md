@@ -98,7 +98,7 @@ Lots of speakers in conferences have a hard time managing the questions asked by
 As a moderator, I would like to see all the questions asked in the conference, so that I am able to manage them.
 
 #### **UI mockup**
-*TODO*
+<img src="./docs/UI_mockup_View-Sort_Questions.png" alt="UI Mockup"/>
 
 #### **Acceptance Tests**
 ```gherkin
@@ -117,7 +117,9 @@ Effort: S
 As a speaker, I would like to receive my questions in order of importance, so that I can use the conference time more effectively.
 
 #### **UI mockup**
-*TODO*
+<img src="./docs/UI_mockup_View-Sort_Questions.png" alt="UI Mockup Edit Questions 1"/>
+
+<img src="./docs/UI_mockup_Sort_Questions_2.png" alt="UI Mockup Edit Questions 2"/>
 
 #### **Acceptance Tests**
 ```gherkin
@@ -136,7 +138,7 @@ Effort: M
 As a moderator, I'd like to edit a question, so that I can make it more clear before redirecting it to the speaker.
 
 #### **UI mockup**
-*TODO*
+<img src="./docs/UI_mockup_Edit_Question.png" alt="UI Mockup Edit Questions"/>
 
 #### **Acceptance Tests**
 ```gherkin
@@ -152,28 +154,6 @@ Scenario: Edit a question
 Value: Must have
 
 Effort: L
-
-### **Notify Speaker**
-As a moderator, I want to be able to notify the speaker, so that he acknowledges an urgent question to be answered.
-
-#### **UI mockup**
-*TODO*
-
-#### **Acceptance Tests**
-```gherkin
-Scenario: Notify speaker
-  Given An important question
-  When  Click the question options
-  And   Click on notify speaker
-  Then  The speaker receives a notification
-  And   Upon click redirects to the question page
-```
-
-#### **Value and Effort**
-Value: Could have
-
-Effort: M
-
 
 ## Problem Domain
 
