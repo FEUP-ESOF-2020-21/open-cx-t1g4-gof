@@ -30,6 +30,7 @@ class _TagEditorWidgetState extends State<TagEditorWidget> {
                   return Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    margin: EdgeInsets.only(left: 4, right: 4),
                     child: Row(
                       children: <Widget>[
                         Text(
@@ -41,7 +42,7 @@ class _TagEditorWidgetState extends State<TagEditorWidget> {
                           iconSize: 23,
                           constraints: BoxConstraints(),
                           icon: Icon(
-                            Icons.delete_forever_outlined,
+                            Icons.close,
                             color: Colors.grey[700],
                           ),
                           onPressed: () => this.setState(() => this.widget.tags.removeAt(index)),
@@ -50,7 +51,6 @@ class _TagEditorWidgetState extends State<TagEditorWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                     ),
-                    margin: EdgeInsets.only(left: 4, right: 4),
                   );
                 },
               ),

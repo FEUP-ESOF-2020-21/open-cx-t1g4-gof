@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/QuestionCard.dart';
 import 'package:inquirescape/widgets/QuestionsHolder.dart';
 
 class QuestionListPage extends StatefulWidget {
+  final FirebaseController _fbController;
+  final Widget _drawer;
+
+  QuestionListPage(this._fbController, this._drawer);
+
   @override
   State<StatefulWidget> createState() {
     return QuestionListPageState();
@@ -19,7 +25,7 @@ class QuestionListPageState extends State<QuestionListPage> {
           title: Text("Questions Page"),
           centerTitle: true,
         ),
-        drawer: InquireScapeDrawer(),
+        drawer: this.widget._drawer,
         body: _questionList(context),
       ),
       onRefresh: this._onRefresh,

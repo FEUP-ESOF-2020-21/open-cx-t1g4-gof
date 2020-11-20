@@ -7,7 +7,10 @@ import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/TagEditorWidget.dart';
 
 class AddConferencePage extends StatefulWidget {
-  // final FirebaseController _fbController;
+  final FirebaseController _fbController;
+  final Widget _drawer;
+
+  AddConferencePage(this._fbController, this._drawer);
 
   @override
   State<StatefulWidget> createState() => _AddConferencePageState();
@@ -25,10 +28,10 @@ class _AddConferencePageState extends State<AddConferencePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Add Conference"),
+          title: Text("New Conference"),
           centerTitle: true,
         ),
-        drawer: InquireScapeDrawer(),
+        drawer: this.widget._drawer,
         body: SingleChildScrollView(
           child: Container(
             margin: EdgeInsetsDirectional.only(top: 10.0, bottom: 10.0),

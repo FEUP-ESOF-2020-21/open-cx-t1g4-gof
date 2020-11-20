@@ -5,11 +5,10 @@ class Moderator {
 
   String username;
   String email;
-  String name;
 
-  Moderator(this.username, this.email, this.name, this.docRef);
+  Moderator(this.username, this.email, this.docRef);
 
-  Moderator.withoutRef(this.username, this.email, this.name);
+  Moderator.withoutRef(this.username, this.email);
 
   @override
   bool operator ==(Object other) =>
