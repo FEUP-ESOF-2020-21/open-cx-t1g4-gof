@@ -1,14 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
-import 'package:inquirescape/Question.dart';
+import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/model/Conference.dart';
+import 'package:inquirescape/model/Moderator.dart';
 
 class PostQuestionPage extends StatefulWidget {
   final FirebaseController _fbController;
   final Widget _drawer;
+  Moderator _mod;
+  Conference _conference;
 
-  PostQuestionPage(this._fbController, this._drawer);
+  PostQuestionPage(this._fbController, this._drawer) {
+    this._mod = this._fbController.currentMod;
+    this._conference = this._mod.currentConference;
+  }
 
   @override
   _PostQuestionPage createState() => _PostQuestionPage();
@@ -47,7 +53,7 @@ class _PostQuestionPage extends State<PostQuestionPage> {
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(5)),
                 child: Text(
-                  "Conference name",
+                  this.widget._conference.title,
                   style: TextStyle(fontSize: 20),
                   maxLines: null,
                 ),
@@ -103,7 +109,15 @@ class _PostQuestionPage extends State<PostQuestionPage> {
         // Validate will return true if the form is valid, or false if
         // the form is invalid.
         if (_formKey.currentState.validate()) {
-          // widget._question.description = textController.text;
+          DateTime postDate = DateTime.now();
+          Question question = new Question.withoutRef(
+              textController.text,
+              postDate,
+              widget._mod.docRef.id,
+              widget._mod.username,
+              "InquireScape");
+
+          widget._fbController.addQuestion(widget._conference, question);
           Navigator.pop(context);
         }
       },
