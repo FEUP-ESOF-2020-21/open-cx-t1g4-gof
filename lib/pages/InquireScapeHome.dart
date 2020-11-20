@@ -17,7 +17,7 @@ class InquireScapeHome extends StatelessWidget {
       ),
       drawer: this._drawer,
       body:
-          Center(child: Text("Hello there, general Kenobi", key: Key("text"))),
+          Center(child: Text("Hello there, general Kenobi")),
     ));
   }
 }
