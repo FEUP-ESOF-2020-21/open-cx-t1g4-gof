@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/Question.dart';
 
 class _QuestionsHolderInherited extends InheritedWidget {
-
   final QuestionsHolderState data;
 
   _QuestionsHolderInherited({
@@ -27,9 +26,7 @@ class QuestionsHolder extends StatefulWidget {
   QuestionsHolderState createState() => new QuestionsHolderState();
 
   static QuestionsHolderState of(BuildContext context) {
-    return (context
-            .dependOnInheritedWidgetOfExactType<_QuestionsHolderInherited>())
-        .data;
+    return (context.dependOnInheritedWidgetOfExactType<_QuestionsHolderInherited>()).data;
   }
 }
 

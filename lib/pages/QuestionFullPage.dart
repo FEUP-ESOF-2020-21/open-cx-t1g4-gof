@@ -23,8 +23,7 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
           centerTitle: true,
         ),
         body: Container(
-          padding:
-              EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
+          padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,10 +62,7 @@ class _QuestionFullPageState extends State<QuestionFullPage> {
       backgroundColor: Colors.blue,
       foregroundColor: Colors.white,
       onPressed: () => {
-        Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (ctx) => EditQuestionPage(widget._question)))
+        Navigator.push(context, MaterialPageRoute(builder: (ctx) => EditQuestionPage(widget._question)))
             .then((value) => {this.setState(() {})}),
       },
     );

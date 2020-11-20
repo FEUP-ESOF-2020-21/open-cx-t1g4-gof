@@ -16,7 +16,6 @@ class MyConferencesPage extends StatefulWidget {
 }
 
 class _MyConferencesPageState extends State<MyConferencesPage> {
-
   List<Conference> conferences = [
     Conference.withoutRef("A talk here", "Intro to Dart", "Ademar", DateTime(2020, 11, 22), ["Dart"]),
     Conference.withoutRef("A talk there", "Intro to Flutter", "Aguiar", DateTime(2020, 11, 24), ["Flutter", "Widgets"]),

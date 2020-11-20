@@ -10,18 +10,14 @@ class LoginPage extends StatefulWidget {
   final FirebaseController fbController;
   final Widget drawer;
 
-  // LoginPage(this.fbController, this.drawer);
-
-  LoginPage({Key key, @required this.fbController, @required this.drawer})
-      : super(key: key);
+  LoginPage({Key key, @required this.fbController, @required this.drawer}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _loginPage =
-      true; // If true -> display Login; If false -> Display Register
+  bool _loginPage = true; // If true -> display Login; If false -> Display Register
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passowrdController = TextEditingController();
   TextEditingController _registerEmailController = TextEditingController();
@@ -58,23 +54,19 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput(
-              'Enter your email', Icons.email, _emailController),
+          child: _loginTextInput('Enter your email', Icons.email, _emailController),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput('Enter your password', Icons.vpn_key,
-              _passowrdController,
-              isPassword: true),
+          child: _loginTextInput('Enter your password', Icons.vpn_key, _passowrdController, isPassword: true),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 10.0, start: 20.0, end: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _switchStateButton("Create an account?",
-                  () => setState(() => _loginPage = false)),
+              _switchStateButton("Create an account?", () => setState(() => _loginPage = false)),
               _switchStateButton("Forgot password?", () {}),
             ],
           ),
@@ -83,8 +75,8 @@ class _LoginPageState extends State<LoginPage> {
           child: _loginSubmit("Login", Icons.login, () {
             showDialog(
                 context: context,
-                builder: (context) => _LoginAlert(this.widget.fbController,
-                    true, _emailController.text, _passowrdController.text));
+                builder: (context) =>
+                    _LoginAlert(this.widget.fbController, true, _emailController.text, _passowrdController.text));
           }),
         ),
       ],
@@ -99,42 +91,34 @@ class _LoginPageState extends State<LoginPage> {
           size: 200.0,
         ),
         Container(
-            margin:
-                EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+            margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
             alignment: Alignment.centerLeft,
-            child: _loginTextInput('Enter your email', Icons.email,
-                _registerEmailController,
+            child: _loginTextInput('Enter your email', Icons.email, _registerEmailController,
                 validator: Validators.emailValidator())),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput('Enter your username', Icons.person,
-              _registerUsernameController,
+          child: _loginTextInput('Enter your username', Icons.person, _registerUsernameController,
               validator: Validators.usernameValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput('Enter your password', Icons.vpn_key,
-              _registerPassowrdController,
+          child: _loginTextInput('Enter your password', Icons.vpn_key, _registerPassowrdController,
               isPassword: true, validator: Validators.passwordValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput('Confirm your password', Icons.vpn_key,
-              _confirmPassowrdController,
-              isPassword: true,
-              validator:
-                  Validators.confirmPasswordValidator(_passowrdController)),
+          child: _loginTextInput('Confirm your password', Icons.vpn_key, _confirmPassowrdController,
+              isPassword: true, validator: Validators.confirmPasswordValidator(_passowrdController)),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 10.0, start: 20.0, end: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _switchStateButton("Already have an account?",
-                  () => setState(() => _loginPage = true)),
+              _switchStateButton("Already have an account?", () => setState(() => _loginPage = true)),
             ],
           ),
         ),
@@ -143,10 +127,7 @@ class _LoginPageState extends State<LoginPage> {
             showDialog(
                 context: context,
                 builder: (context) => _LoginAlert(
-                    this.widget.fbController,
-                    false,
-                    _registerEmailController.text,
-                    _registerPassowrdController.text,
+                    this.widget.fbController, false, _registerEmailController.text, _registerPassowrdController.text,
                     username: _registerUsernameController.text));
           }),
         ),
@@ -161,8 +142,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginTextInput(String hintText, IconData icon,
-      TextEditingController textController,
+  Widget _loginTextInput(String hintText, IconData icon, TextEditingController textController,
       {bool isPassword: false, FormFieldValidator<String> validator}) {
     return TextFormField(
         decoration: InputDecoration(
@@ -176,8 +156,7 @@ class _LoginPageState extends State<LoginPage> {
         maxLines: 1);
   }
 
-  Widget _loginSubmit(
-      String buttonText, IconData icon, Function onSubmit) {
+  Widget _loginSubmit(String buttonText, IconData icon, Function onSubmit) {
     return TextButton(
       onPressed: onSubmit,
       child: Row(
@@ -199,8 +178,7 @@ class _LoginAlert extends StatefulWidget {
   final String password;
   final bool isSignIn;
 
-  const _LoginAlert(this.fbController, this.isSignIn, this.email, this.password,
-      {this.username: ""});
+  const _LoginAlert(this.fbController, this.isSignIn, this.email, this.password, {this.username: ""});
 
   void action(FirebaseListener listener) => this.isSignIn
       ? this.fbController.login(email, password, listener)
@@ -219,10 +197,7 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
   @override
   void initState() {
     super.initState();
-    this._activeWidgets = [
-      CircularProgressIndicator(),
-      Text(this._isSignIn ? "Logging in..." : "Registering...")
-    ];
+    this._activeWidgets = [CircularProgressIndicator(), Text(this._isSignIn ? "Logging in..." : "Registering...")];
     this.widget.action(this);
   }
 
@@ -240,8 +215,7 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
   }
 
   Widget _alertButton(String buttonText, Function onPressed) {
-    return TextButton(
-        child: Text(buttonText), onPressed: onPressed);
+    return TextButton(child: Text(buttonText), onPressed: onPressed);
   }
 
   @override

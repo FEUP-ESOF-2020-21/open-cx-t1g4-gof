@@ -33,8 +33,7 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                   keyboardType: TextInputType.multiline,
                   style: TextStyle(fontSize: 20),
                   decoration: InputDecoration(
-                    contentPadding:
-                        new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
+                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
                   ),
                   minLines: 6,
                   maxLines: null,
