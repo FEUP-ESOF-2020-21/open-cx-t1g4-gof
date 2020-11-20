@@ -13,6 +13,7 @@ class FirebaseController {
   static List<Conference> _myConferences;
   static int _conferenceIndex;
   static List<Question> _conferenceQuestions;
+  static int _conferenceQuestionsLoadedIndex;
 
   List<FirebaseListener> listeners;
 
@@ -189,13 +190,29 @@ class FirebaseController {
 
   Conference get currentConference => _conferenceIndex == null ? null : _myConferences[_conferenceIndex];
 
-
   int get conferenceIndex => _conferenceIndex;
-
   set conferenceIndex(int value) {
     _conferenceIndex = value;
   }
 
+  static List<Question> get conferenceQuestions => _conferenceQuestions;
+
+  static int get conferenceQuestionsLoadedIndex => _conferenceQuestionsLoadedIndex;
+
+  Future<void> reloadQuestions(void Function(List<Question>) onReload) async {
+    if (_conferenceIndex == null || _myConferences == null || _conferenceIndex != _conferenceQuestionsLoadedIndex)
+      return;
+
+    await forceReloadQuestions(onReload);
+  }
+
+  Future<void> forceReloadQuestions(void Function(List<Question>) onReload) async {
+    if (_conferenceIndex == null || _myConferences == null)
+      return;
+
+    _conferenceQuestions = await getQuestions(currentConference);
+    onReload(_conferenceQuestions);
+  }
 
   Future<bool> isLoggedIn() async {
     User moderator = FBAuthenticator.getCurrentUser();
