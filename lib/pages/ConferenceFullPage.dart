@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/TagDisplayer.dart';
 
 class ConferenceFullPage extends StatelessWidget {
@@ -10,17 +9,40 @@ class ConferenceFullPage extends StatelessWidget {
 
   ConferenceFullPage(this._fbController, this._drawer);
 
-  final Conference conference = Conference.withoutRef(
-      "Introdução a Flutter",
-      "Uma breve introdução a uma simples ferramente para criar mobile apps e com uma documentação sem paralelo",
-      "Ademar Aguiar",
-      DateTime(2020, 11, 24, 11, 30),
-      ["Flutter", "Widgets", "Firebase"]);
+  // final Conference conference = Conference.withoutRef(
+  //     "Introdução a Flutter",
+  //     "Uma breve introdução a uma simples ferramente para criar mobile apps e com uma documentação sem paralelo",
+  //     "Ademar Aguiar",
+  //     DateTime(2020, 11, 24, 11, 30),
+  //     ["Flutter", "Widgets", "Firebase"]);
 
   @override
   Widget build(BuildContext context) {
     TextStyle headerStyle = const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
     TextStyle infoStyle = const TextStyle(fontSize: 20);
+    Conference conference = this._fbController.currentConference;
+
+    if (conference == null) {
+      return SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Current Conference"),
+            centerTitle: true,
+          ),
+          drawer: this._drawer,
+          body: Center(
+            child: Text(
+              "No conference selected\nSelect conference in 'My Conferences' tab",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
 
     return SafeArea(
       child: Scaffold(
