@@ -108,6 +108,13 @@ Scenario: Displaying a question
   Then  I should see the questions stored in the database
 ```
 
+```gherkin
+Scenario: Displaying questions without a selected conference
+  Given I haven't selected a conference
+  When  I select the questionsList
+  Then  The questionsList will display a warning message
+```
+
 #### **Value and Effort**
 Value: Must have
 
@@ -127,6 +134,13 @@ Scenario: Sorting questions by rating
   Given A list of questions
   When  I select to sort questions by rating
   Then  The questions with higher rating are displayed at the top
+```
+
+```gherkin
+Scenario: Sorting an empty list of questions
+  Given A an empty question list
+  When  I select the questionsList page
+  Then  I shouldn't see the sortingButton on screen
 ```
 
 #### **Value and Effort**
@@ -196,14 +210,18 @@ Effort: L
 - Added "Post Question" page
 - Added "My Conferences" page to view all of the user's active conferences
 - Added "Create new Conference" to add a new conference to the database
-- Added the option to filter questions by conference
 - Gherkin tests compatibility
+- Major redesign of Questions
+
 
 
 **Screenshots:**
 
 ![Login Page](docs/increment_2_login_page.png)
 ![Navigation Drawer](docs/increment_2_app_drawer.png)
+![Question List Page](docs/increment_2_questions_list.png)
+![My Conferences Page](docs/increment_2_conferences_page.png)
+![Add Conference Page](docs/increment_2_add_conference_page.png)
 
 ---
 
