@@ -105,7 +105,7 @@ As a moderator, I would like to see all the questions asked in the conference, s
 Scenario: Displaying a question
   Given A list of questions
   When  I enter the page containing the list of questions
-  Then  Display the questions stored in the database
+  Then  I should see the questions stored in the database
 ```
 
 #### **Value and Effort**
@@ -143,11 +143,17 @@ As a moderator, I'd like to edit a question, so that I can make it more clear be
 #### **Acceptance Tests**
 ```gherkin
 Scenario: Edit a question
-  Given A question
-  When  I click to edit the question
-  And   Change the text
-  Then  Save the changes in database
-  And   Update the page display
+  Given A questionCard
+  When  I click the EditQuestionButton
+  Then  A questionEditor should appear on screen
+```
+
+```gherkin
+Scenario: User deletes question's description
+  Given The questionEditor has been opened
+  And   I remove the original question description
+  When  I click the saveChangesButton
+  Then  A warning should appear on screen
 ```
 
 #### **Value and Effort**
@@ -183,13 +189,21 @@ Effort: L
 ## Project Iteration 2
 **Changelog:**
 - Introduced Firebase database management
-- Added application login page
-- Added a drawer to facilitate page navigation 
+- Added a login page
+- Added firebase login validation
+- Added a main aplication drawer to facilitate page navigation 
+- Added "Current Conference" page to access the event's information
+- Added "Post Question" page
+- Added "My Conferences" page to view all of the user's active conferences
+- Added "Create new Conference" to add a new conference to the database
+- Added the option to filter questions by conference
+- Gherkin tests compatibility
+
 
 **Screenshots:**
-![Login Page](docs/increment_1_question_list.png)
-![Navigation Drawer](docs/increment_1_full_page_question.png)
-![Question editing page](docs/increment_1_edit.png)
+
+![Login Page](docs/increment_2_login_page.png)
+![Navigation Drawer](docs/increment_2_app_drawer.png)
 
 ---
 
