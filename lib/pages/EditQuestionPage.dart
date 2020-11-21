@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inquirescape/Question.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/model/Question.dart';
 
 class EditQuestionPage extends StatefulWidget {
   final Question _question;
+  final FirebaseController _fbController;
   final String oldDescript;
 
-  EditQuestionPage(this._question) : this.oldDescript = _question.description;
+  EditQuestionPage(this._question, this._fbController) : this.oldDescript = _question.content;
 
   @override
   _EditQuestionPage createState() => _EditQuestionPage();
@@ -33,20 +35,23 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                   keyboardType: TextInputType.multiline,
                   style: TextStyle(fontSize: 20),
                   decoration: InputDecoration(
-                    contentPadding:
-                        new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
+                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
                   ),
                   minLines: 6,
                   maxLines: null,
-                  initialValue: widget._question.description,
+                  initialValue: widget._question.content,
                   validator: (String value) {
                     if (value.isEmpty) {
                       return "Empty description.";
                     }
+                    return null;
                   },
-                  onSaved: (String value) {
+                  onSaved: (String value) async {
                     bool hasChanged = value != this.widget.oldDescript;
-                    if (hasChanged) widget._question.updateDescription(value);
+                    if (hasChanged) {
+                      widget._question.content = value;
+                      await widget._fbController.updateQuestionContent(widget._question);
+                    }
                     Navigator.pop(context);
                   },
                 ),

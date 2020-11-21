@@ -98,14 +98,21 @@ Lots of speakers in conferences have a hard time managing the questions asked by
 As a moderator, I would like to see all the questions asked in the conference, so that I am able to manage them.
 
 #### **UI mockup**
-*TODO*
+<img src="./docs/UI_mockup_View-Sort_Questions.png" alt="UI Mockup"/>
 
 #### **Acceptance Tests**
 ```gherkin
 Scenario: Displaying a question
   Given A list of questions
   When  I enter the page containing the list of questions
-  Then  Display the questions stored in the database
+  Then  I should see the questions stored in the database
+```
+
+```gherkin
+Scenario: Displaying questions without a selected conference
+  Given I haven't selected a conference
+  When  I select the questionsList
+  Then  The questionsList will display a warning message
 ```
 
 #### **Value and Effort**
@@ -117,7 +124,9 @@ Effort: S
 As a speaker, I would like to receive my questions in order of importance, so that I can use the conference time more effectively.
 
 #### **UI mockup**
-*TODO*
+<img src="./docs/UI_mockup_View-Sort_Questions.png" alt="UI Mockup Edit Questions 1"/>
+
+<img src="./docs/UI_mockup_Sort_Questions_2.png" alt="UI Mockup Edit Questions 2"/>
 
 #### **Acceptance Tests**
 ```gherkin
@@ -125,6 +134,13 @@ Scenario: Sorting questions by rating
   Given A list of questions
   When  I select to sort questions by rating
   Then  The questions with higher rating are displayed at the top
+```
+
+```gherkin
+Scenario: Sorting an empty list of questions
+  Given A an empty question list
+  When  I select the questionsList page
+  Then  I shouldn't see the sortingButton on screen
 ```
 
 #### **Value and Effort**
@@ -136,44 +152,28 @@ Effort: M
 As a moderator, I'd like to edit a question, so that I can make it more clear before redirecting it to the speaker.
 
 #### **UI mockup**
-*TODO*
+<img src="./docs/UI_mockup_Edit_Question.png" alt="UI Mockup Edit Questions"/>
 
 #### **Acceptance Tests**
 ```gherkin
 Scenario: Edit a question
-  Given A question
-  When  I click to edit the question
-  And   Change the text
-  Then  Save the changes in database
-  And   Update the page display
+  Given A questionCard
+  When  I click the EditQuestionButton
+  Then  A questionEditor should appear on screen
+```
+
+```gherkin
+Scenario: User deletes question's description
+  Given The questionEditor has been opened
+  And   I remove the original question description
+  When  I click the saveChangesButton
+  Then  A warning should appear on screen
 ```
 
 #### **Value and Effort**
 Value: Must have
 
 Effort: L
-
-### **Notify Speaker**
-As a moderator, I want to be able to notify the speaker, so that he acknowledges an urgent question to be answered.
-
-#### **UI mockup**
-*TODO*
-
-#### **Acceptance Tests**
-```gherkin
-Scenario: Notify speaker
-  Given An important question
-  When  Click the question options
-  And   Click on notify speaker
-  Then  The speaker receives a notification
-  And   Upon click redirects to the question page
-```
-
-#### **Value and Effort**
-Value: Could have
-
-Effort: M
-
 
 ## Problem Domain
 
@@ -199,6 +199,29 @@ Effort: M
 ![Question listing page](docs/increment_1_question_list.png)
 ![Focused question page](docs/increment_1_full_page_question.png)
 ![Question editing page](docs/increment_1_edit.png)
+
+## Project Iteration 2
+**Changelog:**
+- Introduced Firebase database management
+- Added a login page
+- Added firebase login validation
+- Added a main aplication drawer to facilitate page navigation 
+- Added "Current Conference" page to access the event's information
+- Added "Post Question" page
+- Added "My Conferences" page to view all of the user's active conferences
+- Added "Create new Conference" to add a new conference to the database
+- Gherkin tests compatibility
+- Major redesign of Questions
+
+
+
+**Screenshots:**
+
+![Login Page](docs/increment_2_login_page.png)
+![Navigation Drawer](docs/increment_2_app_drawer.png)
+![Question List Page](docs/increment_2_questions_list.png)
+![My Conferences Page](docs/increment_2_conferences_page.png)
+![Add Conference Page](docs/increment_2_add_conference_page.png)
 
 ---
 

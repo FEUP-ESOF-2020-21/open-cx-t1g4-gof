@@ -1,64 +1,169 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:inquirescape/Question.dart';
-import 'package:inquirescape/pages/QuestionFullPage.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/model/Question.dart';
+import 'package:inquirescape/pages/EditQuestionPage.dart';
 
-import 'QuestionsHolder.dart';
-
-class QuestionCard extends StatelessWidget {
+class QuestionCard extends StatefulWidget {
   final Question question;
   final int questionIndex;
+  final FirebaseController fbController;
+  final void Function() onUpdate;
 
-  QuestionCard({Key key, @required this.question, @required this.questionIndex})
+  QuestionCard(
+      {Key key, @required this.question, @required this.questionIndex, @required this.fbController, this.onUpdate})
       : super(key: key);
 
   @override
+  _QuestionCardState createState() => _QuestionCardState();
+}
+
+class _QuestionCardState extends State<QuestionCard> {
+  bool expanded = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 0),
-      child: Card(
-          child: Padding(
-        padding: EdgeInsets.only(left: 4, top: 8, right: 4, bottom: 8),
-        child: InkWell(
-            splashColor: Colors.blue.withAlpha(30),
-            onTap: () async {
-              Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              QuestionFullPage(this.question)))
-                  .then((value) => QuestionsHolder.of(context).update());
-            },
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      question.userName,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          question.rating.toStringAsFixed(1),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Icon(Icons.star, color: Colors.amber, size: 22),
-                      ],
-                    ),
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                ),
-                Text(
-                  question.description,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: TextStyle(fontSize: 15),
-                )
-              ],
-            )),
-      )),
+    return ExpansionTile(
+      tilePadding: EdgeInsets.zero,
+      title: _shortCard(context),
+      initiallyExpanded: expanded,
+      children: [
+        _longCard(context),
+      ],
     );
+  }
+
+  Widget _longCard(BuildContext context) {
+    const TextStyle headerStyle = TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        infoStyle = TextStyle(
+          fontSize: 16,
+        ),
+        contentStyle = TextStyle(
+          fontSize: 18,
+        );
+
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.only(left: 4, top: 4, right: 4, bottom: 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: [
+                Text(
+                  "Author: ",
+                  style: headerStyle,
+                ),
+                Text(widget.question.authorDisplayName, style: infoStyle),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "Platform: ",
+                  style: headerStyle,
+                ),
+                Text(widget.question.authorPlatform, style: infoStyle),
+              ],
+            ),
+            Text(
+              widget.question.content,
+              style: contentStyle,
+              maxLines: null,
+            ),
+            Divider(
+              color: Colors.transparent,
+            ),
+            Row(
+              children: [
+                _ratingBar(context),
+                Spacer(),
+                IconButton(
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () async {
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditQuestionPage(widget.question, widget.fbController)))
+                          .then((value) => this.setState(() {}));
+                    }),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _ratingBar(BuildContext context) {
+    return RatingBarIndicator(
+      rating: widget.question.avgRating,
+      itemBuilder: (context, index) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemCount: 5,
+      itemSize: 30.0,
+      unratedColor: Colors.amber.withAlpha(100),
+      direction: Axis.horizontal,
+    );
+  }
+
+  Widget _shortCard(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.only(left: 4, top: 8, right: 4, bottom: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 200,
+                    child: Text(
+                      widget.question.authorDisplayName,
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ),
+                  Spacer(),
+                  Text(parseDateTime(widget.question.postDate) + "     "),
+                  Row(
+                    children: [
+                      Text(
+                        widget.question.avgRating.toStringAsFixed(1),
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Icon(Icons.star, color: Colors.amber, size: 22),
+                    ],
+                  ),
+                ],
+              ),
+              Text(
+                widget.question.content,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.start,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String parseDateTime(DateTime d) {
+    return d.hour.toString().padLeft(2, "0") + ":" + d.minute.toString().padLeft(2, "0");
   }
 }
