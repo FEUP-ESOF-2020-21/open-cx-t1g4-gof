@@ -72,6 +72,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
 
   Widget buildLoggedOff(BuildContext context) {
     return Drawer(
+      key: Key("drawerLogOff"),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -108,6 +109,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
 
   Widget buildLoggedIn(BuildContext context) {
     return Drawer(
+      key: Key("drawerLogIn"),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -166,7 +168,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
             onExpansionChanged: (value) => _InquireScapeDrawerState._expanded = value,
             title: _DrawerEntry(Icons.mic, "Conference", null),
             children: [
-              _DrawerEntry(Icons.subdirectory_arrow_right_rounded, "Current", () => Navigator.pushReplacementNamed(context, "/conference/current")),
+              _DrawerEntry(Icons.subdirectory_arrow_right_rounded, "Current", () => Navigator.pushReplacementNamed(context, "/conference")),
               _DrawerEntry(Icons.hourglass_empty_rounded, "Questions", () => Navigator.pushReplacementNamed(context, "/conference/questions")),
               _DrawerEntry(Icons.note, "Post Question", () => Navigator.pushReplacementNamed(context, "/conference/postQuestion")),
               _DrawerEntry(Icons.format_list_bulleted, "My Conferences", () => Navigator.pushReplacementNamed(context, "/conference/myConferences")),
@@ -182,7 +184,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
   }
 
   @override
-  void onLoginIncorrect() { }
+  void onLoginIncorrect() {}
 
   @override
   void onLoginSuccess() {
@@ -194,13 +196,13 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
   }
 
   @override
-  void onRegisterDuplicate() { }
+  void onRegisterDuplicate() {}
 
   @override
-  void onRegisterSuccess() { }
+  void onRegisterSuccess() {}
 
   @override
-  void onDataChanged() { }
+  void onDataChanged() {}
 
   @override
   void onLogout() {

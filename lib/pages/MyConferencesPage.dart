@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 
 import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/TagDisplayer.dart';
 
 class MyConferencesPage extends StatefulWidget {
@@ -17,13 +16,14 @@ class MyConferencesPage extends StatefulWidget {
 
 class _MyConferencesPageState extends State<MyConferencesPage> {
 
-  List<Conference> conferences = [
-    Conference.withoutRef("A talk here", "Intro to Dart", "Ademar", DateTime(2020, 11, 22), ["Dart"]),
-    Conference.withoutRef("A talk there", "Intro to Flutter", "Aguiar", DateTime(2020, 11, 24), ["Flutter", "Widgets"]),
-  ];
+  // List<Conference> conferences = [
+  //   Conference.withoutRef("A talk here", "Intro to Dart", "Ademar", DateTime(2020, 11, 22), ["Dart"]),
+  //   Conference.withoutRef("A talk there", "Intro to Flutter", "Aguiar", DateTime(2020, 11, 24), ["Flutter", "Widgets"]),
+  // ];
 
   @override
   Widget build(BuildContext context) {
+    List<Conference> conferences = this.widget._fbController.myConferences;
     return RefreshIndicator(
       child: Scaffold(
         appBar: AppBar(
@@ -31,7 +31,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
           centerTitle: true,
         ),
         drawer: this.widget._drawer,
-        body: _questionList(context),
+        body: conferences == null ? _noConferences(context) : _conferenceList(context, conferences),
       ),
       onRefresh: this._onRefresh,
     );
@@ -42,25 +42,35 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
     print("I feel rather refreshed");
   }
 
-  Widget _questionList(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(8),
-      itemCount: this.conferences.length,
-      itemBuilder: (BuildContext context, int index) => _conferenceCard(context, this.conferences[index]),
+  Widget _noConferences(BuildContext context) {
+    return Center(
+      child: Text("No conferences", style: TextStyle(color: Colors.grey, fontSize: 30),),
     );
   }
 
-  Widget _conferenceCard(BuildContext context, Conference conference) {
-    TextStyle headerStyle = TextStyle(fontSize: 15);
-    TextStyle infoStyle = TextStyle(fontSize: 20);
-    TextStyle dateStyle = TextStyle(fontSize: 12);
+  Widget _conferenceList(BuildContext context, List<Conference> conferences) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(8),
+      itemCount: conferences.length,
+      itemBuilder: (BuildContext context, int index) => _conferenceCard(context, conferences[index], index),
+    );
+  }
+
+  Widget _conferenceCard(BuildContext context, Conference conference, int index) {
+    const TextStyle headerStyle = TextStyle(fontSize: 15);
+    const TextStyle infoStyle = TextStyle(fontSize: 20);
+    const TextStyle dateStyle = TextStyle(fontSize: 12);
 
     return Padding(
       padding: EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 0),
       child: Card(
+        color: index != this.widget._fbController.conferenceIndex ? null : Colors.blue[100],
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
-          onTap: () => print("Ahoy mate"),
+          onTap: () {
+            this.widget._fbController.conferenceIndex = index;
+            setState(() {});
+          },
           child: Padding(
             padding: EdgeInsets.all(8),
             child: Column(
@@ -120,7 +130,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
                 Divider(
                   color: Colors.transparent,
                 ),
-                TagDisplayer(tags: conference.topics),
+                TagDisplayer(tags: conference.topics, tagColor: Colors.white,),
               ],
             ),
           ),
