@@ -54,11 +54,17 @@ class FirebaseController {
     return conference;
   }
 
+  Future<Question> addQuestionAndUpdate(Conference conference, Question question) async {
+    Question q = await this.addQuestion(conference, question);
+    this.conferenceQuestions.add(q);
+    return q;
+  }
+
   Future<Question> addQuestion(Conference conference, Question question) async {
     question.docRef = await conference.docRef.collection("questions").add({
       'content': question.content,
       'postDate': question.postDate,
-      'avgRating': 0.0,
+      'avgRating': 2.5,
       'totalRatings': 0,
       'authorID': question.authorId,
       'authorDisplayName': question.authorDisplayName,
@@ -104,15 +110,23 @@ class FirebaseController {
   }
 
   Future<List<Question>> getQuestions(Conference conference) async {
-    List<Question> questions;
+    List<Question> questions = [];
     QuerySnapshot snapshot = await conference.docRef.collection("questions").get();
 
     snapshot.docs.forEach((result) {
       Map<String, dynamic> data = result.data();
       if (data == null) return null;
 
-      Question q = Question(data["content"], data["postDate"], data["avgRating"], data["totalRatings"],
-          data["authorID"], data["authorDisplayName"], data["authorPlatform"], result.reference);
+      Question q = Question(
+        data["content"],
+        DateTime.fromMicrosecondsSinceEpoch(data["postDate"].microsecondsSinceEpoch),
+        data["avgRating"].toDouble(),
+        data["totalRatings"],
+        data["authorID"],
+        data["authorDisplayName"],
+        data["authorPlatform"],
+        result.reference,
+      );
       questions.add(q);
     });
     return questions;
@@ -191,6 +205,7 @@ class FirebaseController {
   Conference get currentConference => _conferenceIndex == null ? null : _myConferences[_conferenceIndex];
 
   int get conferenceIndex => _conferenceIndex;
+
   set conferenceIndex(int value) {
     _conferenceIndex = value;
   }
@@ -200,15 +215,14 @@ class FirebaseController {
   int get conferenceQuestionsLoadedIndex => _conferenceQuestionsLoadedIndex;
 
   Future<void> reloadQuestions(void Function(List<Question>) onReload) async {
-    if (_conferenceIndex == null || _myConferences == null || _conferenceIndex != _conferenceQuestionsLoadedIndex)
+    if (_conferenceIndex == null || _myConferences == null || _conferenceIndex == _conferenceQuestionsLoadedIndex)
       return;
 
     await forceReloadQuestions(onReload);
   }
 
   Future<void> forceReloadQuestions(void Function(List<Question>) onReload) async {
-    if (_conferenceIndex == null || _myConferences == null)
-      return;
+    if (_conferenceIndex == null || _myConferences == null) return;
 
     _conferenceQuestions = await getQuestions(currentConference);
     onReload(_conferenceQuestions);

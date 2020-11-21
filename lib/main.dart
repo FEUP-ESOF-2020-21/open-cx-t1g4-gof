@@ -7,7 +7,6 @@ import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/PostQuestionPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
-import 'package:inquirescape/widgets/QuestionsHolder.dart';
 
 import 'package:inquirescape/pages/InquireScapeHome.dart';
 
@@ -50,11 +49,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => InquireScapeHome(firebaseController, this.drawer),
         '/login': (context) => LoginPage(firebaseController, this.drawer),
+        '/conference': (context) => ConferenceFullPage(firebaseController, this.drawer),
         '/conference/questions': (context) => QuestionListPage(firebaseController, this.drawer),
         '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),
         '/conference/myConferences': (context) => MyConferencesPage(firebaseController, this.drawer),
         '/conference/invites': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/current': (context) => ConferenceFullPage(firebaseController, this.drawer),
         '/conference/postQuestion': (context) => PostQuestionPage(firebaseController, this.drawer),
       },
     );

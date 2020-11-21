@@ -16,14 +16,14 @@ class QuestionListPage extends StatefulWidget {
 }
 
 class QuestionListPageState extends State<QuestionListPage> {
-
   @override
   void initState() {
-    this.widget._fbController.reloadQuestions((arg) { setState(() {}); });
+    this.widget._fbController.reloadQuestions((arg) {
+      setState(() {});
+    });
 
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class QuestionListPageState extends State<QuestionListPage> {
       child: RefreshIndicator(
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Questions Page"),
+            title: Text("Questions"),
             centerTitle: true,
           ),
           drawer: this.widget._drawer,
@@ -45,7 +45,12 @@ class QuestionListPageState extends State<QuestionListPage> {
   }
 
   Widget _questionsUnloaded(BuildContext context) {
-    return Center(child: Text("No questions D:", style: TextStyle(color: Colors.grey, fontSize: 22),),);
+    return Center(
+      child: Text(
+        "No questions D:",
+        style: TextStyle(color: Colors.grey, fontSize: 22),
+      ),
+    );
   }
 
   Future<void> _onRefresh() async {
@@ -61,7 +66,8 @@ class QuestionListPageState extends State<QuestionListPage> {
         return QuestionCard(
           question: questions[index],
           questionIndex: index,
-          // onClick: goToFullQuestionTab,
+          fbController: this.widget._fbController,
+          onUpdate: () => this.setState(() {}),
         );
       },
     );

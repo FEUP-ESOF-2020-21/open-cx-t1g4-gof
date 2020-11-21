@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Question.dart';
 
 class EditQuestionPage extends StatefulWidget {
   final Question _question;
+  final FirebaseController _fbController;
   final String oldDescript;
 
-  EditQuestionPage(this._question) : this.oldDescript = _question.content;
+  EditQuestionPage(this._question, this._fbController) : this.oldDescript = _question.content;
 
   @override
   _EditQuestionPage createState() => _EditQuestionPage();
@@ -45,9 +47,12 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                     }
                     return null;
                   },
-                  onSaved: (String value) {
-                    // bool hasChanged = value != this.widget.oldDescript;
-                    // if (hasChanged) widget._question.updateContent(value);
+                  onSaved: (String value) async {
+                    bool hasChanged = value != this.widget.oldDescript;
+                    if (hasChanged) {
+                      widget._question.content = value;
+                      await widget._fbController.updateQuestionContent(widget._question);
+                    }
                     Navigator.pop(context);
                   },
                 ),

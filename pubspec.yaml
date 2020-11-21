@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   flutter_rating_bar: ^3.0.1+1
+  timeago: ^2.0.28
   flutter:
     sdk: flutter
   firebase_core: "0.5.1"
