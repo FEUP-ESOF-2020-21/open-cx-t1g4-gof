@@ -48,7 +48,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => InquireScapeHome(firebaseController, this.drawer),
-        '/login': (context) => LoginPage(firebaseController, this.drawer),
+        '/login': (context) => LoginPage(
+          key: Key("LoginPage"),
+          fbController: firebaseController,
+          drawer: this.drawer,
+        ),
         '/conference': (context) => ConferenceFullPage(firebaseController, this.drawer),
         '/conference/questions': (context) => QuestionListPage(firebaseController, this.drawer),
         '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),

@@ -72,6 +72,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
 
   Widget buildLoggedOff(BuildContext context) {
     return Drawer(
+      key: Key("drawerLogOff"),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -108,6 +109,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
 
   Widget buildLoggedIn(BuildContext context) {
     return Drawer(
+      key: Key("drawerLogIn"),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -182,7 +184,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
   }
 
   @override
-  void onLoginIncorrect() { }
+  void onLoginIncorrect() {}
 
   @override
   void onLoginSuccess() {
@@ -194,13 +196,13 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
   }
 
   @override
-  void onRegisterDuplicate() { }
+  void onRegisterDuplicate() {}
 
   @override
-  void onRegisterSuccess() { }
+  void onRegisterSuccess() {}
 
   @override
-  void onDataChanged() { }
+  void onDataChanged() {}
 
   @override
   void onLogout() {
