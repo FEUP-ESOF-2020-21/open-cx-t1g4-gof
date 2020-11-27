@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseListener.dart';
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/model/Moderator.dart';
@@ -91,6 +92,33 @@ class FirebaseController {
 
     listeners.forEach((FirebaseListener listener) => listener.onDataChanged());
     return ratingRef;
+  }
+
+  Future<DocumentReference> addInvite(Moderator moderator, Conference conference) async {
+    DocumentReference ref = moderator.docRef.collection("conferenceInvites").doc(conference.docRef.id);
+    await ref.set({});
+    return ref;
+  }
+
+  Future<DocumentReference> acceptInvite(Moderator moderator, Conference conference) async {
+    DocumentReference ref = moderator.docRef.collection("conferenceInvites").doc(conference.docRef.id);
+    DocumentReference out;
+    await ref.delete()
+      .whenComplete(() async {
+        out = await addConferenceToModerator(conference, moderator);
+      }
+      ).catchError(() => out = null);
+    return out;
+  }
+
+  Future<bool> rejectInvite(Moderator moderator, Conference conference) async {
+    DocumentReference ref = moderator.docRef.collection("conferenceInvites").doc(conference.docRef.id);
+    bool rejected = false;
+    await ref.delete()
+      .whenComplete(() => rejected = true)
+      .catchError(() => rejected = false);
+
+    return rejected;
   }
 
   Future<void> updateRating(Question question, Moderator moderator, double rating) async {
