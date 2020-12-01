@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Conference {
+class Conference implements Comparable<Conference> {
   DocumentReference docRef;
 
   String title;
@@ -24,4 +24,9 @@ class Conference {
 
   @override
   int get hashCode => docRef.hashCode;
+
+  @override
+  int compareTo(Conference other) {
+    return other.startDate.compareTo(this.startDate);
+  }
 }

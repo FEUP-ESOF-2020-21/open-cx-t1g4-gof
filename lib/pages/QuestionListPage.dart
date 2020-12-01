@@ -21,7 +21,21 @@ class QuestionListPage extends StatefulWidget {
 class QuestionListPageState extends State<QuestionListPage> {
   final List<PopupMenuEntry<_SortSetting>> sortButtonEntries = [];
   _SortSetting _selection = _SortSetting.date;
-  bool descending = true;
+  int descendingVal = -1;
+
+  bool get descending {
+    return descendingVal == -1;
+  }
+
+  static final Map sortName = {
+    _SortSetting.date: "Date",
+    _SortSetting.rating: "Rating",
+    _SortSetting.author: "Author",
+    _SortSetting.platform: "Platform",
+  };
+
+  Comparator<Question> dateComparator;
+  final Map comparators = Map();
 
   @override
   void initState() {
@@ -29,13 +43,22 @@ class QuestionListPageState extends State<QuestionListPage> {
       setState(() {});
     });
 
+    this.comparators[_SortSetting.date] =
+        (Question a, Question b) => this.descendingVal * a.postDate.compareTo(b.postDate);
+    this.comparators[_SortSetting.rating] =
+        (Question a, Question b) => this.descendingVal * a.avgRating.compareTo(b.avgRating);
+    this.comparators[_SortSetting.author] =
+        (Question a, Question b) => this.descendingVal * a.authorDisplayName.compareTo(b.authorDisplayName);
+    this.comparators[_SortSetting.platform] =
+        (Question a, Question b) => this.descendingVal * a.authorPlatform.compareTo(b.authorPlatform);
+
     _SortSetting.values.forEach((value) {
       this.sortButtonEntries.add(
-        PopupMenuItem<_SortSetting>(
-          value: value,
-          child: Text(this._getSortText(value)),
-        ),
-      );
+            PopupMenuItem<_SortSetting>(
+              value: value,
+              child: Text(sortName[value]),
+            ),
+          );
     });
 
     super.initState();
@@ -44,38 +67,8 @@ class QuestionListPageState extends State<QuestionListPage> {
   @override
   Widget build(BuildContext context) {
     List<Question> questions = this.widget._fbController.conferenceQuestions;
-    if (questions != null) {
-      switch (this._selection) {
-        case _SortSetting.date:
-          if (this.descending)
-            questions.sort((a, b) => a.postDate.compareTo(b.postDate));
-          else
-            questions.sort((b, a) => a.postDate.compareTo(b.postDate));
-          break;
-        case _SortSetting.rating:
-          if (this.descending)
-            questions.sort((a, b) => a.avgRating.compareTo(b.avgRating));
-          else
-            questions.sort((b, a) => a.avgRating.compareTo(b.avgRating));
-          break;
-        case _SortSetting.author:
-          if (this.descending)
-            questions.sort((a, b) =>
-                a.authorDisplayName.compareTo(b.authorDisplayName));
-          else
-            questions.sort((b, a) =>
-                a.authorDisplayName.compareTo(b.authorDisplayName));
-          break;
-        case _SortSetting.platform:
-          if (this.descending)
-            questions.sort((a, b) =>
-                a.authorPlatform.compareTo(b.authorPlatform));
-          else
-            questions.sort((b, a) =>
-                a.authorPlatform.compareTo(b.authorPlatform));
-          break;
-      }
-    }
+
+    if (questions != null) questions.sort(this.comparators[this._selection]);
 
     return SafeArea(
       child: RefreshIndicator(
@@ -85,9 +78,7 @@ class QuestionListPageState extends State<QuestionListPage> {
             centerTitle: true,
           ),
           drawer: this.widget._drawer,
-          body: questions == null
-              ? _questionsUnloaded(context)
-              : _questionList(context, questions),
+          body: questions == null ? _questionsUnloaded(context) : _questionList(context, questions),
         ),
         onRefresh: this._onRefresh,
       ),
@@ -110,34 +101,17 @@ class QuestionListPageState extends State<QuestionListPage> {
 
   Widget _sortButton(BuildContext context) {
     return PopupMenuButton<_SortSetting>(
-        icon: Icon(
-          Icons.filter_alt_outlined,
-          color: Colors.grey,
-        ),
-        onSelected: (_SortSetting result) {
-          setState(() {
-            _selection = result;
-          });
-        },
-        itemBuilder: (ctx) => this.sortButtonEntries,
+      icon: Icon(
+        Icons.filter_alt_outlined,
+        color: Colors.grey,
+      ),
+      onSelected: (_SortSetting result) {
+        setState(() {
+          _selection = result;
+        });
+      },
+      itemBuilder: (ctx) => this.sortButtonEntries,
     );
-  }
-
-  String _getSortText(_SortSetting sortSet) {
-    switch (sortSet) {
-      case _SortSetting.date:
-        return "Date";
-        break;
-      case _SortSetting.rating:
-        return "Rating";
-        break;
-      case _SortSetting.author:
-        return "Author";
-        break;
-      case _SortSetting.platform:
-        return "Platform";
-        break;
-    }
   }
 
   Widget _questionList(BuildContext context, List<Question> questions) {
@@ -154,12 +128,12 @@ class QuestionListPageState extends State<QuestionListPage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    this.descending = !this.descending;
+                    this.descendingVal *= -1;
                   });
                 },
               ),
               Text(
-                "Sorting by: " + this._getSortText(this._selection),
+                "Sorting by: " + sortName[this._selection],
                 style: TextStyle(fontSize: 16),
                 overflow: TextOverflow.clip,
               ),
