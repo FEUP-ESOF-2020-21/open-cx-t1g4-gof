@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 
-import 'package:inquirescape/model/Conference.dart';
+import 'package:inquirescape/model/Invitation.dart';
 import 'package:inquirescape/widgets/TagDisplayer.dart';
 
 class InvitationsPage extends StatefulWidget {
@@ -15,15 +15,17 @@ class InvitationsPage extends StatefulWidget {
 }
 
 class _InvitationsPageState extends State<InvitationsPage> {
-  List<Conference> conferences = [
-    Conference.withoutRef("A talk here", "IntrotoDartadaiufuafapsfgagsf8g",
-        "Ademar", DateTime(2020, 11, 22), ["Dart"]),
-    Conference.withoutRef("A talk there", "I", "Aguiar", DateTime(2020, 11, 24),
-        ["Flutter", "Widgets"]),
-  ];
+  @override
+  void initState() {
+    this.widget._fbController.reloadInvites((arg) {
+      setState(() {});
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // List<Conference> conferences = this.widget._fbController.myConferences;
+    List<Invitation> invitations = this.widget._fbController.myInvitations;
 
     return RefreshIndicator(
       child: Scaffold(
@@ -32,39 +34,39 @@ class _InvitationsPageState extends State<InvitationsPage> {
           centerTitle: true,
         ),
         drawer: this.widget._drawer,
-        body: conferences == null
-            ? _noConferences(context)
-            : _conferenceList(context, conferences),
+        body: invitations == null
+            ? _noInvites(context)
+            : _inviteList(context, invitations),
       ),
       onRefresh: this._onRefresh,
     );
   }
 
   Future<void> _onRefresh() async {
-    this.setState(() {});
-    print("I feel rather refreshed");
+    // this.widget._fbController.reloadInvites((arg) {
+    //   setState(() {});
+    // });
   }
 
-  Widget _noConferences(BuildContext context) {
+  Widget _noInvites(BuildContext context) {
     return Center(
       child: Text(
-        "No Conference Invitations",
+        "No Invitations",
         style: TextStyle(color: Colors.grey, fontSize: 30),
       ),
     );
   }
 
-  Widget _conferenceList(BuildContext context, List<Conference> conferences) {
+  Widget _inviteList(BuildContext context, List<Invitation> invitations) {
     return ListView.builder(
       padding: const EdgeInsets.all(8),
-      itemCount: conferences.length,
+      itemCount: invitations.length,
       itemBuilder: (BuildContext context, int index) =>
-          _conferenceCard(context, conferences[index], index),
+          _inviteCard(context, invitations[index], index),
     );
   }
 
-  Widget _conferenceCard(
-      BuildContext context, Conference conference, int index) {
+  Widget _inviteCard(BuildContext context, Invitation invite, int index) {
     const TextStyle headerStyle = TextStyle(fontSize: 15);
     const TextStyle infoStyle = TextStyle(fontSize: 20);
     const TextStyle dateStyle = TextStyle(fontSize: 12);
@@ -85,7 +87,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Text(conference.title, style: infoStyle),
+                Text(invite.conference.title, style: infoStyle),
                 Divider(
                   color: Colors.transparent,
                 ),
@@ -102,7 +104,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                             style: headerStyle,
                           ),
                           Text(
-                            conference.speaker,
+                            invite.conference.speaker,
                             style: infoStyle,
                             maxLines: 1,
                             overflow: TextOverflow.clip,
@@ -120,7 +122,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                             style: headerStyle,
                           ),
                           Text(
-                            this.fromDateTime(conference.startDate),
+                            this.fromDateTime(invite.conference.startDate),
                             style: dateStyle,
                             maxLines: 1,
                             overflow: TextOverflow.visible,
@@ -134,7 +136,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                   color: Colors.transparent,
                 ),
                 TagDisplayer(
-                  tags: conference.topics,
+                  tags: invite.conference.topics,
                   tagColor: Colors.white,
                 ),
                 Divider(
@@ -153,7 +155,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                               style: headerStyle,
                             ),
                             Text(
-                              conference.description,
+                              invite.user.username,
                               style: infoStyle,
                               maxLines: 1,
                               overflow: TextOverflow.visible,

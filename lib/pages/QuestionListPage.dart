@@ -67,8 +67,7 @@ class QuestionListPageState extends State<QuestionListPage> {
   @override
   Widget build(BuildContext context) {
     List<Question> questions = this.widget._fbController.conferenceQuestions;
-
-    if (questions != null) questions.sort(this.comparators[this._selection]);
+    questions?.sort(this.comparators[this._selection]);
 
     return SafeArea(
       child: RefreshIndicator(

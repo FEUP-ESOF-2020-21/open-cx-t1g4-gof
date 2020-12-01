@@ -23,7 +23,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
   @override
   Widget build(BuildContext context) {
     List<Conference> conferences = this.widget._fbController.myConferences;
-    conferences.sort();
+    conferences?.sort();
 
     return RefreshIndicator(
       child: Scaffold(
