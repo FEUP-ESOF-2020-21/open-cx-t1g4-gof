@@ -12,7 +12,11 @@ class QuestionCard extends StatefulWidget {
   final void Function() onUpdate;
 
   QuestionCard(
-      {Key key, @required this.question, @required this.questionIndex, @required this.fbController, this.onUpdate})
+      {Key key,
+      @required this.question,
+      @required this.questionIndex,
+      @required this.fbController,
+      this.onUpdate})
       : super(key: key);
 
   @override
@@ -91,7 +95,8 @@ class _QuestionCardState extends State<QuestionCard> {
                       Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => EditQuestionPage(widget.question, widget.fbController)))
+                                  builder: (context) => EditQuestionPage(
+                                      widget.question, widget.fbController)))
                           .then((value) => this.setState(() {}));
                     }),
               ],
@@ -133,7 +138,8 @@ class _QuestionCardState extends State<QuestionCard> {
                       widget.question.authorDisplayName,
                       overflow: TextOverflow.clip,
                       maxLines: 1,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
                   Spacer(),
@@ -164,6 +170,8 @@ class _QuestionCardState extends State<QuestionCard> {
   }
 
   String parseDateTime(DateTime d) {
-    return d.hour.toString().padLeft(2, "0") + ":" + d.minute.toString().padLeft(2, "0");
+    return d.hour.toString().padLeft(2, "0") +
+        ":" +
+        d.minute.toString().padLeft(2, "0");
   }
 }

@@ -4,31 +4,31 @@ import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/widgets/TagDisplayer.dart';
 
-class MyConferencesPage extends StatefulWidget {
+class InvitationsPage extends StatefulWidget {
   final FirebaseController _fbController;
   final Widget _drawer;
 
-  MyConferencesPage(this._fbController, this._drawer);
+  InvitationsPage(this._fbController, this._drawer);
 
   @override
-  _MyConferencesPageState createState() => _MyConferencesPageState();
+  _InvitationsPageState createState() => _InvitationsPageState();
 }
 
-class _MyConferencesPageState extends State<MyConferencesPage> {
-  // List<Conference> conferences = [
-  //   Conference.withoutRef("A talk here", "Intro to Dart", "Ademar", DateTime(2020, 11, 22), ["Dart"]),
-  //   Conference.withoutRef("A talk there", "Intro to Flutter", "Aguiar", DateTime(2020, 11, 24), ["Flutter", "Widgets"]),
-  // ];
-
+class _InvitationsPageState extends State<InvitationsPage> {
+  List<Conference> conferences = [
+    Conference.withoutRef("A talk here", "IntrotoDartadaiufuafapsfgagsf8g",
+        "Ademar", DateTime(2020, 11, 22), ["Dart"]),
+    Conference.withoutRef("A talk there", "I", "Aguiar", DateTime(2020, 11, 24),
+        ["Flutter", "Widgets"]),
+  ];
   @override
   Widget build(BuildContext context) {
-    List<Conference> conferences = this.widget._fbController.myConferences;
-    conferences.sort();
+    // List<Conference> conferences = this.widget._fbController.myConferences;
 
     return RefreshIndicator(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("My Conferences"),
+          title: Text("Pending Invitations"),
           centerTitle: true,
         ),
         drawer: this.widget._drawer,
@@ -48,7 +48,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
   Widget _noConferences(BuildContext context) {
     return Center(
       child: Text(
-        "No conferences",
+        "No Conference Invitations",
         style: TextStyle(color: Colors.grey, fontSize: 30),
       ),
     );
@@ -72,15 +72,8 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
     return Padding(
       padding: EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 0),
       child: Card(
-        color: index != this.widget._fbController.conferenceIndex
-            ? null
-            : Colors.blue[100],
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            this.widget._fbController.conferenceIndex = index;
-            setState(() {});
-          },
           child: Padding(
             padding: EdgeInsets.all(8),
             child: Column(
@@ -144,6 +137,43 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
                   tags: conference.topics,
                   tagColor: Colors.white,
                 ),
+                Divider(
+                  color: Colors.transparent,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 160),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Invited by:",
+                              style: headerStyle,
+                            ),
+                            Text(
+                              conference.description,
+                              style: infoStyle,
+                              maxLines: 1,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          FlatButton(
+                            onPressed: () {},
+                            child: Icon(Icons.check, color: Colors.green),
+                          ),
+                          FlatButton(
+                            onPressed: () {},
+                            child: Icon(Icons.close, color: Colors.red),
+                          )
+                        ],
+                      ),
+                    ]),
               ],
             ),
           ),

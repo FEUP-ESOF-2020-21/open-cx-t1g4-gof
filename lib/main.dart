@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/pages/AddConferencePage.dart';
 import 'package:inquirescape/pages/ConferenceFullPage.dart';
+import 'package:inquirescape/pages/InvitationsPage.dart';
 import 'package:inquirescape/pages/MyConferencesPage.dart';
 import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/PostQuestionPage.dart';
@@ -49,16 +50,22 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => InquireScapeHome(firebaseController, this.drawer),
         '/login': (context) => LoginPage(
-          key: Key("LoginPage"),
-          fbController: firebaseController,
-          drawer: this.drawer,
-        ),
-        '/conference': (context) => ConferenceFullPage(firebaseController, this.drawer),
-        '/conference/questions': (context) => QuestionListPage(firebaseController, this.drawer),
-        '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),
-        '/conference/myConferences': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/invites': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/postQuestion': (context) => PostQuestionPage(firebaseController, this.drawer),
+              key: Key("LoginPage"),
+              fbController: firebaseController,
+              drawer: this.drawer,
+            ),
+        '/conference': (context) =>
+            ConferenceFullPage(firebaseController, this.drawer),
+        '/conference/questions': (context) =>
+            QuestionListPage(firebaseController, this.drawer),
+        '/conference/create': (context) =>
+            AddConferencePage(firebaseController, this.drawer),
+        '/conference/myConferences': (context) =>
+            MyConferencesPage(firebaseController, this.drawer),
+        '/conference/invites': (context) =>
+            InvitationsPage(firebaseController, this.drawer),
+        '/conference/postQuestion': (context) =>
+            PostQuestionPage(firebaseController, this.drawer)
       },
     );
   }
