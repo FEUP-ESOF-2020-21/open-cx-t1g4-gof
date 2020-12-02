@@ -34,7 +34,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
           centerTitle: true,
         ),
         drawer: this.widget._drawer,
-        body: invitations == null
+        body: (invitations == null || invitations.isEmpty)
             ? _noInvites(context)
             : _inviteList(context, invitations),
       ),
@@ -166,11 +166,16 @@ class _InvitationsPageState extends State<InvitationsPage> {
                       Row(
                         children: [
                           FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              this.widget._fbController.acceptInvite(invite);
+                              // TODO refresh page state
+                            },
                             child: Icon(Icons.check, color: Colors.green),
                           ),
                           FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              this.widget._fbController.rejectInvite(invite);
+                            },
                             child: Icon(Icons.close, color: Colors.red),
                           )
                         ],

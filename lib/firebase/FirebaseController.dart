@@ -175,6 +175,15 @@ class FirebaseController {
     return invites;
   }
 
+  Future<void> acceptInvite(Invitation invite) async {
+    invite.docRef.delete();
+    addConferenceToModerator(invite.conference, _currentMod);
+  }
+
+  Future<void> rejectInvite(Invitation invite) async {
+    invite.docRef.delete();
+  }
+
   Future<Conference> getConference(String conferenceId) async {
     DocumentReference conferenceDocRef =
         firebase.collection("conferences").doc(conferenceId);
