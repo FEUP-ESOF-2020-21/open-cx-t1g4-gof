@@ -7,8 +7,11 @@ import 'package:inquirescape/widgets/TagDisplayer.dart';
 class InvitationsPage extends StatefulWidget {
   final FirebaseController _fbController;
   final Widget _drawer;
+  List<Invitation> _invitations;
 
-  InvitationsPage(this._fbController, this._drawer);
+  InvitationsPage(this._fbController, this._drawer) {
+    this._invitations = this._fbController.myInvitations;
+  }
 
   @override
   _InvitationsPageState createState() => _InvitationsPageState();
@@ -34,9 +37,9 @@ class _InvitationsPageState extends State<InvitationsPage> {
           centerTitle: true,
         ),
         drawer: this.widget._drawer,
-        body: (invitations == null || invitations.isEmpty)
+        body: (widget._invitations == null || widget._invitations.isEmpty)
             ? _noInvites(context)
-            : _inviteList(context, invitations),
+            : _inviteList(context, widget._invitations),
       ),
       onRefresh: this._onRefresh,
     );
@@ -62,11 +65,11 @@ class _InvitationsPageState extends State<InvitationsPage> {
       padding: const EdgeInsets.all(8),
       itemCount: invitations.length,
       itemBuilder: (BuildContext context, int index) =>
-          _inviteCard(context, invitations[index], index),
+          _inviteCard(context, invitations[index]),
     );
   }
 
-  Widget _inviteCard(BuildContext context, Invitation invite, int index) {
+  Widget _inviteCard(BuildContext context, Invitation invite) {
     const TextStyle headerStyle = TextStyle(fontSize: 15);
     const TextStyle infoStyle = TextStyle(fontSize: 20);
     const TextStyle dateStyle = TextStyle(fontSize: 12);
@@ -168,13 +171,16 @@ class _InvitationsPageState extends State<InvitationsPage> {
                           FlatButton(
                             onPressed: () {
                               this.widget._fbController.acceptInvite(invite);
-                              // TODO refresh page state
+                              widget._invitations.remove(invite);
+                              super.setState(() {});
                             },
                             child: Icon(Icons.check, color: Colors.green),
                           ),
                           FlatButton(
                             onPressed: () {
                               this.widget._fbController.rejectInvite(invite);
+                              widget._invitations.remove(invite);
+                              super.setState(() {});
                             },
                             child: Icon(Icons.close, color: Colors.red),
                           )
