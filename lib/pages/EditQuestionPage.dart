@@ -5,10 +5,9 @@ import 'package:inquirescape/model/Question.dart';
 
 class EditQuestionPage extends StatefulWidget {
   final Question _question;
-  final FirebaseController _fbController;
   final String oldDescript;
 
-  EditQuestionPage(this._question, this._fbController) : this.oldDescript = _question.content;
+  EditQuestionPage(this._question) : this.oldDescript = _question.content;
 
   @override
   _EditQuestionPage createState() => _EditQuestionPage();
@@ -25,38 +24,31 @@ class _EditQuestionPage extends State<EditQuestionPage> {
           title: Text('Edit Question'),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Form(
+        body: Form(
             key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(
-                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
-                  ),
-                  minLines: 6,
-                  maxLines: null,
-                  initialValue: widget._question.content,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return "Empty description.";
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) async {
-                    bool hasChanged = value != this.widget.oldDescript;
-                    if (hasChanged) {
-                      widget._question.content = value;
-                      await widget._fbController.updateQuestionContent(widget._question);
-                    }
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
+            child: TextFormField(
+              keyboardType: TextInputType.multiline,
+              style: TextStyle(fontSize: 20),
+              decoration: InputDecoration(
+                contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
+              ),
+              minLines: 1000, // This pushes the end line to the bottom of it's area
+              maxLines: null,
+              initialValue: widget._question.content,
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return "Empty description.";
+                }
+                return null;
+              },
+              onSaved: (String value) async {
+                bool hasChanged = value != this.widget.oldDescript;
+                if (hasChanged) {
+                  widget._question.content = value;
+                  await FirebaseController.updateQuestionContent(widget._question);
+                }
+                Navigator.pop(context);
+              },
           ),
         ),
         persistentFooterButtons: [saveButton(context)],

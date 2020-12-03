@@ -15,34 +15,30 @@ class FirebaseController {
   static List<Question> _conferenceQuestions;
   static int _conferenceQuestionsLoadedIndex;
 
-  List<FirebaseListener> listeners;
+  static List<FirebaseListener> listeners = List();
 
-  FirebaseController() {
-    this.listeners = List();
-  }
-
-  void subscribeListener(FirebaseListener listener) {
+  static void subscribeListener(FirebaseListener listener) {
     listeners.add(listener);
   }
 
-  void unsubscribeListener(FirebaseListener listener) {
+  static void unsubscribeListener(FirebaseListener listener) {
     listeners.remove(listener);
   }
 
-  Future<Moderator> addModerator(Moderator moderator, String uid) async {
+  static Future<Moderator> addModerator(Moderator moderator, String uid) async {
     moderator.docRef = firebase.collection("moderators").doc(uid);
     await moderator.docRef.set({'email': moderator.email, 'username': moderator.username});
 
     return moderator;
   }
 
-  Future<DocumentReference> addConferenceToModerator(Conference conference, Moderator moderator) async {
+  static Future<DocumentReference> addConferenceToModerator(Conference conference, Moderator moderator) async {
     DocumentReference ref = moderator.docRef.collection("conferences").doc(conference.docRef.id);
     await ref.set({});
     return ref;
   }
 
-  Future<Conference> addConference(Conference conference) async {
+  static Future<Conference> addConference(Conference conference) async {
     conference.docRef = await firebase.collection("conferences").add({
       'title': conference.title,
       'startDate': conference.startDate,
@@ -54,13 +50,13 @@ class FirebaseController {
     return conference;
   }
 
-  Future<Question> addQuestionAndUpdate(Conference conference, Question question) async {
-    Question q = await this.addQuestion(conference, question);
-    this.conferenceQuestions.add(q);
+  static Future<Question> addQuestionAndUpdate(Conference conference, Question question) async {
+    Question q = await addQuestion(conference, question);
+    conferenceQuestions.add(q);
     return q;
   }
 
-  Future<Question> addQuestion(Conference conference, Question question) async {
+  static Future<Question> addQuestion(Conference conference, Question question) async {
     question.docRef = await conference.docRef.collection("questions").add({
       'content': question.content,
       'postDate': question.postDate,
@@ -74,12 +70,12 @@ class FirebaseController {
     return question;
   }
 
-  Future<void> updateQuestionContent(Question question) async {
+  static Future<void> updateQuestionContent(Question question) async {
     await question.docRef.set({"content": question.content}, SetOptions(merge: true));
     listeners.forEach((FirebaseListener listener) => listener.onDataChanged());
   }
 
-  Future<DocumentReference> addRating(Question question, Moderator moderator, double rating) async {
+  static Future<DocumentReference> addRating(Question question, Moderator moderator, double rating) async {
     DocumentReference ratingRef = question.docRef.collection("ratings").doc(moderator.docRef.id);
     await ratingRef.set({'rating': rating});
 
@@ -93,7 +89,7 @@ class FirebaseController {
     return ratingRef;
   }
 
-  Future<void> updateRating(Question question, Moderator moderator, double rating) async {
+  static Future<void> updateRating(Question question, Moderator moderator, double rating) async {
     DocumentReference ratingRef = question.docRef.collection("ratings").doc(moderator.docRef.id);
 
     double oldRating;
@@ -109,7 +105,7 @@ class FirebaseController {
     listeners.forEach((FirebaseListener listener) => listener.onDataChanged());
   }
 
-  Future<List<Question>> getQuestions(Conference conference) async {
+  static Future<List<Question>> getQuestions(Conference conference) async {
     List<Question> questions = [];
     QuerySnapshot snapshot = await conference.docRef.collection("questions").get();
 
@@ -132,7 +128,7 @@ class FirebaseController {
     return questions;
   }
 
-  Future<Conference> getConference(String conferenceId) async {
+  static Future<Conference> getConference(String conferenceId) async {
     DocumentReference conferenceDocRef = firebase.collection("conferences").doc(conferenceId);
     Map<String, dynamic> data = (await conferenceDocRef.get()).data();
 
@@ -148,7 +144,7 @@ class FirebaseController {
     );
   }
 
-  Future<Moderator> getModerator(String uid) async {
+  static Future<Moderator> getModerator(String uid) async {
     DocumentReference modDocRef = firebase.collection("moderators").doc(uid);
     Map<String, dynamic> data = (await modDocRef.get()).data();
 
@@ -156,34 +152,40 @@ class FirebaseController {
     return Moderator(data["username"], data["email"], modDocRef);
   }
 
-  Future<List<Conference>> getModeratorConferences(Moderator moderator) async {
+  static Future<List<Conference>> getModeratorConferences(Moderator moderator) async {
     QuerySnapshot snapshot = await moderator.docRef.collection("conferences").get();
     List<Conference> result = [];
 
-    snapshot.docs.forEach((doc) async => result.add(await this.getConference(doc.id)));
+    snapshot.docs.forEach((doc) async => result.add(await getConference(doc.id)));
+    result?.sort();
 
     return result;
   }
 
-  Future<void> login(String email, String password, FirebaseListener listener) async {
+  static Future<void> login(String email, String password, FirebaseListener listener) async {
     try {
       String modUid = await FBAuthenticator.signIn(email, password);
 
-      _currentMod = await this.getModerator(modUid);
+      _currentMod = await getModerator(modUid);
       if (_currentMod == null) return listener.onLoginIncorrect();
 
+      await FirebaseController.updateLoginInfo();
+
       listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
+
       return listener.onLoginSuccess();
     } on FirebaseAuthException catch (exception) {
       return listener.onLoginIncorrect();
     }
   }
 
-  Future<void> register(String email, String username, String password, FirebaseListener listener) async {
+  static Future<void> register(String email, String username, String password, FirebaseListener listener) async {
     try {
       String modUid = await FBAuthenticator.signUp(email, password);
       Moderator mod = Moderator.withoutRef(username, email);
-      _currentMod = await this.addModerator(mod, modUid);
+      _currentMod = await addModerator(mod, modUid);
+
+      await FirebaseController.updateLoginInfo();
 
       listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
       return listener.onRegisterSuccess();
@@ -192,61 +194,68 @@ class FirebaseController {
     }
   }
 
-  Future<void> logout() async {
+  static Future<void> logout() async {
     await FBAuthenticator.signOut();
     _currentMod = null;
     listeners.forEach((FirebaseListener listener) => listener.onLogout());
   }
 
-  Moderator get currentMod => _currentMod;
+  static Moderator get currentMod => _currentMod;
 
-  List<Conference> get myConferences => _myConferences;
+  static List<Conference> get myConferences => _myConferences;
 
-  Conference get currentConference => _conferenceIndex == null ? null : _myConferences[_conferenceIndex];
+  static Conference get currentConference => _conferenceIndex == null ? null : _myConferences[_conferenceIndex];
 
-  int get conferenceIndex => _conferenceIndex;
+  static int get conferenceIndex => _conferenceIndex;
 
-  set conferenceIndex(int value) {
+  static set conferenceIndex(int value) {
     _conferenceIndex = value;
+    reloadQuestions((_) {});
   }
 
-  List<Question> get conferenceQuestions => _conferenceQuestions;
+  static List<Question> get conferenceQuestions => _conferenceQuestions;
 
-  int get conferenceQuestionsLoadedIndex => _conferenceQuestionsLoadedIndex;
+  static int get conferenceQuestionsLoadedIndex => _conferenceQuestionsLoadedIndex;
 
-  Future<void> reloadQuestions(void Function(List<Question>) onReload) async {
+  static Future<void> reloadQuestions(void Function(List<Question>) onReload) async {
     if (_conferenceIndex == null || _myConferences == null || _conferenceIndex == _conferenceQuestionsLoadedIndex)
       return;
 
     await forceReloadQuestions(onReload);
   }
 
-  Future<void> forceReloadQuestions(void Function(List<Question>) onReload) async {
+  static Future<void> forceReloadQuestions(void Function(List<Question>) onReload) async {
     if (_conferenceIndex == null || _myConferences == null) return;
 
     _conferenceQuestions = await getQuestions(currentConference);
+    _conferenceQuestions.sort();
     onReload(_conferenceQuestions);
   }
 
-  Future<bool> isLoggedIn() async {
+  static bool isLoggedIn() {
+    return FBAuthenticator.isLoggedIn();
+  }
+
+  static Future<bool> updateLoginInfo() async {
     User moderator = FBAuthenticator.getCurrentUser();
     if (moderator == null) {
       _currentMod = null;
       return false;
     }
     if (_currentMod == null || moderator.uid != _currentMod.docRef.id) {
-      _currentMod = await this.getModerator(moderator.uid);
+      _currentMod = await getModerator(moderator.uid);
       _conferenceIndex = null;
-      this.getModeratorConferences(_currentMod).then((res) {
+      getModeratorConferences(_currentMod).then((res) {
         _myConferences = res;
       });
     }
-    if (_currentMod == null) {
-      await FBAuthenticator.signOut();
-      listeners.forEach((FirebaseListener listener) => listener.onLogout());
-      return false;
-    }
-    listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
+
+    // if (_currentMod == null) {
+    //   await FBAuthenticator.signOut();
+    //   listeners.forEach((FirebaseListener listener) => listener.onLogout());
+    //   return false;
+    // }
+    // listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
     return true;
   }
 }

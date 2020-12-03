@@ -6,14 +6,12 @@ import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/model/Moderator.dart';
 
 class PostQuestionPage extends StatefulWidget {
-  final FirebaseController _fbController;
-  final Widget _drawer;
   Moderator _mod;
   Conference _conference;
 
-  PostQuestionPage(this._fbController, this._drawer) {
-    this._mod = this._fbController.currentMod;
-    this._conference = this._fbController.currentConference;
+  PostQuestionPage() {
+    this._mod = FirebaseController.currentMod;
+    this._conference = FirebaseController.currentConference;
   }
 
   @override
@@ -28,16 +26,15 @@ class _PostQuestionPage extends State<PostQuestionPage> {
   @override
   Widget build(BuildContext context) {
     bool unloaded = (this.widget._mod == null || this.widget._conference == null);
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Post Question'),
-          centerTitle: true,
-        ),
-        drawer: this.widget._drawer,
-        body: unloaded ? _conferenceUnloaded(context) : _onConferenceLoaded(context),
-        persistentFooterButtons: unloaded ? null : [saveButton(context)],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Post Question'),
+        centerTitle: true,
       ),
+      body: SafeArea(
+        child: unloaded ? _conferenceUnloaded(context) : _onConferenceLoaded(context),
+      ),
+      persistentFooterButtons: unloaded ? null : [saveButton(context)],
     );
   }
 
@@ -126,8 +123,7 @@ class _PostQuestionPage extends State<PostQuestionPage> {
           Question question = new Question.withoutRef(
               textController.text, postDate, widget._mod.docRef.id, widget._mod.username, "InquireScape");
 
-          await widget._fbController.addQuestionAndUpdate(widget._conference, question);
-          Navigator.pushReplacementNamed(context, "/conference/questions");
+          await FirebaseController.addQuestionAndUpdate(widget._conference, question);
         }
       },
       child: Icon(Icons.save),

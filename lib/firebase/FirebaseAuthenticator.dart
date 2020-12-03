@@ -7,6 +7,10 @@ class FBAuthenticator {
     return _auth.currentUser;
   }
 
+  static bool isLoggedIn() {
+    return _auth.currentUser != null;
+  }
+
   static Future<String> signUp(String email, String password) async {
     UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
