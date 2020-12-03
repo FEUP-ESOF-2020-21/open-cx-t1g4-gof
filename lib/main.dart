@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/pages/AddConferencePage.dart';
 import 'package:inquirescape/pages/ConferenceFullPage.dart';
+import 'package:inquirescape/pages/InvitationsPage.dart';
 import 'package:inquirescape/pages/MyConferencesPage.dart';
 import 'package:inquirescape/pages/PostQuestionPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
       case routeConferences:
         return SlideAnimationRoute(builder: (_) => MyConferencesPage());
       case routeInvites:
-        return SlideAnimationRoute(builder: (_) => MyConferencesPage());
+        return SlideAnimationRoute(builder: (_) => InvitationsPage());
       case routePostQuestion:
         return SlideAnimationRoute(builder: (_) => PostQuestionPage());
       default:

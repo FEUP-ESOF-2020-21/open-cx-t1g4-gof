@@ -134,7 +134,8 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
                 "Posted: ",
                 style: headerStyle,
               ),
-              Text(this.parseDateTime(widget.question.postDate), style: infoStyle),
+              Text(this.parseDateTime(widget.question.postDate),
+                  style: infoStyle),
             ],
           ),
           Divider(
@@ -185,6 +186,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       direction: Axis.horizontal,
     );
   }
+
 
   String parseDateTime(DateTime d) {
     return d.day.toString().padLeft(2) +

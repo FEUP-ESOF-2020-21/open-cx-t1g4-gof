@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inquirescape/firebase/FirebaseListener.dart';
 import 'package:inquirescape/model/Conference.dart';
+import 'package:inquirescape/model/Invitation.dart';
 import 'package:inquirescape/model/Moderator.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/firebase/FirebaseAuthenticator.dart';
@@ -14,6 +15,7 @@ class FirebaseController {
   static int _conferenceIndex;
   static List<Question> _conferenceQuestions;
   static int _conferenceQuestionsLoadedIndex;
+  static List<Invitation> _myInvitations;
 
   static List<FirebaseListener> listeners = List();
 
@@ -34,6 +36,7 @@ class FirebaseController {
 
   static Future<DocumentReference> addConferenceToModerator(Conference conference, Moderator moderator) async {
     DocumentReference ref = moderator.docRef.collection("conferences").doc(conference.docRef.id);
+
     await ref.set({});
     return ref;
   }
@@ -144,6 +147,37 @@ class FirebaseController {
     );
   }
 
+  static Future<List<Invitation>> getInvitations() async {
+    List<Invitation> invites = [];
+    QuerySnapshot snapshot = await _currentMod.docRef.collection("invites").get();
+
+    snapshot.docs.forEach((result) async {
+      Map<String, dynamic> data = result.data();
+      if (data == null) return null;
+
+      Moderator mod = await getModerator(data["userID"]);
+      Conference conf = await getConference(data["conferenceID"]);
+
+      Invitation i = new Invitation(
+        mod,
+        conf,
+        result.reference,
+      );
+      invites.add(i);
+    });
+
+    return invites;
+  }
+
+  static Future<void> acceptInvite(Invitation invite) async {
+    invite.docRef.delete();
+    addConferenceToModerator(invite.conference, _currentMod);
+  }
+
+  static Future<void> rejectInvite(Invitation invite) async {
+    invite.docRef.delete();
+  }
+
   static Future<Moderator> getModerator(String uid) async {
     DocumentReference modDocRef = firebase.collection("moderators").doc(uid);
     Map<String, dynamic> data = (await modDocRef.get()).data();
@@ -208,6 +242,8 @@ class FirebaseController {
 
   static int get conferenceIndex => _conferenceIndex;
 
+  static List<Invitation> get myInvitations => _myInvitations;
+
   static set conferenceIndex(int value) {
     _conferenceIndex = value;
     reloadQuestions((_) {});
@@ -257,5 +293,14 @@ class FirebaseController {
     // }
     // listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
     return true;
+  }
+
+  static Future<void> reloadInvites(void Function(List<Invitation>) onReload) async {
+    await forceReloadInvitations(onReload);
+  }
+
+  static Future<void> forceReloadInvitations(void Function(List<Invitation>) onReload) async {
+    _myInvitations = await getInvitations();
+    onReload(_myInvitations);
   }
 }
