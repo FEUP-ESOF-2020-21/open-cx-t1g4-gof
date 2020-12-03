@@ -28,7 +28,7 @@ class MyTheme with ChangeNotifier {
   );
 
   static final ThemeData lightTheme = ThemeData(
-    accentColor: Color.fromRGBO(25, 30, 60, 1),
+    accentColor: Color.fromRGBO(20, 1, 160, 1),
     brightness: Brightness.light,
     primaryColor: Color.fromRGBO(2, 62, 160, 1),
   );

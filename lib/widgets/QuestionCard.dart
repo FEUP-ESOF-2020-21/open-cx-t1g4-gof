@@ -43,7 +43,7 @@ class ShortQuestionCard extends StatelessWidget {
                         question.avgRating.toStringAsFixed(1),
                         style: TextStyle(fontSize: 14),
                       ),
-                      Icon(Icons.star, color: MyTheme.theme.primaryColor, size: 22),
+                      Icon(Icons.star, color: MyTheme.theme.accentColor, size: 22),
                     ],
                   ),
                 ],
@@ -177,7 +177,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       rating: widget.question.avgRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
-        color:  MyTheme.theme.primaryColor,
+        color:  MyTheme.theme.accentColor,
       ),
       itemCount: 5,
       itemSize: 30.0,

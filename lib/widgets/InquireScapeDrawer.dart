@@ -69,44 +69,64 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'InquireScape',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
+                      Flexible(
+                        flex: 1,
+                        child: Text(
+                          'InquireScape',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                          ),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Logged in as',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
+                      Flexible(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Logged in as',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  this.mod.username,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                  ),
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 2,
+                                ),
+                                Text(
+                                  this.mod.email,
+                                  style: TextStyle(
+                                    color: Colors.grey[200],
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ],
                             ),
-                          ),
-                          Text(
-                            this.mod.username,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
+                            Flexible(
+                              flex: 1,
+                              child: FittedBox(
+                                fit: BoxFit.cover,
+                                child: Image(image: AssetImage('assets/InquireScapeLogo.png')),
+                              ),
                             ),
-                            overflow: TextOverflow.clip,
-                            maxLines: 2,
-                          ),
-                          Text(
-                            this.mod.email,
-                            style: TextStyle(
-                              color: Colors.grey[200],
-                              fontSize: 14,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        ],
-                      )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),

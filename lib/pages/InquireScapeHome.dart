@@ -69,16 +69,51 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
   }
 
   Widget _homePage(BuildContext context) {
+    return (FirebaseController.currentConference == null || FirebaseController.conferenceQuestions == null)
+        ? _homePageWithoutConference(context)
+        : _homePageWithConference(context);
+  }
+
+  Widget _homePageWithoutConference(BuildContext context) {
     return SizedBox.expand(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (FirebaseController.currentConference != null)
-            ConferenceCard(
-              conference: FirebaseController.currentConference,
-              onTap: (_) => Navigator.pushNamed(context, routeCurrentConference),
-              cardBorder: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+          Spacer(flex: 1),
+          Expanded(
+            flex: 4,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Image(image: AssetImage('assets/InquireScapeLogo.png')),
             ),
+          ),
+          Spacer(flex: 1),
+          Expanded(flex: 5, child: _conferencesButton()),
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Expanded(flex: 1, child: _addConferenceButton()),
+                Expanded(flex: 1, child: _invitesButton()),
+              ],
+            ),
+          ),
+          Spacer(flex: 1),
+        ],
+      ),
+    );
+  }
+
+  Widget _homePageWithConference(BuildContext context) {
+    return SizedBox.expand(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ConferenceCard(
+            conference: FirebaseController.currentConference,
+            onTap: (_) => Navigator.pushNamed(context, routeCurrentConference),
+            cardBorder: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+          ),
           Expanded(
             flex: 3,
             child: _conferenceBlock(context),
@@ -98,33 +133,15 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 3,
-            child: _questionList(context),
-          ),
+          Expanded(flex: 3, child: _questionList(context)),
           Expanded(
             flex: 1,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  flex: 2,
-                  child: _HomeButton(
-                      icon: Icons.library_books_rounded,
-                      text: "Post",
-                      fontSize: 14,
-                      onTap: () => Navigator.pushNamed(context, routePostQuestion)),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: _HomeButton(
-                    icon: Icons.format_quote_rounded,
-                    text: "Questions",
-                    fontSize: 14,
-                    onTap: () => Navigator.pushNamed(context, routeConferenceQuestions),
-                  ),
-                ),
+                Expanded(flex: 2, child: _postQuestionButton()),
+                Expanded(flex: 3, child: _questionsButton()),
               ],
             ),
           ),
@@ -165,9 +182,11 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
                               Expanded(
                                 child: FittedBox(
                                   fit: BoxFit.cover,
-                                  // child: Icon(Icons.bathtub, color: MyTheme.theme.primaryColor,),
-                                  // child: Icon(Icons.bathtub, color: MyTheme.theme.primaryColor,),
-                                  child: Icon(Icons.pest_control_rodent_outlined, color: MyTheme.theme.accentColor,),
+                                  // child: Icon(Icons.bathtub_rounded, color: MyTheme.theme.accentColor,),
+                                  child: Icon(
+                                    Icons.pest_control_rodent_outlined,
+                                    color: MyTheme.theme.accentColor,
+                                  ),
                                 ),
                               ),
                               Text("Wow such empty", style: TextStyle(fontSize: 18)),
@@ -204,35 +223,66 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
               children: [
                 Expanded(
                   flex: 1,
-                  child: _HomeButton(
-                    icon: Icons.email,
-                    text: "Invites",
-                    fontSize: 14,
-                    onTap: () {},
-                  ),
+                  child: _invitesButton(),
                 ),
                 Expanded(
                   flex: 1,
-                  child: _HomeButton(
-                    icon: Icons.add_circle_rounded,
-                    text: "Create",
-                    fontSize: 14,
-                    onTap: () => Navigator.pushNamed(context, routeAddConference),
-                  ),
+                  child: _addConferenceButton(),
                 ),
               ],
             ),
           ),
           Expanded(
             flex: 3,
-            child: _HomeButton(
-                icon: Icons.format_list_bulleted,
-                text: "Conferences",
-                fontSize: 20,
-                onTap: () => Navigator.pushNamed(context, routeConferences).then((_) => this.setState(() {}))),
+            child: _conferencesButton(),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _questionsButton() {
+    return _HomeButton(
+      icon: Icons.format_quote_rounded,
+      text: "Questions",
+      fontSize: 14,
+      onTap: () => Navigator.pushNamed(context, routeConferenceQuestions),
+    );
+  }
+
+  Widget _postQuestionButton() {
+    return _HomeButton(
+      icon: Icons.library_books_rounded,
+      text: "Post",
+      fontSize: 14,
+      onTap: () => Navigator.pushNamed(context, routePostQuestion),
+    );
+  }
+
+  Widget _invitesButton() {
+    return _HomeButton(
+      icon: Icons.email,
+      text: "Invites",
+      fontSize: 14,
+      onTap: () {},
+    );
+  }
+
+  Widget _addConferenceButton() {
+    return _HomeButton(
+      icon: Icons.add_circle_rounded,
+      text: "Create",
+      fontSize: 14,
+      onTap: () => Navigator.pushNamed(context, routeAddConference),
+    );
+  }
+
+  Widget _conferencesButton() {
+    return _HomeButton(
+      icon: Icons.format_list_bulleted,
+      text: "Conferences",
+      fontSize: 20,
+      onTap: () => Navigator.pushNamed(context, routeConferences).then((_) => this.setState(() {})),
     );
   }
 
