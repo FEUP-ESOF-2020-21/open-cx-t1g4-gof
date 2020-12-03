@@ -82,10 +82,7 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
           Spacer(flex: 1),
           Expanded(
             flex: 4,
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: Image(image: AssetImage('assets/InquireScapeLogo.png')),
-            ),
+            child: Image(image: AssetImage('assets/InquireScapeLogo.png')),
           ),
           Spacer(flex: 1),
           Expanded(flex: 5, child: _conferencesButton()),
