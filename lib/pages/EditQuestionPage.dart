@@ -25,30 +25,31 @@ class _EditQuestionPage extends State<EditQuestionPage> {
           centerTitle: true,
         ),
         body: Form(
-            key: _formKey,
-            child: TextFormField(
-              keyboardType: TextInputType.multiline,
-              style: TextStyle(fontSize: 20),
-              decoration: InputDecoration(
-                contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
-              ),
-              minLines: 1000, // This pushes the end line to the bottom of it's area
-              maxLines: null,
-              initialValue: widget._question.content,
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return "Empty description.";
-                }
-                return null;
-              },
-              onSaved: (String value) async {
-                bool hasChanged = value != this.widget.oldDescript;
-                if (hasChanged) {
-                  widget._question.content = value;
-                  await FirebaseController.updateQuestionContent(widget._question);
-                }
-                Navigator.pop(context);
-              },
+          key: _formKey,
+          child: TextFormField(
+            keyboardType: TextInputType.multiline,
+            style: TextStyle(fontSize: 20),
+            decoration: InputDecoration(
+              contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
+            ),
+            minLines: 1000,
+            // This pushes the end line to the bottom of it's area
+            maxLines: null,
+            initialValue: widget._question.content,
+            validator: (String value) {
+              if (value.isEmpty) {
+                return "Empty description.";
+              }
+              return null;
+            },
+            onSaved: (String value) async {
+              bool hasChanged = value != this.widget.oldDescript;
+              if (hasChanged) {
+                widget._question.content = value;
+                await FirebaseController.updateQuestionContent(widget._question);
+              }
+              Navigator.pop(context);
+            },
           ),
         ),
         persistentFooterButtons: [saveButton(context)],

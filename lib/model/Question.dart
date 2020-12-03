@@ -9,8 +9,8 @@ class Question implements Comparable<Question> {
   int totalRatings;
   String authorId, authorDisplayName, authorPlatform;
 
-  Question(this.content, this.postDate,
-      this.avgRating, this.totalRatings, this.authorId, this.authorDisplayName, this.authorPlatform, this.docRef);
+  Question(this.content, this.postDate, this.avgRating, this.totalRatings, this.authorId, this.authorDisplayName,
+      this.authorPlatform, this.docRef);
 
   Question.withoutRef(this.content, this.postDate, this.authorId, this.authorDisplayName, this.authorPlatform) {
     this.avgRating = 2.5;
@@ -19,10 +19,7 @@ class Question implements Comparable<Question> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Question &&
-          runtimeType == other.runtimeType &&
-          docRef == other.docRef;
+      identical(this, other) || other is Question && runtimeType == other.runtimeType && docRef == other.docRef;
 
   @override
   int get hashCode => docRef.hashCode;

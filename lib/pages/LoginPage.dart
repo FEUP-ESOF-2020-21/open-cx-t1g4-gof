@@ -13,8 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _loginPage =
-      true; // If true -> display Login; If false -> Display Register
+  bool _loginPage = true; // If true -> display Login; If false -> Display Register
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passowrdController = TextEditingController();
   TextEditingController _registerEmailController = TextEditingController();
@@ -42,16 +41,13 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput(
-              'Enter your email', Icons.email, _emailController,
-              keyboardType: TextInputType.emailAddress,
-              inputAction: TextInputAction.next),
+          child: _loginTextInput('Enter your email', Icons.email, _emailController,
+              keyboardType: TextInputType.emailAddress, inputAction: TextInputAction.next),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput(
-              'Enter your password', Icons.vpn_key, _passowrdController,
+          child: _loginTextInput('Enter your password', Icons.vpn_key, _passowrdController,
               isPassword: true, inputAction: TextInputAction.done),
         ),
         Container(
@@ -59,8 +55,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _switchStateButton("Create an account?",
-                  () => setState(() => _loginPage = false)),
+              _switchStateButton("Create an account?", () => setState(() => _loginPage = false)),
               _switchStateButton("Forgot password?", () {}),
             ],
           ),
@@ -69,8 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           child: _loginSubmit("Login", Icons.login, () {
             showDialog(
                 context: context,
-                builder: (context) => _LoginAlert(
-                    true, _emailController.text, _passowrdController.text));
+                builder: (context) => _LoginAlert(true, _emailController.text, _passowrdController.text));
           }),
         ),
       ],
@@ -85,43 +79,34 @@ class _LoginPageState extends State<LoginPage> {
           size: 200.0,
         ),
         Container(
-            margin:
-                EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+            margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
             alignment: Alignment.centerLeft,
-            child: _loginTextInput(
-                'Enter your email', Icons.email, _registerEmailController,
-                validator: Validators.emailValidator(),
-                keyboardType: TextInputType.emailAddress)),
+            child: _loginTextInput('Enter your email', Icons.email, _registerEmailController,
+                validator: Validators.emailValidator(), keyboardType: TextInputType.emailAddress)),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput(
-              'Enter your username', Icons.person, _registerUsernameController,
+          child: _loginTextInput('Enter your username', Icons.person, _registerUsernameController,
               validator: Validators.usernameValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput(
-              'Enter your password', Icons.vpn_key, _registerPassowrdController,
+          child: _loginTextInput('Enter your password', Icons.vpn_key, _registerPassowrdController,
               isPassword: true, validator: Validators.passwordValidator()),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
           alignment: Alignment.centerLeft,
-          child: _loginTextInput('Confirm your password', Icons.vpn_key,
-              _confirmPassowrdController,
-              isPassword: true,
-              validator:
-                  Validators.confirmPasswordValidator(_passowrdController)),
+          child: _loginTextInput('Confirm your password', Icons.vpn_key, _confirmPassowrdController,
+              isPassword: true, validator: Validators.confirmPasswordValidator(_passowrdController)),
         ),
         Container(
           margin: EdgeInsetsDirectional.only(top: 10.0, start: 20.0, end: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _switchStateButton("Already have an account?",
-                  () => setState(() => _loginPage = true)),
+              _switchStateButton("Already have an account?", () => setState(() => _loginPage = true)),
             ],
           ),
         ),
@@ -130,9 +115,7 @@ class _LoginPageState extends State<LoginPage> {
             showDialog(
                 context: context,
                 builder: (context) => _LoginAlert(
-                    false,
-                    _registerEmailController.text,
-                    _registerPassowrdController.text,
+                    false, _registerEmailController.text, _registerPassowrdController.text,
                     username: _registerUsernameController.text));
           }),
         ),
@@ -147,8 +130,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginTextInput(
-      String hintText, IconData icon, TextEditingController textController,
+  Widget _loginTextInput(String hintText, IconData icon, TextEditingController textController,
       {bool isPassword: false,
       FormFieldValidator<String> validator,
       TextInputType keyboardType = TextInputType.text,
@@ -190,8 +172,7 @@ class _LoginAlert extends StatefulWidget {
   final String password;
   final bool isSignIn;
 
-  const _LoginAlert(this.isSignIn, this.email, this.password,
-      {this.username: ""});
+  const _LoginAlert(this.isSignIn, this.email, this.password, {this.username: ""});
 
   void action(FirebaseListener listener) => this.isSignIn
       ? FirebaseController.login(email, password, listener)
@@ -212,10 +193,7 @@ class _LoginAlertState extends State<_LoginAlert> implements FirebaseListener {
     super.initState();
 
     FirebaseController.subscribeListener(this);
-    this._activeWidgets = [
-      CircularProgressIndicator(),
-      Text(this._isSignIn ? "Logging in..." : "Registering...")
-    ];
+    this._activeWidgets = [CircularProgressIndicator(), Text(this._isSignIn ? "Logging in..." : "Registering...")];
     this.widget.action(this);
   }
 

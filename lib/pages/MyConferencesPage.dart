@@ -11,7 +11,6 @@ class MyConferencesPage extends StatefulWidget {
 }
 
 class _MyConferencesPageState extends State<MyConferencesPage> {
-
   @override
   Widget build(BuildContext context) {
     List<Conference> conferences = FirebaseController.myConferences;
@@ -36,7 +35,11 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
   }
 
   Widget _noConferences(BuildContext context) {
-    return Center(child: SuchEmpty(extraText: "No Questions", sizeFactor: 0.5,));
+    return Center(
+        child: SuchEmpty(
+      extraText: "No Questions",
+      sizeFactor: 0.5,
+    ));
   }
 
   Widget _conferenceList(BuildContext context, List<Conference> conferences) {
@@ -47,9 +50,11 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
         conference: conferences[index],
         index: index,
         highlighted: FirebaseController.conferenceIndex == index,
-        onTap: (i) { FirebaseController.conferenceIndex = i; setState(() {}); },
+        onTap: (i) {
+          FirebaseController.conferenceIndex = i;
+          setState(() {});
+        },
       ),
     );
   }
-
 }

@@ -12,10 +12,7 @@ class Moderator {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Moderator &&
-          runtimeType == other.runtimeType &&
-          docRef == other.docRef;
+      identical(this, other) || other is Moderator && runtimeType == other.runtimeType && docRef == other.docRef;
 
   @override
   int get hashCode => docRef.hashCode;

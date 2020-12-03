@@ -77,7 +77,11 @@ class QuestionListPageState extends State<QuestionListPage> {
   }
 
   Widget _noQuestions(BuildContext context) {
-    return Center(child: SuchEmpty(extraText: "No Questions", sizeFactor: 0.5,));
+    return Center(
+        child: SuchEmpty(
+      extraText: "No Questions",
+      sizeFactor: 0.5,
+    ));
   }
 
   Future<void> _onRefresh() async {

@@ -171,7 +171,10 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
               child: Padding(
                 padding: EdgeInsets.only(bottom: 5),
                 child: len == 0
-                    ? Center(child: SuchEmpty(sizeFactor: 0.6,))
+                    ? Center(
+                        child: SuchEmpty(
+                        sizeFactor: 0.6,
+                      ))
                     : ListView.builder(
                         itemCount: len,
                         itemBuilder: (context, index) {

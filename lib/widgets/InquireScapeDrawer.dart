@@ -121,9 +121,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
                               flex: 1,
                               child: FittedBox(
                                 fit: BoxFit.cover,
-                                child: Image(
-                                    image: AssetImage(
-                                        'assets/InquireScapeLogo.png')),
+                                child: Image(image: AssetImage('assets/InquireScapeLogo.png')),
                               ),
                             ),
                           ],

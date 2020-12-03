@@ -12,7 +12,10 @@ class ConferenceFullPage extends StatelessWidget {
 
     Conference conference = FirebaseController.currentConference;
 
-    const Divider headerInfoDivider = Divider(color: Colors.transparent, height: 5,);
+    const Divider headerInfoDivider = Divider(
+      color: Colors.transparent,
+      height: 5,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -21,8 +24,7 @@ class ConferenceFullPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          padding:
-              EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
+          padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

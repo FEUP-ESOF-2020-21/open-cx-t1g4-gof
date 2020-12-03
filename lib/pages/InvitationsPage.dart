@@ -28,9 +28,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
           title: Text("Pending Invitations"),
           centerTitle: true,
         ),
-        body: (invitations == null || invitations.isEmpty)
-            ? _noInvites(context)
-            : _inviteList(context, invitations),
+        body: (invitations == null || invitations.isEmpty) ? _noInvites(context) : _inviteList(context, invitations),
       ),
       onRefresh: this._onRefresh,
     );
@@ -43,7 +41,11 @@ class _InvitationsPageState extends State<InvitationsPage> {
   }
 
   Widget _noInvites(BuildContext context) {
-    return Center(child: SuchEmpty(extraText: "No Invites", sizeFactor: 0.5,));
+    return Center(
+        child: SuchEmpty(
+      extraText: "No Invites",
+      sizeFactor: 0.5,
+    ));
   }
 
   Widget _inviteList(BuildContext context, List<Invitation> invitations) {

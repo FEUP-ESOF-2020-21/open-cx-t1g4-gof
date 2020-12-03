@@ -11,7 +11,7 @@ class ShortQuestionCard extends StatelessWidget {
   final Question question;
   final int maxLines;
 
-  ShortQuestionCard({@required this.question, this.maxLines=3});
+  ShortQuestionCard({@required this.question, this.maxLines = 3});
 
   @override
   Widget build(BuildContext context) {
@@ -61,17 +61,14 @@ class ShortQuestionCard extends StatelessWidget {
       ),
     );
   }
-
 }
-
 
 class ExpandableQuestionCard extends StatefulWidget {
   final Question question;
   final int questionIndex;
   final void Function() onUpdate;
 
-  ExpandableQuestionCard(
-      {Key key, @required this.question, @required this.questionIndex, this.onUpdate})
+  ExpandableQuestionCard({Key key, @required this.question, @required this.questionIndex, this.onUpdate})
       : super(key: key);
 
   @override
@@ -85,7 +82,9 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
   Widget build(BuildContext context) {
     return ExpansionTile(
       tilePadding: EdgeInsets.zero,
-      title: ShortQuestionCard(question: widget.question,),
+      title: ShortQuestionCard(
+        question: widget.question,
+      ),
       initiallyExpanded: expanded,
       children: [
         _longCard(context),
@@ -134,8 +133,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
                 "Posted: ",
                 style: headerStyle,
               ),
-              Text(this.parseDateTime(widget.question.postDate),
-                  style: infoStyle),
+              Text(this.parseDateTime(widget.question.postDate), style: infoStyle),
             ],
           ),
           Divider(
@@ -160,10 +158,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
                     color: Colors.grey,
                   ),
                   onPressed: () async {
-                    Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditQuestionPage(widget.question)))
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditQuestionPage(widget.question)))
                         .then((value) => this.setState(() {}));
                   }),
             ],
@@ -178,7 +173,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       rating: widget.question.avgRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
-        color:  MyTheme.theme.accentColor,
+        color: MyTheme.theme.accentColor,
       ),
       itemCount: 5,
       itemSize: 30.0,
@@ -186,7 +181,6 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       direction: Axis.horizontal,
     );
   }
-
 
   String parseDateTime(DateTime d) {
     return d.day.toString().padLeft(2) +

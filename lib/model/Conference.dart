@@ -14,13 +14,9 @@ class Conference implements Comparable<Conference> {
 
   Conference.withoutRef(this.title, this.description, this.speaker, this.startDate, this.topics);
 
-
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Conference &&
-          runtimeType == other.runtimeType &&
-          docRef == other.docRef;
+      identical(this, other) || other is Conference && runtimeType == other.runtimeType && docRef == other.docRef;
 
   @override
   int get hashCode => docRef.hashCode;
