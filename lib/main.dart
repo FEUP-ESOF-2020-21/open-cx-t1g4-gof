@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     switch (settings.name) {
       case routeHome:
-        return SlideAnimationRoute(builder: (_) => InquireScapeHome());
+        return SlideAnimationRoute(builder: (_) => InquireScapeHome(key: Key("HomePage")));
       case routeCurrentConference:
         return SlideAnimationRoute(builder: (_) => ConferenceFullPage());
       case routeConferenceQuestions:

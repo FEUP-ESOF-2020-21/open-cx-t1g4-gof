@@ -52,7 +52,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
   Widget build(BuildContext context) {
     mod = FirebaseController.currentMod;
     return Drawer(
-      key: Key("drawerLogIn"),
+      key: Key("inquireScapeDrawer"),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -121,7 +121,9 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
                               flex: 1,
                               child: FittedBox(
                                 fit: BoxFit.cover,
-                                child: Image(image: AssetImage('assets/InquireScapeLogo.png')),
+                                child: Image(
+                                    image: AssetImage(
+                                        'assets/InquireScapeLogo.png')),
                               ),
                             ),
                           ],
