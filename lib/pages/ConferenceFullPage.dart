@@ -7,31 +7,12 @@ import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 class ConferenceFullPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TextStyle headerStyle =
-        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-    TextStyle infoStyle = const TextStyle(fontSize: 20);
+    const TextStyle headerStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+    const TextStyle infoStyle = TextStyle(fontSize: 20);
+
     Conference conference = FirebaseController.currentConference;
 
-    if (conference == null) {
-      return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Current Conference"),
-            centerTitle: true,
-          ),
-          body: Center(
-            child: Text(
-              "No conference selected\nSelect conference in 'My Conferences' tab",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
+    const Divider headerInfoDivider = Divider(color: Colors.transparent, height: 5,);
 
     return Scaffold(
       appBar: AppBar(
@@ -46,46 +27,43 @@ class ConferenceFullPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   "Title",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                headerInfoDivider,
                 Text(
                   conference.title,
                   style: infoStyle,
                   maxLines: null,
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Speaker",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                headerInfoDivider,
                 Text(
                   conference.speaker,
                   style: infoStyle,
                   maxLines: null,
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Date & Time",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                headerInfoDivider,
                 Text(
                   this.fromDateTime(conference.startDate),
                   style: infoStyle,
                   maxLines: null,
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Topics",
                   style: headerStyle,
                   maxLines: null,
@@ -97,16 +75,15 @@ class ConferenceFullPage extends StatelessWidget {
                     tagSize: 18,
                   ),
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Description",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                const Divider(color: Colors.transparent, height: 5),
                 Text(
-                  conference.description,
+                  conference.description == "" ? "(no description added)" : conference.description,
                   style: infoStyle,
                 ),
               ],

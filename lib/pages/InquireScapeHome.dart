@@ -265,7 +265,7 @@ class _InquireScapeHomeState extends State<InquireScapeHome>
       icon: Icons.email,
       text: "Invites",
       fontSize: 14,
-      onTap: () {},
+      onTap: () => Navigator.pushNamed(context, routeInvites),
     );
   }
 
