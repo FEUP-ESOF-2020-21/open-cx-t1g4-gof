@@ -161,6 +161,7 @@ class FirebaseController {
     List<Conference> result = [];
 
     snapshot.docs.forEach((doc) async => result.add(await this.getConference(doc.id)));
+    result?.sort();
 
     return result;
   }
