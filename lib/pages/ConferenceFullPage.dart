@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
-import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagDisplayer.dart';
+import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 
 class ConferenceFullPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TextStyle headerStyle = const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+    TextStyle headerStyle =
+        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
     TextStyle infoStyle = const TextStyle(fontSize: 20);
     Conference conference = FirebaseController.currentConference;
 
@@ -39,7 +40,8 @@ class ConferenceFullPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
+          padding:
+              EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +115,6 @@ class ConferenceFullPage extends StatelessWidget {
         ),
       ),
       persistentFooterButtons: [
-
         FlatButton(
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(10.0),

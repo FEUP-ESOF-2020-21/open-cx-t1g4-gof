@@ -4,7 +4,7 @@ import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
-import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagEditor.dart';
+import 'package:inquirescape/widgets/tags/TagEditor.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 
 class AddConferencePage extends StatefulWidget {
@@ -39,7 +39,8 @@ class _AddConferencePageState extends State<AddConferencePage> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+                        margin: EdgeInsetsDirectional.only(
+                            top: 20.0, start: 20.0, end: 20.0),
                         alignment: Alignment.centerLeft,
                         child: TextField(
                           controller: titleController,
@@ -51,7 +52,8 @@ class _AddConferencePageState extends State<AddConferencePage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+                        margin: EdgeInsetsDirectional.only(
+                            top: 20.0, start: 20.0, end: 20.0),
                         alignment: Alignment.centerLeft,
                         child: DateField(
                           firstDate: DateTime.now(),
@@ -65,7 +67,8 @@ class _AddConferencePageState extends State<AddConferencePage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+                        margin: EdgeInsetsDirectional.only(
+                            top: 20.0, start: 20.0, end: 20.0),
                         alignment: Alignment.centerLeft,
                         child: TextField(
                           readOnly: true,
@@ -86,10 +89,12 @@ class _AddConferencePageState extends State<AddConferencePage> {
                       ),
                       Container(
                         //Description
-                        margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+                        margin: EdgeInsetsDirectional.only(
+                            top: 20.0, start: 20.0, end: 20.0),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(5)),
 
                         child: TextFormField(
                           controller: descriptionController,
@@ -97,7 +102,8 @@ class _AddConferencePageState extends State<AddConferencePage> {
                           keyboardType: TextInputType.multiline,
                           style: TextStyle(fontSize: 20),
                           decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 8),
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 25.0, horizontal: 8),
                             hintText: 'Description',
                           ),
                           minLines: 6,
@@ -111,7 +117,8 @@ class _AddConferencePageState extends State<AddConferencePage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+                        margin: EdgeInsetsDirectional.only(
+                            top: 20.0, start: 20.0, end: 20.0),
                         alignment: Alignment.centerLeft,
                         child: TextField(
                           controller: speakerController,
@@ -124,10 +131,12 @@ class _AddConferencePageState extends State<AddConferencePage> {
                       ),
                       Container(
                         //Description
-                        margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
+                        margin: EdgeInsetsDirectional.only(
+                            top: 20.0, start: 20.0, end: 20.0),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(5)),
                         child: TagEditor(tags: this.tags),
                       ),
                       Divider(
@@ -151,10 +160,13 @@ class _AddConferencePageState extends State<AddConferencePage> {
                                 speakerController.text.isEmpty ||
                                 start == null ||
                                 selectedTime == null) {
-                              _showSnackBar(context, "All fields must be filled!");
+                              _showSnackBar(
+                                  context, "All fields must be filled!");
                               return;
                             }
-                            start = start.add(new Duration(hours: selectedTime.hour, minutes: selectedTime.minute));
+                            start = start.add(new Duration(
+                                hours: selectedTime.hour,
+                                minutes: selectedTime.minute));
 
                             showDialog(
                               context: context,
@@ -173,13 +185,16 @@ class _AddConferencePageState extends State<AddConferencePage> {
                             );
 
                             try {
-                              Conference created = await FirebaseController.addConference(Conference.withoutRef(
-                                  titleController.text,
-                                  descriptionController.text,
-                                  speakerController.text,
-                                  start,
-                                  tags));
-                              await FirebaseController.addConferenceToModerator(created, FirebaseController.currentMod);
+                              Conference created =
+                                  await FirebaseController.addConference(
+                                      Conference.withoutRef(
+                                          titleController.text,
+                                          descriptionController.text,
+                                          speakerController.text,
+                                          start,
+                                          tags));
+                              await FirebaseController.addConferenceToModerator(
+                                  created, FirebaseController.currentMod);
                             } on Exception {
                               Navigator.pop(context);
                             }
