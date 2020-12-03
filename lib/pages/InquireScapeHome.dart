@@ -12,13 +12,14 @@ import '../routes.dart';
 import 'LoginPage.dart';
 
 class InquireScapeHome extends StatefulWidget {
-  InquireScapeHome({Key key}) : super(key: key);
+  InquireScapeHome({Key key}) : super(key: Key("HomePage"));
 
   @override
   _InquireScapeHomeState createState() => _InquireScapeHomeState();
 }
 
-class _InquireScapeHomeState extends State<InquireScapeHome> implements FirebaseListener {
+class _InquireScapeHomeState extends State<InquireScapeHome>
+    implements FirebaseListener {
   @override
   void initState() {
     super.initState();
@@ -69,7 +70,8 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
   }
 
   Widget _homePage(BuildContext context) {
-    return (FirebaseController.currentConference == null || FirebaseController.conferenceQuestions == null)
+    return (FirebaseController.currentConference == null ||
+            FirebaseController.conferenceQuestions == null)
         ? _homePageWithoutConference(context)
         : _homePageWithConference(context);
   }
@@ -109,7 +111,8 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
           ConferenceCard(
             conference: FirebaseController.currentConference,
             onTap: (_) => Navigator.pushNamed(context, routeCurrentConference),
-            cardBorder: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+            cardBorder: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
           ),
           Expanded(
             flex: 3,
@@ -186,7 +189,8 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
                                   ),
                                 ),
                               ),
-                              Text("Wow such empty", style: TextStyle(fontSize: 18)),
+                              Text("Wow such empty",
+                                  style: TextStyle(fontSize: 18)),
                             ],
                           ),
                         ),
@@ -279,7 +283,8 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
       icon: Icons.format_list_bulleted,
       text: "Conferences",
       fontSize: 20,
-      onTap: () => Navigator.pushNamed(context, routeConferences).then((_) => this.setState(() {})),
+      onTap: () => Navigator.pushNamed(context, routeConferences)
+          .then((_) => this.setState(() {})),
     );
   }
 
@@ -289,7 +294,8 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
   @override
   void onLoginSuccess() {
     if (mounted) {
-      Navigator.of(context).pushNamedAndRemoveUntil(routeHome, (Route<dynamic> route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(routeHome, (Route<dynamic> route) => false);
       setState(() {});
     }
   }
@@ -300,7 +306,8 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
   @override
   void onRegisterSuccess() {
     if (mounted) {
-      Navigator.of(context).pushNamedAndRemoveUntil(routeHome, (Route<dynamic> route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(routeHome, (Route<dynamic> route) => false);
       setState(() {});
     }
   }
@@ -325,12 +332,14 @@ class _HomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: onTap == null
           ? child
           : InkResponse(
               highlightShape: BoxShape.rectangle,
-              customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+              customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               onTap: onTap,
               child: Container(
                 margin: EdgeInsets.zero,
@@ -348,7 +357,11 @@ class _HomeButton extends StatelessWidget {
   String text;
   double fontSize;
 
-  _HomeButton({@required this.icon, @required this.text, @required this.onTap, this.fontSize = 16});
+  _HomeButton(
+      {@required this.icon,
+      @required this.text,
+      @required this.onTap,
+      this.fontSize = 16});
 
   @override
   Widget build(BuildContext context) {

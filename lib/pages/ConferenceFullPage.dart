@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
-import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagDisplayer.dart';
+import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 
 class ConferenceFullPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const TextStyle headerStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
     const TextStyle infoStyle = TextStyle(fontSize: 20);
+
     Conference conference = FirebaseController.currentConference;
 
     const Divider headerInfoDivider = Divider(color: Colors.transparent, height: 5,);
@@ -20,7 +21,8 @@ class ConferenceFullPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
+          padding:
+              EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
