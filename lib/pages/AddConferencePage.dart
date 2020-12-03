@@ -8,10 +8,6 @@ import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagEditor.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 
 class AddConferencePage extends StatefulWidget {
-  final FirebaseController _fbController;
-
-  AddConferencePage(this._fbController);
-
   @override
   State<StatefulWidget> createState() => _AddConferencePageState();
 }
@@ -177,21 +173,16 @@ class _AddConferencePageState extends State<AddConferencePage> {
                             );
 
                             try {
-                              Conference created = await this.widget._fbController.addConference(Conference.withoutRef(
+                              Conference created = await FirebaseController.addConference(Conference.withoutRef(
                                   titleController.text,
                                   descriptionController.text,
                                   speakerController.text,
                                   start,
                                   tags));
-                              await this
-                                  .widget
-                                  ._fbController
-                                  .addConferenceToModerator(created, this.widget._fbController.currentMod);
+                              await FirebaseController.addConferenceToModerator(created, FirebaseController.currentMod);
                             } on Exception {
                               Navigator.pop(context);
                             }
-                            Navigator.pushReplacementNamed(context, "/conference/myConferences");
-                            //TODO better error detection
                           },
                         ),
                       ),

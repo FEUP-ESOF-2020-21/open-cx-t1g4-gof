@@ -5,10 +5,6 @@ import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/widgets/ConferenceCard.dart';
 
 class MyConferencesPage extends StatefulWidget {
-  final FirebaseController _fbController;
-
-  MyConferencesPage(this._fbController);
-
   @override
   _MyConferencesPageState createState() => _MyConferencesPageState();
 }
@@ -17,7 +13,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Conference> conferences = this.widget._fbController.myConferences;
+    List<Conference> conferences = FirebaseController.myConferences;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,8 +50,8 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
       itemBuilder: (BuildContext context, int index) => ConferenceCard(
         conference: conferences[index],
         index: index,
-        highlighted: widget._fbController.conferenceIndex == index,
-        onTap: (i) { widget._fbController.conferenceIndex = i; setState(() {}); },
+        highlighted: FirebaseController.conferenceIndex == index,
+        onTap: (i) { FirebaseController.conferenceIndex = i; setState(() {}); },
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
@@ -68,11 +67,10 @@ class ShortQuestionCard extends StatelessWidget {
 class ExpandableQuestionCard extends StatefulWidget {
   final Question question;
   final int questionIndex;
-  final FirebaseController fbController;
   final void Function() onUpdate;
 
   ExpandableQuestionCard(
-      {Key key, @required this.question, @required this.questionIndex, @required this.fbController, this.onUpdate})
+      {Key key, @required this.question, @required this.questionIndex, this.onUpdate})
       : super(key: key);
 
   @override
@@ -163,7 +161,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
                     Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EditQuestionPage(widget.question, widget.fbController)))
+                                builder: (context) => EditQuestionPage(widget.question)))
                         .then((value) => this.setState(() {}));
                   }),
             ],

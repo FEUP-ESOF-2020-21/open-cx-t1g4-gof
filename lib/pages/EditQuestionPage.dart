@@ -5,10 +5,9 @@ import 'package:inquirescape/model/Question.dart';
 
 class EditQuestionPage extends StatefulWidget {
   final Question _question;
-  final FirebaseController _fbController;
   final String oldDescript;
 
-  EditQuestionPage(this._question, this._fbController) : this.oldDescript = _question.content;
+  EditQuestionPage(this._question) : this.oldDescript = _question.content;
 
   @override
   _EditQuestionPage createState() => _EditQuestionPage();
@@ -50,7 +49,7 @@ class _EditQuestionPage extends State<EditQuestionPage> {
                     bool hasChanged = value != this.widget.oldDescript;
                     if (hasChanged) {
                       widget._question.content = value;
-                      await widget._fbController.updateQuestionContent(widget._question);
+                      await FirebaseController.updateQuestionContent(widget._question);
                     }
                     Navigator.pop(context);
                   },

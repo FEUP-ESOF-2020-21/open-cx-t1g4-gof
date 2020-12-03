@@ -7,10 +7,6 @@ import 'package:inquirescape/widgets/QuestionCard.dart';
 enum _SortSetting { date, rating, author, platform }
 
 class QuestionListPage extends StatefulWidget {
-  final FirebaseController _fbController;
-
-  QuestionListPage(this._fbController);
-
   @override
   State<StatefulWidget> createState() {
     return QuestionListPageState();
@@ -38,7 +34,7 @@ class QuestionListPageState extends State<QuestionListPage> {
 
   @override
   void initState() {
-    this.widget._fbController.reloadQuestions((arg) {
+    FirebaseController.reloadQuestions((arg) {
       setState(() {});
     });
 
@@ -65,7 +61,7 @@ class QuestionListPageState extends State<QuestionListPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Question> questions = this.widget._fbController.conferenceQuestions;
+    List<Question> questions = FirebaseController.conferenceQuestions;
     questions?.sort(this.comparators[this._selection]);
 
     return Scaffold(
@@ -145,7 +141,6 @@ class QuestionListPageState extends State<QuestionListPage> {
                 return ExpandableQuestionCard(
                   question: questions[index],
                   questionIndex: index,
-                  fbController: this.widget._fbController,
                   onUpdate: () => this.setState(() {}),
                 );
               },

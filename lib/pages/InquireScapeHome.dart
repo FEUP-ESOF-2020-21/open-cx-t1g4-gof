@@ -1,14 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
-import 'package:inquirescape/model/Conference.dart';
-import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagDisplayer.dart';
+import 'package:inquirescape/firebase/FirebaseListener.dart';
+import 'package:inquirescape/widgets/ConferenceCard.dart';
+import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 
-class InquireScapeHome extends StatelessWidget {
-  final FirebaseController _fbController;
-  final Widget _drawer;
+import '../routes.dart';
+import 'LoginPage.dart';
 
-  InquireScapeHome(this._fbController, this._drawer);
+class InquireScapeHome extends StatefulWidget {
+  InquireScapeHome({Key key}) : super(key: key);
+
+  @override
+  _InquireScapeHomeState createState() => _InquireScapeHomeState();
+}
+
+class _InquireScapeHomeState extends State<InquireScapeHome> implements FirebaseListener {
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseController.subscribeListener(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    FirebaseController.unsubscribeListener(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +37,47 @@ class InquireScapeHome extends StatelessWidget {
         title: Text("InquireScape"),
         centerTitle: true,
       ),
-      drawer: this._drawer,
+      drawer: FirebaseController.isLoggedIn() ? InquireScapeDrawer() : null,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _conferenceCard(
-                  context,
-                  Conference.withoutRef("A rather nice talk", "A short talk about ESOF", "Ademar Aguar", DateTime.now(),
-                      ["Flutter", "Dart", "ESOF", "Gherkin"])),
-              _conferenceBlock(context),
-              _questionBlock(context),
-            ],
+        child: _body(context),
+      ),
+    );
+  }
+
+  Widget _body(BuildContext context) {
+    return FirebaseController.isLoggedIn() ? _homePage(context) : LoginPage();
+  }
+
+  Widget _loadingScreen(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          Divider(
+            color: Colors.transparent,
+            height: 30,
           ),
-        ),
+          Text("Loading data"),
+        ],
+      ),
+    );
+  }
+
+  Widget _homePage(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          if (FirebaseController.currentConference != null)
+            ConferenceCard(
+              conference: FirebaseController.currentConference,
+              onTap: (_) => () => Navigator.pushNamed(context, routeCurrentConference),
+            ),
+          _conferenceBlock(context),
+          _questionBlock(context),
+        ],
       ),
     );
   }
@@ -44,8 +90,13 @@ class InquireScapeHome extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: _largeButton(context, Icons.format_list_bulleted, "Conferences", 20,
-                () => Navigator.pushNamed(context, "/conference/myConferences")),
+            child: _largeButton(
+              context,
+              Icons.spa_rounded,
+              "tmp",
+              20,
+              () {},
+            ),
           ),
           Expanded(
             flex: 1,
@@ -56,12 +107,12 @@ class InquireScapeHome extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: _largeButton(context, Icons.library_books_rounded, "Post", 14,
-                      () => Navigator.pushNamed(context, "/conference/postQuestion")),
+                      () => Navigator.pushNamed(context, routePostQuestion)),
                 ),
                 Expanded(
                   flex: 3,
                   child: _largeButton(context, Icons.format_quote_rounded, "Questions", 14,
-                      () => Navigator.pushNamed(context, "/conference/questions")),
+                      () => Navigator.pushNamed(context, routeConferenceQuestions)),
                 ),
               ],
             ),
@@ -91,7 +142,7 @@ class InquireScapeHome extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: _largeButton(context, Icons.add_circle_rounded, "Create", 14,
-                      () => Navigator.pushNamed(context, "/conference/create")),
+                      () => Navigator.pushNamed(context, routeAddConference)),
                 ),
               ],
             ),
@@ -99,14 +150,14 @@ class InquireScapeHome extends StatelessWidget {
           Expanded(
             flex: 3,
             child: _largeButton(context, Icons.format_list_bulleted, "Conferences", 20,
-                () => Navigator.pushNamed(context, "/conference/myConferences")),
+                () => Navigator.pushNamed(context, routeConferences).then((_) => this.setState(() {}))),
           ),
         ],
       ),
     );
   }
 
-  Widget _mainContainer(BuildContext context, Widget child, void Function() onTap) {
+  Widget _clickableCard(BuildContext context, Widget child, void Function() onTap) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
       child: InkResponse(
@@ -123,7 +174,7 @@ class InquireScapeHome extends StatelessWidget {
   }
 
   Widget _largeButton(BuildContext context, IconData icon, String text, double fontSize, void Function() onTap) {
-    return _mainContainer(
+    return _clickableCard(
       context,
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -142,88 +193,35 @@ class InquireScapeHome extends StatelessWidget {
     );
   }
 
-  Widget _conferenceCard(BuildContext context, Conference conference) {
-    TextStyle headerStyle = TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyText1.color);
-    TextStyle infoStyle = TextStyle(fontSize: 20);
-    TextStyle dateStyle = TextStyle(fontSize: 12);
+  @override
+  void onLoginIncorrect() {}
 
-    return _mainContainer(
-      context,
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Title",
-            style: headerStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(conference.title, style: infoStyle),
-          Divider(
-            color: Colors.transparent,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Speaker",
-                      style: headerStyle,
-                    ),
-                    Text(
-                      conference.speaker,
-                      style: infoStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.clip,
-                    ),
-                  ],
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Date",
-                      style: headerStyle,
-                    ),
-                    Text(
-                      this.fromDateTime(conference.startDate),
-                      style: dateStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.visible,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Divider(
-            color: Colors.transparent,
-          ),
-          TagDisplayer(
-            tags: conference.topics,
-          ),
-        ],
-      ),
-      () => Navigator.pushNamed(context, "/conference"),
-    );
+  @override
+  void onLoginSuccess() {
+    if (mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil(routeHome, (Route<dynamic> route) => false);
+      setState(() {});
+    }
   }
 
-  String fromDateTime(DateTime d) {
-    return d.day.toString().padLeft(2, "0") +
-        "-" +
-        d.month.toString().padLeft(2, "0") +
-        "-" +
-        d.year.toString().padLeft(4, "0") +
-        " " +
-        d.hour.toString().padLeft(2, "0") +
-        ":" +
-        d.minute.toString().padLeft(2, "0");
+  @override
+  void onRegisterDuplicate() {}
+
+  @override
+  void onRegisterSuccess() {
+    if (mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil(routeHome, (Route<dynamic> route) => false);
+      setState(() {});
+    }
+  }
+
+  @override
+  void onDataChanged() {}
+
+  @override
+  void onLogout() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
