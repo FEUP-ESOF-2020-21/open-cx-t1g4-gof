@@ -7,6 +7,7 @@ import 'package:inquirescape/themes/MyTheme.dart';
 import 'package:inquirescape/widgets/ConferenceCard.dart';
 import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/QuestionCard.dart';
+import 'package:inquirescape/widgets/SuchEmpty.dart';
 
 import '../routes.dart';
 import 'LoginPage.dart';
@@ -170,27 +171,7 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
               child: Padding(
                 padding: EdgeInsets.only(bottom: 5),
                 child: len == 0
-                    ? Center(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: 100),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  // child: Icon(Icons.bathtub_rounded, color: MyTheme.theme.accentColor,),
-                                  child: Icon(
-                                    Icons.pest_control_rodent_outlined,
-                                    color: MyTheme.theme.accentColor,
-                                  ),
-                                ),
-                              ),
-                              Text("Wow such empty", style: TextStyle(fontSize: 18)),
-                            ],
-                          ),
-                        ),
-                      )
+                    ? Center(child: SuchEmpty(sizeFactor: 0.6,))
                     : ListView.builder(
                         itemCount: len,
                         itemBuilder: (context, index) {

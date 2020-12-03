@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/widgets/QuestionCard.dart';
+import 'package:inquirescape/widgets/SuchEmpty.dart';
 
 // This is the type used by the popup menu below.
 enum _SortSetting { date, rating, author, platform }
@@ -70,18 +71,13 @@ class QuestionListPageState extends State<QuestionListPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: questions == null ? _questionsUnloaded(context) : _questionList(context, questions),
+        child: (questions == null || questions.isEmpty) ? _noQuestions(context) : _questionList(context, questions),
       ),
     );
   }
 
-  Widget _questionsUnloaded(BuildContext context) {
-    return Center(
-      child: Text(
-        "No questions have been asked yet",
-        style: TextStyle(color: Colors.grey, fontSize: 22),
-      ),
-    );
+  Widget _noQuestions(BuildContext context) {
+    return Center(child: SuchEmpty(extraText: "No Questions", sizeFactor: 0.5,));
   }
 
   Future<void> _onRefresh() async {

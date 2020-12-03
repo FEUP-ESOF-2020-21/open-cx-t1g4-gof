@@ -3,6 +3,7 @@ import 'package:inquirescape/firebase/FirebaseController.dart';
 
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/widgets/ConferenceCard.dart';
+import 'package:inquirescape/widgets/SuchEmpty.dart';
 
 class MyConferencesPage extends StatefulWidget {
   @override
@@ -35,12 +36,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
   }
 
   Widget _noConferences(BuildContext context) {
-    return Center(
-      child: Text(
-        "No conferences",
-        style: TextStyle(color: Colors.grey, fontSize: 30),
-      ),
-    );
+    return Center(child: SuchEmpty(extraText: "No Questions", sizeFactor: 0.5,));
   }
 
   Widget _conferenceList(BuildContext context, List<Conference> conferences) {

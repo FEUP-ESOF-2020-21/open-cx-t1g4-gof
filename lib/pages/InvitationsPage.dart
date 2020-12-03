@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Invitation.dart';
+import 'package:inquirescape/widgets/SuchEmpty.dart';
 import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 
 class InvitationsPage extends StatefulWidget {
-  List<Invitation> _invitations;
-
   @override
   _InvitationsPageState createState() => _InvitationsPageState();
 }
@@ -29,9 +28,9 @@ class _InvitationsPageState extends State<InvitationsPage> {
           title: Text("Pending Invitations"),
           centerTitle: true,
         ),
-        body: (widget._invitations == null || widget._invitations.isEmpty)
+        body: (invitations == null || invitations.isEmpty)
             ? _noInvites(context)
-            : _inviteList(context, widget._invitations),
+            : _inviteList(context, invitations),
       ),
       onRefresh: this._onRefresh,
     );
@@ -44,12 +43,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
   }
 
   Widget _noInvites(BuildContext context) {
-    return Center(
-      child: Text(
-        "No Invitations",
-        style: TextStyle(color: Colors.grey, fontSize: 30),
-      ),
-    );
+    return Center(child: SuchEmpty(extraText: "No Invites", sizeFactor: 0.5,));
   }
 
   Widget _inviteList(BuildContext context, List<Invitation> invitations) {
@@ -159,7 +153,6 @@ class _InvitationsPageState extends State<InvitationsPage> {
                       FlatButton(
                         onPressed: () {
                           FirebaseController.acceptInvite(invite);
-                          widget._invitations.remove(invite);
                           super.setState(() {});
                         },
                         child: Icon(Icons.check, color: Colors.green),
@@ -167,7 +160,6 @@ class _InvitationsPageState extends State<InvitationsPage> {
                       FlatButton(
                         onPressed: () {
                           FirebaseController.rejectInvite(invite);
-                          widget._invitations.remove(invite);
                           super.setState(() {});
                         },
                         child: Icon(Icons.close, color: Colors.red),
