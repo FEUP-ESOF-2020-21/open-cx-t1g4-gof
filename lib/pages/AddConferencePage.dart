@@ -4,13 +4,13 @@ import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/widgets/TagEditorWidget.dart';
+import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagEditor.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 
 class AddConferencePage extends StatefulWidget {
   final FirebaseController _fbController;
-  final Widget _drawer;
 
-  AddConferencePage(this._fbController, this._drawer);
+  AddConferencePage(this._fbController);
 
   @override
   State<StatefulWidget> createState() => _AddConferencePageState();
@@ -28,14 +28,13 @@ class _AddConferencePageState extends State<AddConferencePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("New Conference"),
-          centerTitle: true,
-        ),
-        drawer: this.widget._drawer,
-        body: Builder(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("New Conference"),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Builder(
           builder: (BuildContext context) {
             return SingleChildScrollView(
               child: Container(
@@ -133,7 +132,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                        child: TagEditorWidget(tags: this.tags),
+                        child: TagEditor(tags: this.tags),
                       ),
                       Divider(
                         color: Colors.transparent,
@@ -145,11 +144,11 @@ class _AddConferencePageState extends State<AddConferencePage> {
                           shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(10.0),
                           ),
+                          color: MyTheme.theme.primaryColor,
                           child: Text(
                             "Create",
-                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                            style: TextStyle(fontSize: 20.0),
                           ),
-                          color: Colors.blue,
                           onPressed: () async {
                             if (titleController.text.isEmpty ||
                                 descriptionController.text.isEmpty ||

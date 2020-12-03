@@ -7,11 +7,10 @@ import 'package:inquirescape/model/Moderator.dart';
 
 class PostQuestionPage extends StatefulWidget {
   final FirebaseController _fbController;
-  final Widget _drawer;
   Moderator _mod;
   Conference _conference;
 
-  PostQuestionPage(this._fbController, this._drawer) {
+  PostQuestionPage(this._fbController) {
     this._mod = this._fbController.currentMod;
     this._conference = this._fbController.currentConference;
   }
@@ -28,16 +27,15 @@ class _PostQuestionPage extends State<PostQuestionPage> {
   @override
   Widget build(BuildContext context) {
     bool unloaded = (this.widget._mod == null || this.widget._conference == null);
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Post Question'),
-          centerTitle: true,
-        ),
-        drawer: this.widget._drawer,
-        body: unloaded ? _conferenceUnloaded(context) : _onConferenceLoaded(context),
-        persistentFooterButtons: unloaded ? null : [saveButton(context)],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Post Question'),
+        centerTitle: true,
       ),
+      body: SafeArea(
+        child: unloaded ? _conferenceUnloaded(context) : _onConferenceLoaded(context),
+      ),
+      persistentFooterButtons: unloaded ? null : [saveButton(context)],
     );
   }
 

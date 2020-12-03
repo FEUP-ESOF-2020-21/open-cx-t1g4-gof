@@ -8,9 +8,8 @@ enum _SortSetting { date, rating, author, platform }
 
 class QuestionListPage extends StatefulWidget {
   final FirebaseController _fbController;
-  final Widget _drawer;
 
-  QuestionListPage(this._fbController, this._drawer);
+  QuestionListPage(this._fbController);
 
   @override
   State<StatefulWidget> createState() {
@@ -69,17 +68,13 @@ class QuestionListPageState extends State<QuestionListPage> {
     List<Question> questions = this.widget._fbController.conferenceQuestions;
     questions?.sort(this.comparators[this._selection]);
 
-    return SafeArea(
-      child: RefreshIndicator(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Questions"),
-            centerTitle: true,
-          ),
-          drawer: this.widget._drawer,
-          body: questions == null ? _questionsUnloaded(context) : _questionList(context, questions),
-        ),
-        onRefresh: this._onRefresh,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Questions"),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: questions == null ? _questionsUnloaded(context) : _questionList(context, questions),
       ),
     );
   }
@@ -114,47 +109,50 @@ class QuestionListPageState extends State<QuestionListPage> {
   }
 
   Widget _questionList(BuildContext context, List<Question> questions) {
-    return Column(
-      children: [
-        Align(
-          child: Row(
-            children: [
-              this._sortButton(context),
-              IconButton(
-                icon: Icon(
-                  this.descending ? Icons.arrow_downward : Icons.arrow_upward,
-                  color: Colors.grey,
+    return RefreshIndicator(
+      onRefresh: this._onRefresh,
+      child: Column(
+        children: [
+          Align(
+            child: Row(
+              children: [
+                this._sortButton(context),
+                IconButton(
+                  icon: Icon(
+                    this.descending ? Icons.arrow_downward : Icons.arrow_upward,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      this.descendingVal *= -1;
+                    });
+                  },
                 ),
-                onPressed: () {
-                  setState(() {
-                    this.descendingVal *= -1;
-                  });
-                },
-              ),
-              Text(
-                "Sorting by: " + sortName[this._selection],
-                style: TextStyle(fontSize: 16),
-                overflow: TextOverflow.clip,
-              ),
-            ],
+                Text(
+                  "Sorting by: " + sortName[this._selection],
+                  style: TextStyle(fontSize: 16),
+                  overflow: TextOverflow.clip,
+                ),
+              ],
+            ),
+            alignment: Alignment.centerLeft,
           ),
-          alignment: Alignment.centerLeft,
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: questions.length,
-            itemBuilder: (BuildContext context, int index) {
-              return QuestionCard(
-                question: questions[index],
-                questionIndex: index,
-                fbController: this.widget._fbController,
-                onUpdate: () => this.setState(() {}),
-              );
-            },
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: questions.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ExpandableQuestionCard(
+                  question: questions[index],
+                  questionIndex: index,
+                  fbController: this.widget._fbController,
+                  onUpdate: () => this.setState(() {}),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

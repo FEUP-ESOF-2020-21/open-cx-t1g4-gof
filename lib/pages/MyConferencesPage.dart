@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 
 import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/widgets/TagDisplayer.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
+import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagDisplayer.dart';
 
 class MyConferencesPage extends StatefulWidget {
   final FirebaseController _fbController;
-  final Widget _drawer;
 
-  MyConferencesPage(this._fbController, this._drawer);
+  MyConferencesPage(this._fbController);
 
   @override
   _MyConferencesPageState createState() => _MyConferencesPageState();
 }
 
 class _MyConferencesPageState extends State<MyConferencesPage> {
-
   // List<Conference> conferences = [
   //   Conference.withoutRef("A talk here", "Intro to Dart", "Ademar", DateTime(2020, 11, 22), ["Dart"]),
   //   Conference.withoutRef("A talk there", "Intro to Flutter", "Aguiar", DateTime(2020, 11, 24), ["Flutter", "Widgets"]),
@@ -26,16 +25,17 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
     List<Conference> conferences = this.widget._fbController.myConferences;
     conferences?.sort();
 
-    return RefreshIndicator(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("My Conferences"),
-          centerTitle: true,
-        ),
-        drawer: this.widget._drawer,
-        body: conferences == null ? _noConferences(context) : _conferenceList(context, conferences),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("My Conferences"),
+        centerTitle: true,
       ),
-      onRefresh: this._onRefresh,
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: this._onRefresh,
+          child: conferences == null ? _noConferences(context) : _conferenceList(context, conferences),
+        ),
+      ),
     );
   }
 
@@ -46,7 +46,10 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
 
   Widget _noConferences(BuildContext context) {
     return Center(
-      child: Text("No conferences", style: TextStyle(color: Colors.grey, fontSize: 30),),
+      child: Text(
+        "No conferences",
+        style: TextStyle(color: Colors.grey, fontSize: 30),
+      ),
     );
   }
 
@@ -66,9 +69,9 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
     return Padding(
       padding: EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 0),
       child: Card(
-        color: index != this.widget._fbController.conferenceIndex ? null : Colors.blue[100],
+        color: index != this.widget._fbController.conferenceIndex ? null : MyTheme.theme.primaryColor.withAlpha(80),
         child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
+          splashColor: MyTheme.theme.primaryColor.withAlpha(30),
           onTap: () {
             this.widget._fbController.conferenceIndex = index;
             setState(() {});
@@ -132,7 +135,9 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
                 Divider(
                   color: Colors.transparent,
                 ),
-                TagDisplayer(tags: conference.topics, tagColor: Colors.white,),
+                TagDisplayer(
+                  tags: conference.topics,
+                ),
               ],
             ),
           ),

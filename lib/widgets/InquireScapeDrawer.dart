@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/config.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/firebase/FirebaseListener.dart';
 import 'package:inquirescape/model/Moderator.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 
 // ---------------
 //     ENTRY
@@ -19,10 +21,7 @@ class _DrawerEntry extends StatelessWidget {
       leading: Icon(this.icon),
       title: Text(
         this.text,
-        style: TextStyle(
-          fontSize: 22,
-          color: Colors.black54,
-        ),
+        style: MyTheme.theme.textTheme.headline1,
       ),
       onTap: this.onTap,
     );
@@ -52,6 +51,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
     super.initState();
 
     this.widget._fbController.subscribeListener(this);
+    currentTheme.addListener(() {if (mounted) setState(() {});} );
 
     this.updateState();
   }
@@ -102,6 +102,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
             ),
           ),
           _DrawerEntry(Icons.login, "Log In", () => Navigator.pushReplacementNamed(context, "/login")),
+          _toggleTheme(),
         ],
       ),
     );
@@ -115,7 +116,7 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: MyTheme.theme.primaryColor,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,16 +169,41 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements Fire
             onExpansionChanged: (value) => _InquireScapeDrawerState._expanded = value,
             title: _DrawerEntry(Icons.mic, "Conference", null),
             children: [
-              _DrawerEntry(Icons.subdirectory_arrow_right_rounded, "Current", () => Navigator.pushReplacementNamed(context, "/conference")),
-              _DrawerEntry(Icons.hourglass_empty_rounded, "Questions", () => Navigator.pushReplacementNamed(context, "/conference/questions")),
-              _DrawerEntry(Icons.note, "Post Question", () => Navigator.pushReplacementNamed(context, "/conference/postQuestion")),
-              _DrawerEntry(Icons.format_list_bulleted, "My Conferences", () => Navigator.pushReplacementNamed(context, "/conference/myConferences")),
-              _DrawerEntry(Icons.insert_invitation, "Invites", () => Navigator.pushReplacementNamed(context, "/conference/invites")),
-              _DrawerEntry(Icons.add_box_outlined, "Create New", () => Navigator.pushReplacementNamed(context, "/conference/create")),
+              _DrawerEntry(Icons.subdirectory_arrow_right_rounded, "Current",
+                  () => Navigator.pushReplacementNamed(context, "/conference")),
+              _DrawerEntry(Icons.hourglass_empty_rounded, "Questions",
+                  () => Navigator.pushReplacementNamed(context, "/conference/questions")),
+              _DrawerEntry(Icons.note, "Post Question",
+                  () => Navigator.pushReplacementNamed(context, "/conference/postQuestion")),
+              _DrawerEntry(Icons.format_list_bulleted, "My Conferences",
+                  () => Navigator.pushReplacementNamed(context, "/conference/myConferences")),
+              _DrawerEntry(Icons.insert_invitation, "Invites",
+                  () => Navigator.pushReplacementNamed(context, "/conference/invites")),
+              _DrawerEntry(Icons.add_box_outlined, "Create New",
+                  () => Navigator.pushReplacementNamed(context, "/conference/create")),
             ],
           ),
-          _DrawerEntry(Icons.account_circle_rounded, "Profile", () => Navigator.pushReplacementNamed(context, "/profile")),
+          _DrawerEntry(
+              Icons.account_circle_rounded, "Profile", () => Navigator.pushReplacementNamed(context, "/profile")),
           _DrawerEntry(Icons.logout, "Log Out", () => this.widget._fbController.logout()),
+          _toggleTheme(),
+          // Switch(value: MyAppState.light, onChanged: widget._appState.toggleTheme),
+        ],
+      ),
+    );
+  }
+
+  Widget _toggleTheme() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(MyTheme.isDark ? "Dark Theme" : "Light Theme"),
+          Switch(
+            value: MyTheme.isLight,
+            onChanged: currentTheme.switchTheme,
+          ),
         ],
       ),
     );

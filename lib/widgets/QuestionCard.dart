@@ -4,31 +4,89 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 
-class QuestionCard extends StatefulWidget {
+class ShortQuestionCard extends StatelessWidget {
+  final Question question;
+
+  ShortQuestionCard({@required this.question});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.only(left: 4, top: 8, right: 4, bottom: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: Text(
+                      question.authorDisplayName,
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(timeago.format(question.postDate, locale: 'en_short')),
+                      Text("    "),
+                      Text(
+                        question.avgRating.toStringAsFixed(1),
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Icon(Icons.star, color: MyTheme.theme.accentColor, size: 22),
+                    ],
+                  ),
+                ],
+              ),
+              Text(
+                question.content,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.start,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+}
+
+
+class ExpandableQuestionCard extends StatefulWidget {
   final Question question;
   final int questionIndex;
   final FirebaseController fbController;
   final void Function() onUpdate;
 
-  QuestionCard(
+  ExpandableQuestionCard(
       {Key key, @required this.question, @required this.questionIndex, @required this.fbController, this.onUpdate})
       : super(key: key);
 
   @override
-  _QuestionCardState createState() => _QuestionCardState();
+  _ExpandableQuestionCardState createState() => _ExpandableQuestionCardState();
 }
 
-class _QuestionCardState extends State<QuestionCard> {
+class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
   bool expanded = false;
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
       tilePadding: EdgeInsets.zero,
-      title: _shortCard(context),
+      title: ShortQuestionCard(question: widget.question,),
       initiallyExpanded: expanded,
       children: [
         _longCard(context),
@@ -120,60 +178,12 @@ class _QuestionCardState extends State<QuestionCard> {
       rating: widget.question.avgRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
-        color: Colors.amber,
+        color:  MyTheme.theme.accentColor,
       ),
       itemCount: 5,
       itemSize: 30.0,
-      unratedColor: Colors.amber.withAlpha(100),
+      unratedColor: MyTheme.theme.backgroundColor.withAlpha(100),
       direction: Axis.horizontal,
-    );
-  }
-
-  Widget _shortCard(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.zero,
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.only(left: 4, top: 8, right: 4, bottom: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 200),
-                    child: Text(
-                      widget.question.authorDisplayName,
-                      overflow: TextOverflow.clip,
-                      maxLines: 1,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Text(timeago.format(this.widget.question.postDate, locale: 'en_short')),
-                      Text("    "),
-                      Text(
-                        widget.question.avgRating.toStringAsFixed(1),
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      Icon(Icons.star, color: Colors.amber, size: 22),
-                    ],
-                  ),
-                ],
-              ),
-              Text(
-                widget.question.content,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                style: TextStyle(fontSize: 15),
-                textAlign: TextAlign.start,
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/widgets/TagDisplayer.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
+import 'file:///D:/FEUP/ESOF/inquirescape/lib/widgets/tags/TagDisplayer.dart';
 
 class ConferenceFullPage extends StatelessWidget {
   final FirebaseController _fbController;
-  final Widget _drawer;
 
-  ConferenceFullPage(this._fbController, this._drawer);
+  ConferenceFullPage(this._fbController);
 
   // final Conference conference = Conference.withoutRef(
   //     "Introdução a Flutter",
@@ -29,7 +29,6 @@ class ConferenceFullPage extends StatelessWidget {
             title: Text("Current Conference"),
             centerTitle: true,
           ),
-          drawer: this._drawer,
           body: Center(
             child: Text(
               "No conference selected\nSelect conference in 'My Conferences' tab",
@@ -44,14 +43,13 @@ class ConferenceFullPage extends StatelessWidget {
       );
     }
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Current Conference"),
-          centerTitle: true,
-        ),
-        drawer: this._drawer,
-        body: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Current Conference"),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Container(
           padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
           child: SingleChildScrollView(
             child: Column(
@@ -124,19 +122,20 @@ class ConferenceFullPage extends StatelessWidget {
             ),
           ),
         ),
-        persistentFooterButtons: [
-          FlatButton(
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(10.0),
-              ),
-              child: Text(
-                "Invite Moderators",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              color: Colors.blue,
-              onPressed: () => {}),
-        ],
       ),
+      persistentFooterButtons: [
+
+        FlatButton(
+            shape: new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(10.0),
+            ),
+            child: Text(
+              "Invite Moderators",
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
+            color: MyTheme.theme.primaryColor,
+            onPressed: () => {}),
+      ],
     );
   }
 

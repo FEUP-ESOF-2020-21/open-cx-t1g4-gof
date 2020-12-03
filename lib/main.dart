@@ -6,11 +6,14 @@ import 'package:inquirescape/pages/MyConferencesPage.dart';
 import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/PostQuestionPage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 
 import 'package:inquirescape/pages/InquireScapeHome.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+
+import 'config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,47 +21,44 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   static final FirebaseController firebaseController = FirebaseController();
-  Widget drawer = InquireScapeDrawer(firebaseController);
 
-  // This widget is the root of your application.
+  static final Widget drawer = InquireScapeDrawer(firebaseController);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    currentTheme.addListener(() => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'InquireScape',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // brightness: Brightness.dark,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      themeMode: MyTheme.currentThemeMode(),
+      theme: MyTheme.lightTheme,
+      darkTheme: MyTheme.darkTheme,
       // on the FirstScreen widget.
       initialRoute: '/',
       routes: {
-        '/': (context) => InquireScapeHome(firebaseController, this.drawer),
+        '/': (context) => InquireScapeHome(MyApp.firebaseController, MyApp.drawer),
         '/login': (context) => LoginPage(
           key: Key("LoginPage"),
-          fbController: firebaseController,
-          drawer: this.drawer,
+          fbController: MyApp.firebaseController,
+          drawer: MyApp.drawer,
         ),
-        '/conference': (context) => ConferenceFullPage(firebaseController, this.drawer),
-        '/conference/questions': (context) => QuestionListPage(firebaseController, this.drawer),
-        '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),
-        '/conference/myConferences': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/invites': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/postQuestion': (context) => PostQuestionPage(firebaseController, this.drawer),
+        '/conference': (context) => ConferenceFullPage(MyApp.firebaseController),
+        '/conference/questions': (context) => QuestionListPage(MyApp.firebaseController),
+          '/conference/create': (context) => AddConferencePage(MyApp.firebaseController),
+        '/conference/myConferences': (context) => MyConferencesPage(MyApp.firebaseController),
+        '/conference/invites': (context) => MyConferencesPage(MyApp.firebaseController),
+        '/conference/postQuestion': (context) => PostQuestionPage(MyApp.firebaseController),
       },
     );
   }

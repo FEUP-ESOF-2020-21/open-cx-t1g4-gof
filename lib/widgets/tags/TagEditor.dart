@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/widgets/tags/Tag.dart';
 
-class TagEditorWidget extends StatefulWidget {
+class TagEditor extends StatefulWidget {
   final List<String> tags;
 
-  TagEditorWidget({Key key, @required this.tags}) : super(key: key);
+  TagEditor({Key key, @required this.tags}) : super(key: key);
 
   @override
-  _TagEditorWidgetState createState() => _TagEditorWidgetState();
+  _TagEditorState createState() => _TagEditorState();
 }
 
-class _TagEditorWidgetState extends State<TagEditorWidget> {
+class _TagEditorState extends State<TagEditor> {
   TextEditingController _controller = TextEditingController();
 
   @override
@@ -26,33 +27,10 @@ class _TagEditorWidgetState extends State<TagEditorWidget> {
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: this.widget.tags.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    margin: EdgeInsets.only(left: 4, right: 4),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          "  " + this.widget.tags[index] + "  ",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.only(right: 4),
-                          iconSize: 23,
-                          constraints: BoxConstraints(),
-                          icon: Icon(
-                            Icons.close,
-                            color: Colors.grey[700],
-                          ),
-                          onPressed: () => this.setState(() => this.widget.tags.removeAt(index)),
-                        ),
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                    ),
-                  );
-                },
+                itemBuilder: (BuildContext context, int index) => Tag(
+                  tagName: widget.tags[index],
+                  onTap: () => this.setState(() => this.widget.tags.removeAt(index)),
+                ),
               ),
             ),
           Row(
