@@ -78,7 +78,7 @@ class QuestionListPageState extends State<QuestionListPage> {
   Widget _questionsUnloaded(BuildContext context) {
     return Center(
       child: Text(
-        "No questions D:",
+        "No questions have been asked yet",
         style: TextStyle(color: Colors.grey, fontSize: 22),
       ),
     );
@@ -86,7 +86,6 @@ class QuestionListPageState extends State<QuestionListPage> {
 
   Future<void> _onRefresh() async {
     this.setState(() {});
-    print("I feel rather refreshed");
   }
 
   Widget _sortButton(BuildContext context) {

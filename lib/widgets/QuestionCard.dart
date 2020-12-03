@@ -9,8 +9,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class ShortQuestionCard extends StatelessWidget {
   final Question question;
+  final int maxLines;
 
-  ShortQuestionCard({@required this.question});
+  ShortQuestionCard({@required this.question, this.maxLines=3});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class ShortQuestionCard extends StatelessWidget {
                         question.avgRating.toStringAsFixed(1),
                         style: TextStyle(fontSize: 14),
                       ),
-                      Icon(Icons.star, color: MyTheme.theme.accentColor, size: 22),
+                      Icon(Icons.star, color: MyTheme.theme.primaryColor, size: 22),
                     ],
                   ),
                 ],
@@ -50,7 +51,7 @@ class ShortQuestionCard extends StatelessWidget {
               Text(
                 question.content,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 3,
+                maxLines: maxLines,
                 style: TextStyle(fontSize: 15),
                 textAlign: TextAlign.start,
               )
@@ -176,7 +177,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       rating: widget.question.avgRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
-        color:  MyTheme.theme.accentColor,
+        color:  MyTheme.theme.primaryColor,
       ),
       itemCount: 5,
       itemSize: 30.0,

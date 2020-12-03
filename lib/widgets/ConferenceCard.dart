@@ -4,13 +4,13 @@ import 'package:inquirescape/themes/MyTheme.dart';
 import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 
 class ConferenceCard extends StatelessWidget {
-
   final Conference conference;
   final int index;
   final bool highlighted;
   final void Function(int) onTap;
+  final ShapeBorder cardBorder;
 
-  ConferenceCard({@required this.conference, this.onTap, this.index=0, this.highlighted=false});
+  ConferenceCard({@required this.conference, this.onTap, this.index = 0, this.highlighted = false, this.cardBorder});
 
   static const TextStyle headerStyle = TextStyle(fontSize: 15);
   static const TextStyle infoStyle = TextStyle(fontSize: 20);
@@ -21,8 +21,11 @@ class ConferenceCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 0),
       child: Card(
+        shape: cardBorder,
         color: highlighted ? MyTheme.theme.primaryColor.withAlpha(80) : null,
-        child: InkWell(
+        child: InkResponse(
+          highlightShape: BoxShape.rectangle,
+          customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
           splashColor: MyTheme.theme.primaryColor.withAlpha(30),
           onTap: onTap == null ? null : () => onTap(index),
           child: Padding(

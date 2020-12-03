@@ -210,6 +210,7 @@ class FirebaseController {
 
   static set conferenceIndex(int value) {
     _conferenceIndex = value;
+    reloadQuestions((_) {});
   }
 
   static List<Question> get conferenceQuestions => _conferenceQuestions;
@@ -227,6 +228,7 @@ class FirebaseController {
     if (_conferenceIndex == null || _myConferences == null) return;
 
     _conferenceQuestions = await getQuestions(currentConference);
+    _conferenceQuestions.sort();
     onReload(_conferenceQuestions);
   }
 
@@ -247,12 +249,13 @@ class FirebaseController {
         _myConferences = res;
       });
     }
-    if (_currentMod == null) {
-      await FBAuthenticator.signOut();
-      listeners.forEach((FirebaseListener listener) => listener.onLogout());
-      return false;
-    }
-    listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
+
+    // if (_currentMod == null) {
+    //   await FBAuthenticator.signOut();
+    //   listeners.forEach((FirebaseListener listener) => listener.onLogout());
+    //   return false;
+    // }
+    // listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
     return true;
   }
 }

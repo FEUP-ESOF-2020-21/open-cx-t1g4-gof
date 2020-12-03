@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Question {
+class Question implements Comparable<Question> {
   DocumentReference docRef;
 
   String content;
@@ -13,7 +13,7 @@ class Question {
       this.avgRating, this.totalRatings, this.authorId, this.authorDisplayName, this.authorPlatform, this.docRef);
 
   Question.withoutRef(this.content, this.postDate, this.authorId, this.authorDisplayName, this.authorPlatform) {
-    this.avgRating = 0;
+    this.avgRating = 2.5;
     this.totalRatings = 0;
   }
 
@@ -26,4 +26,9 @@ class Question {
 
   @override
   int get hashCode => docRef.hashCode;
+
+  @override
+  int compareTo(Question other) {
+    return other.postDate.compareTo(this.postDate);
+  }
 }
