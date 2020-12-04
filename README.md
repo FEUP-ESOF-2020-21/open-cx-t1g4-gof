@@ -162,6 +162,22 @@ Scenario: Edit a question
   Then  A questionEditor should appear on screen
 ```
 
+#### **Value and Effort**
+Value: Must have
+
+Effort: L
+
+As a moderator, I should get an error message if I edit a question into an empty string, so that every question has information in it.
+
+#### **UI mockup**
+<img src="./docs/User_story_edit_empty_string_1.png" alt="UI Mockup Edit Questions Empty String"/>
+
+#### **UI mockup**
+<img src="./docs/User_story_edit_empty_string_2.png" alt="UI Mockup Edit Questions Empty String"/>
+
+#### **UI mockup**
+<img src="./docs/User_story_edit_empty_string_3.png" alt="UI Mockup Edit Questions Empty String"/>
+
 ```gherkin
 Scenario: User deletes question's description
   Given The questionEditor has been opened
@@ -169,11 +185,16 @@ Scenario: User deletes question's description
   When  I click the saveChangesButton
   Then  A warning should appear on screen
 ```
-
 #### **Value and Effort**
-Value: Must have
+Value: Optional
 
-Effort: L
+Effort: M
+
+#### **Creating a conference**
+As a user, I should be prevented from creating a conference before today, so that I notice that mistake and fix it.
+
+#### **UI mockup**
+<img src="./docs/User_story_conference_date.png" alt="UI Mockup Conference Date"/>
 
 ## Problem Domain
 
@@ -196,6 +217,7 @@ Effort: L
 - Added a page to edit a questions and locally save its changes
 
 **Screenshots:**
+
 ![Question listing page](docs/increment_1_question_list.png)
 ![Focused question page](docs/increment_1_full_page_question.png)
 ![Question editing page](docs/increment_1_edit.png)
