@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
+import 'package:inquirescape/routes/SlideAnimationRoute.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
@@ -157,10 +158,9 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
                     Icons.edit,
                     color: Colors.grey,
                   ),
-                  onPressed: () async {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditQuestionPage(widget.question)))
-                        .then((value) => this.setState(() {}));
-                  }),
+                  onPressed: () => Navigator.push(
+                          context, SlideAnimationRoute(builder: (context) => EditQuestionPage(widget.question)))
+                      .then((_) => this.setState(() {}))),
             ],
           ),
         ],

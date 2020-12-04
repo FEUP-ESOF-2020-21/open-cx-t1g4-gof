@@ -22,30 +22,29 @@ class _InvitationsPageState extends State<InvitationsPage> {
   Widget build(BuildContext context) {
     List<Invitation> invitations = FirebaseController.myInvitations;
 
-    return RefreshIndicator(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Pending Invitations"),
-          centerTitle: true,
-        ),
-        body: (invitations == null || invitations.isEmpty) ? _noInvites(context) : _inviteList(context, invitations),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Pending Invitations"),
+        centerTitle: true,
       ),
-      onRefresh: this._onRefresh,
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: (invitations == null || invitations.isEmpty) ? _noInvites(context) : _inviteList(context, invitations),
+      ),
     );
   }
 
   Future<void> _onRefresh() async {
-    // this.widget._fbController.reloadInvites((arg) {
-    //   setState(() {});
-    // });
+    FirebaseController.reloadInvites((_) => setState(() {}));
   }
 
   Widget _noInvites(BuildContext context) {
-    return Center(
-        child: SuchEmpty(
-      extraText: "No Invites",
-      sizeFactor: 0.5,
-    ));
+    return Stack(
+      children: [
+        Center(child: SuchEmpty(extraText: "No Invites", sizeFactor: 0.5)),
+        ListView(),
+      ],
+    );
   }
 
   Widget _inviteList(BuildContext context, List<Invitation> invitations) {
@@ -155,14 +154,14 @@ class _InvitationsPageState extends State<InvitationsPage> {
                       FlatButton(
                         onPressed: () {
                           FirebaseController.acceptInvite(invite);
-                          super.setState(() {});
+                          setState(() {});
                         },
                         child: Icon(Icons.check, color: Colors.green),
                       ),
                       FlatButton(
                         onPressed: () {
                           FirebaseController.rejectInvite(invite);
-                          super.setState(() {});
+                          setState(() {});
                         },
                         child: Icon(Icons.close, color: Colors.red),
                       )

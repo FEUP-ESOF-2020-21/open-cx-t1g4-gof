@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/dialog/TextInputDialog.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
+import 'package:inquirescape/model/Moderator.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 
@@ -95,16 +97,43 @@ class ConferenceFullPage extends StatelessWidget {
       ),
       persistentFooterButtons: [
         FlatButton(
-            shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(10.0),
-            ),
-            child: Text(
-              "Invite Moderators",
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-            color: MyTheme.theme.primaryColor,
-            onPressed: () => {}),
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+          ),
+          child: Text(
+            "Invite Moderator",
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          color: MyTheme.theme.primaryColor,
+          onPressed: () => _inviteModerator(context),
+        ),
       ],
+    );
+  }
+
+  void _inviteModerator(BuildContext context) async {
+    textInputDialog(
+      context,
+      query: "Invite Moderator",
+      hintText: "eg. moderator@gmail.com",
+      buttonText: "Invite",
+      label: "Email",
+      dismissable: false,
+      action: (String value) async {
+        Moderator recipient = await FirebaseController.getModeratorByMail(value);
+        if (recipient == null) {
+          return [false, "Moderator with email '" + value + "' not found"];
+        }
+
+        if (await FirebaseController.inviteModerator(
+            recipient, FirebaseController.currentConference, FirebaseController.currentMod)) {
+          return [true, "Invite sent to " + recipient.username];
+        }
+        else {
+          return [false, "Failed to send invite to " + recipient.username];
+        }
+      },
+      inputType: TextInputType.emailAddress,
     );
   }
 

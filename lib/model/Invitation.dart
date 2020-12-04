@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/model/Moderator.dart';
 
-class Invitation {
+class Invitation implements Comparable<Invitation> {
   DocumentReference docRef;
 
   Moderator user;
@@ -18,4 +18,9 @@ class Invitation {
 
   @override
   int get hashCode => docRef.hashCode;
+
+  @override
+  int compareTo(Invitation other) {
+    return this.conference.compareTo(other.conference);
+  }
 }
