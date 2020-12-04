@@ -181,7 +181,8 @@ class _AddConferencePageState extends State<AddConferencePage> {
                                   speakerController.text,
                                   start,
                                   tags));
-                              await FirebaseController.addConferenceToModerator(created, FirebaseController.currentMod);
+                              await FirebaseController.addConferenceToModerator(created, FirebaseController.currentMod)
+                                  .then((_) { Navigator.pop(context); Navigator.pop(context); });
                             } on Exception {
                               Navigator.pop(context);
                             }

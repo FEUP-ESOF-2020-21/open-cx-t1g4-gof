@@ -151,8 +151,29 @@ class FirebaseController {
     );
   }
 
-  static Future<bool> inviteModerator(Moderator recipient, Conference conference, Moderator sender) async {
-    // TODO: Check for duplicates and if mod is already in conference
+  static Future<bool> isInvitedTo(Moderator moderator, Conference conference) async {
+    QuerySnapshot snapshot = await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
+    if (snapshot == null || snapshot.docs == null)
+        return false;
+
+    return snapshot.docs.isNotEmpty;
+  }
+
+  static Future<bool> isInConference(Moderator moderator, Conference conference) async {
+    DocumentReference doc = await moderator.docRef.collection("conferences").doc(conference.docRef.id);
+    if (doc == null) return false;
+
+    Map<String, dynamic> data = (await doc.get()).data();
+    return data != null;
+  }
+
+  static Future<bool> inviteModerator(Moderator recipient, Conference conference, Moderator sender, {bool verifiedExistance: false}) async {
+    if (!verifiedExistance) {
+      if (await isInConference(recipient, conference) || await isInvitedTo(recipient, conference)) {
+        return false;
+      }
+    }
+
     DocumentReference ret =
         await recipient.docRef.collection("invites").add({'conference': conference.docRef, 'moderator': sender.docRef});
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/pages/Validators.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 
 class _TextInputDialog extends StatefulWidget {
   final String query, label, hintText, buttonText;
@@ -54,6 +55,7 @@ class _TextInputDialogState extends State<_TextInputDialog> {
         Divider(color: Colors.transparent, height: 20),
         RaisedButton(
           child: Text("Ok"),
+          color: MyTheme.theme.primaryColor,
           onPressed: () {
             Navigator.of(context).pop(_value);
           },
@@ -81,21 +83,32 @@ class _TextInputDialogState extends State<_TextInputDialog> {
           ],
         ),
         Divider(color: Colors.transparent, height: 20),
-        RaisedButton(
-          child: Text(widget.buttonText),
-          onPressed: () {
-            if (_value != null && _value.isNotEmpty && Validators.validateEmail(_value)) {
-              _waitingResponse = true;
-              setState(() {});
-              widget.action(_value).then((l) {
-                _waitingResponse = false;
-                _successStatus = l[0];
-                _successStatusMessage = l[1];
-                setState(() {});
-              });
-            }
-          },
-        ),
+        ButtonBar(
+          alignment: MainAxisAlignment.spaceBetween,
+          children: [
+            OutlineButton(onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            RaisedButton(
+              child: Text(widget.buttonText),
+              color: MyTheme.theme.primaryColor,
+              onPressed: () {
+                if (_value != null && _value.isNotEmpty && Validators.validateEmail(_value)) {
+                  _waitingResponse = true;
+                  setState(() {});
+                  widget.action(_value).then((l) {
+                    _waitingResponse = false;
+                    _successStatus = l[0];
+                    _successStatusMessage = l[1];
+                    print(_successStatus);
+                    print(_successStatusMessage);
+                    setState(() {});
+                  });
+                }
+              },
+            ),
+          ],
+        )
       ],
     );
   }

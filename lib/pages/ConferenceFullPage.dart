@@ -125,8 +125,16 @@ class ConferenceFullPage extends StatelessWidget {
           return [false, "Moderator with email '" + value + "' not found"];
         }
 
+        if (await FirebaseController.isInConference(recipient, FirebaseController.currentConference)) {
+          return [false, "Moderator " + recipient.username + " is already in that conference"];
+        }
+
+        if (await FirebaseController.isInvitedTo(recipient, FirebaseController.currentConference)) {
+          return [false, "Moderator " + recipient.username + " is already invited to that conference"];
+        }
+
         if (await FirebaseController.inviteModerator(
-            recipient, FirebaseController.currentConference, FirebaseController.currentMod)) {
+            recipient, FirebaseController.currentConference, FirebaseController.currentMod, verifiedExistance: true)) {
           return [true, "Invite sent to " + recipient.username];
         }
         else {

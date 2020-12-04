@@ -42,7 +42,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
     return Stack(
       children: [
         Center(child: SuchEmpty(extraText: "No Invites", sizeFactor: 0.5)),
-        ListView(),
+        ListView(physics: const AlwaysScrollableScrollPhysics(),),
       ],
     );
   }
