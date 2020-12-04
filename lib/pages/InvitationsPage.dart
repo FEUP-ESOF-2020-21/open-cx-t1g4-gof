@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Invitation.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 import 'package:inquirescape/widgets/SuchEmpty.dart';
 import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 
@@ -42,7 +43,9 @@ class _InvitationsPageState extends State<InvitationsPage> {
     return Stack(
       children: [
         Center(child: SuchEmpty(extraText: "No Invites", sizeFactor: 0.5)),
-        ListView(physics: const AlwaysScrollableScrollPhysics(),),
+        ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+        ),
       ],
     );
   }
@@ -149,22 +152,21 @@ class _InvitationsPageState extends State<InvitationsPage> {
                       ],
                     ),
                   ),
-                  Row(
+                  ButtonBar(
                     children: [
-                      FlatButton(
+                      OutlineButton(
                         onPressed: () {
-                          FirebaseController.acceptInvite(invite);
-                          setState(() {});
-                        },
-                        child: Icon(Icons.check, color: Colors.green),
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          FirebaseController.rejectInvite(invite);
-                          setState(() {});
+                          FirebaseController.rejectInvite(invite).then((_) => setState(() {}));
                         },
                         child: Icon(Icons.close, color: Colors.red),
-                      )
+                      ),
+                      FlatButton(
+                        color: MyTheme.theme.primaryColor,
+                        onPressed: () {
+                          FirebaseController.acceptInvite(invite).then((_) => setState(() {}));
+                        },
+                        child: Icon(Icons.check),
+                      ),
                     ],
                   ),
                 ]),
