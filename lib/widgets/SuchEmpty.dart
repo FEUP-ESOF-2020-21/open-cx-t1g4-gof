@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 
 class SuchEmpty extends StatelessWidget {
-  String extraText;
-  double mainFontSize, extraFontSize;
-  double sizeFactor;
+  final String extraText;
+  final double mainFontSize, extraFontSize;
+  final double sizeFactor;
 
   SuchEmpty({this.extraText, this.sizeFactor: 1, this.mainFontSize: 18, this.extraFontSize: 28});
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/pages/AboutPage.dart';
 import 'package:inquirescape/pages/AddConferencePage.dart';
 import 'package:inquirescape/pages/ConferenceFullPage.dart';
 import 'package:inquirescape/pages/InvitationsPage.dart';
@@ -7,12 +8,14 @@ import 'package:inquirescape/pages/MyConferencesPage.dart';
 import 'package:inquirescape/pages/PostQuestionPage.dart';
 import 'package:inquirescape/pages/ProfilePage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
+import 'package:inquirescape/pages/SettingsPage.dart';
+import 'package:inquirescape/routes/FadeAnimationRoute.dart';
 import 'package:inquirescape/routes/SlideAnimationRoute.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 
 import 'package:inquirescape/routes.dart';
 
-import 'package:inquirescape/pages/InquireScapeHome.dart';
+import 'package:inquirescape/pages/HomePage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -53,23 +56,27 @@ class _MyAppState extends State<MyApp> {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     switch (settings.name) {
       case routeHome:
-        return SlideAnimationRoute(builder: (_) => InquireScapeHome(key: Key("HomePage")));
+        return FadeAnimationRoute(builder: (_) => HomePage(key: Key("HomePage")));
       case routeCurrentConference:
-        return SlideAnimationRoute(builder: (_) => ConferenceFullPage());
+        return FadeAnimationRoute(builder: (_) => ConferenceFullPage());
       case routeConferenceQuestions:
-        return SlideAnimationRoute(builder: (_) => QuestionListPage());
+        return FadeAnimationRoute(builder: (_) => QuestionListPage());
       case routeAddConference:
-        return SlideAnimationRoute(builder: (_) => AddConferencePage());
+        return FadeAnimationRoute(builder: (_) => AddConferencePage());
       case routeConferences:
-        return SlideAnimationRoute(builder: (_) => MyConferencesPage());
+        return FadeAnimationRoute(builder: (_) => MyConferencesPage());
       case routeInvites:
-        return SlideAnimationRoute(builder: (_) => InvitationsPage());
+        return FadeAnimationRoute(builder: (_) => InvitationsPage());
       case routePostQuestion:
-        return SlideAnimationRoute(builder: (_) => PostQuestionPage());
+        return FadeAnimationRoute(builder: (_) => PostQuestionPage());
       case routeProfile:
         return SlideAnimationRoute(builder: (_) => ProfilePage());
+      case routeSettings:
+        return SlideAnimationRoute(builder: (_) => SettingsPage());
+      case routeAbout:
+        return SlideAnimationRoute(builder: (_) => AboutPage());
       default:
-        return SlideAnimationRoute(
+        return FadeAnimationRoute(
             builder: (_) => Scaffold(
                   body: Center(child: Text('No route defined for ${settings.name}')),
                 ));

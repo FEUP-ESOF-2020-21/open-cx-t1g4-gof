@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
-import 'package:inquirescape/routes/SlideAnimationRoute.dart';
+import 'package:inquirescape/routes/FadeAnimationRoute.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
@@ -113,7 +113,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           Row(
             children: [
               Text(
-                "Author: ",
+                "Author:      ",
                 style: headerStyle,
               ),
               Text(widget.question.authorDisplayName, style: infoStyle),
@@ -122,7 +122,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           Row(
             children: [
               Text(
-                "Platform: ",
+                "Platform:   ",
                 style: headerStyle,
               ),
               Text(widget.question.authorPlatform, style: infoStyle),
@@ -131,7 +131,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           Row(
             children: [
               Text(
-                "Posted: ",
+                "Posted:      ",
                 style: headerStyle,
               ),
               Text(this.parseDateTime(widget.question.postDate), style: infoStyle),
@@ -159,7 +159,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
                     color: Colors.grey,
                   ),
                   onPressed: () => Navigator.push(
-                          context, SlideAnimationRoute(builder: (context) => EditQuestionPage(widget.question)))
+                          context, FadeAnimationRoute(builder: (context) => EditQuestionPage(widget.question)))
                       .then((_) => this.setState(() {}))),
             ],
           ),
@@ -183,11 +183,11 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
   }
 
   String parseDateTime(DateTime d) {
-    return d.day.toString().padLeft(2) +
+    return d.day.toString().padLeft(2, "0") +
         "/" +
-        d.month.toString().padLeft(2) +
+        d.month.toString().padLeft(2, "0") +
         "/" +
-        d.year.toString().padLeft(4) +
+        d.year.toString().padLeft(4, "0") +
         "      " +
         d.hour.toString().padLeft(2, "0") +
         ":" +

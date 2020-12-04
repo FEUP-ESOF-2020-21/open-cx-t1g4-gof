@@ -161,7 +161,7 @@ class FirebaseController {
   }
 
   static Future<bool> isInConference(Moderator moderator, Conference conference) async {
-    DocumentReference doc = await moderator.docRef.collection("conferences").doc(conference.docRef.id);
+    DocumentReference doc = moderator.docRef.collection("conferences").doc(conference.docRef.id);
     if (doc == null) return false;
 
     Map<String, dynamic> data = (await doc.get()).data();

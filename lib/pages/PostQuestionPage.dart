@@ -6,13 +6,12 @@ import 'package:inquirescape/model/Conference.dart';
 import 'package:inquirescape/model/Moderator.dart';
 
 class PostQuestionPage extends StatefulWidget {
-  Moderator _mod;
-  Conference _conference;
+  final Moderator _mod;
+  final Conference _conference;
 
-  PostQuestionPage() {
-    this._mod = FirebaseController.currentMod;
-    this._conference = FirebaseController.currentConference;
-  }
+  PostQuestionPage()
+      : this._mod = FirebaseController.currentMod,
+        this._conference = FirebaseController.currentConference;
 
   @override
   _PostQuestionPage createState() => _PostQuestionPage();
@@ -123,7 +122,8 @@ class _PostQuestionPage extends State<PostQuestionPage> {
           Question question = new Question.withoutRef(
               textController.text, postDate, widget._mod.docRef.id, widget._mod.username, "InquireScape");
 
-          await FirebaseController.addQuestionAndUpdate(widget._conference, question).then((_) => Navigator.pop(context, true));
+          await FirebaseController.addQuestionAndUpdate(widget._conference, question)
+              .then((_) => Navigator.pop(context, true));
         }
       },
       child: Icon(Icons.save),

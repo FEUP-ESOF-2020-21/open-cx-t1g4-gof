@@ -12,14 +12,14 @@ import 'package:inquirescape/widgets/SuchEmpty.dart';
 import 'package:inquirescape/routes.dart';
 import 'package:inquirescape/pages/LoginPage.dart';
 
-class InquireScapeHome extends StatefulWidget {
-  InquireScapeHome({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
 
   @override
-  _InquireScapeHomeState createState() => _InquireScapeHomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _InquireScapeHomeState extends State<InquireScapeHome> implements FirebaseListener {
+class _HomePageState extends State<HomePage> implements FirebaseListener {
   @override
   void initState() {
     super.initState();
@@ -306,8 +306,8 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
 }
 
 class _HomeCard extends StatelessWidget {
-  Widget child;
-  void Function() onTap;
+  final Widget child;
+  final void Function() onTap;
 
   _HomeCard({@required this.child, this.onTap});
 
@@ -332,10 +332,10 @@ class _HomeCard extends StatelessWidget {
 }
 
 class _HomeButton extends StatelessWidget {
-  void Function() onTap;
-  IconData icon;
-  String text;
-  double fontSize;
+  final void Function() onTap;
+  final IconData icon;
+  final String text;
+  final double fontSize;
 
   _HomeButton({@required this.icon, @required this.text, @required this.onTap, this.fontSize = 16});
 
