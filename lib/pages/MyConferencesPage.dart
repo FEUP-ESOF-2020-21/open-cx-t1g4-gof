@@ -21,23 +21,17 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: this._onRefresh,
-          child: conferences == null ? _noConferences(context) : _conferenceList(context, conferences),
-        ),
+        child: (conferences == null || conferences.isEmpty)
+            ? _noConferences(context)
+            : _conferenceList(context, conferences),
       ),
     );
-  }
-
-  Future<void> _onRefresh() async {
-    this.setState(() {});
-    print("I feel rather refreshed");
   }
 
   Widget _noConferences(BuildContext context) {
     return Center(
         child: SuchEmpty(
-      extraText: "No Questions",
+      extraText: "No Conferences",
       sizeFactor: 0.5,
     ));
   }

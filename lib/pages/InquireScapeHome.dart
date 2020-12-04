@@ -9,8 +9,8 @@ import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
 import 'package:inquirescape/widgets/QuestionCard.dart';
 import 'package:inquirescape/widgets/SuchEmpty.dart';
 
-import '../routes.dart';
-import 'LoginPage.dart';
+import 'package:inquirescape/routes.dart';
+import 'package:inquirescape/pages/LoginPage.dart';
 
 class InquireScapeHome extends StatefulWidget {
   InquireScapeHome({Key key}) : super(key: key);
@@ -52,22 +52,22 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
     return FirebaseController.isLoggedIn() ? _homePage(context) : LoginPage();
   }
 
-  Widget _loadingScreen(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-          Divider(
-            color: Colors.transparent,
-            height: 30,
-          ),
-          Text("Loading data"),
-        ],
-      ),
-    );
-  }
+  // Widget _loadingScreen(BuildContext context) {
+  //   return Center(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         CircularProgressIndicator(),
+  //         Divider(
+  //           color: Colors.transparent,
+  //           height: 30,
+  //         ),
+  //         Text("Loading data"),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _homePage(BuildContext context) {
     return (FirebaseController.currentConference == null || FirebaseController.conferenceQuestions == null)

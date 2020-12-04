@@ -71,17 +71,21 @@ class QuestionListPageState extends State<QuestionListPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: (questions == null || questions.isEmpty) ? _noQuestions(context) : _questionList(context, questions),
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: (questions == null || questions.isEmpty) ? _noQuestions(context) : _questionList(context, questions),
+        ),
       ),
     );
   }
 
   Widget _noQuestions(BuildContext context) {
-    return Center(
-        child: SuchEmpty(
-      extraText: "No Questions",
-      sizeFactor: 0.5,
-    ));
+    return Stack(
+      children: [
+        Center(child: SuchEmpty(extraText: "No Questions", sizeFactor: 0.5)),
+        ListView(physics: const AlwaysScrollableScrollPhysics(),),
+      ],
+    );
   }
 
   Future<void> _onRefresh() async {

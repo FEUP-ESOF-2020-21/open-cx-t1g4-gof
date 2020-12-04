@@ -50,6 +50,8 @@ class FirebaseController {
       'topics': conference.topics
     });
     listeners.forEach((FirebaseListener listener) => listener.onDataChanged());
+    _myConferences.add(conference);
+    _myConferences.sort();
     return conference;
   }
 
@@ -132,9 +134,11 @@ class FirebaseController {
   }
 
   static Future<Conference> getConference(String conferenceId) async {
-    DocumentReference conferenceDocRef = firebase.collection("conferences").doc(conferenceId);
-    Map<String, dynamic> data = (await conferenceDocRef.get()).data();
+    return await getConferenceFromDoc(firebase.collection("conferences").doc(conferenceId));
+  }
 
+  static Future<Conference> getConferenceFromDoc(DocumentReference doc) async {
+    Map<String, dynamic> data = (await doc.get()).data();
     if (data == null) return null;
 
     return Conference(
@@ -143,20 +147,49 @@ class FirebaseController {
       data["speaker"],
       DateTime.fromMicrosecondsSinceEpoch(data["startDate"].microsecondsSinceEpoch),
       (data["topics"] as List)?.map((item) => item as String)?.toList(),
-      conferenceDocRef,
+      doc,
     );
+  }
+
+  static Future<bool> isInvitedTo(Moderator moderator, Conference conference) async {
+    QuerySnapshot snapshot = await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
+    if (snapshot == null || snapshot.docs == null)
+        return false;
+
+    return snapshot.docs.isNotEmpty;
+  }
+
+  static Future<bool> isInConference(Moderator moderator, Conference conference) async {
+    DocumentReference doc = await moderator.docRef.collection("conferences").doc(conference.docRef.id);
+    if (doc == null) return false;
+
+    Map<String, dynamic> data = (await doc.get()).data();
+    return data != null;
+  }
+
+  static Future<bool> inviteModerator(Moderator recipient, Conference conference, Moderator sender, {bool verifiedExistance: false}) async {
+    if (!verifiedExistance) {
+      if (await isInConference(recipient, conference) || await isInvitedTo(recipient, conference)) {
+        return false;
+      }
+    }
+
+    DocumentReference ret =
+        await recipient.docRef.collection("invites").add({'conference': conference.docRef, 'moderator': sender.docRef});
+
+    return ret != null;
   }
 
   static Future<List<Invitation>> getInvitations() async {
     List<Invitation> invites = [];
     QuerySnapshot snapshot = await _currentMod.docRef.collection("invites").get();
 
-    snapshot.docs.forEach((result) async {
+    await Future.forEach(snapshot.docs, (result) async {
       Map<String, dynamic> data = result.data();
       if (data == null) return null;
 
-      Moderator mod = await getModerator(data["userID"]);
-      Conference conf = await getConference(data["conferenceID"]);
+      Moderator mod = await getModeratorFromDoc(data["moderator"]);
+      Conference conf = await getConferenceFromDoc(data["conference"]);
 
       Invitation i = new Invitation(
         mod,
@@ -166,31 +199,50 @@ class FirebaseController {
       invites.add(i);
     });
 
+    invites.sort();
     return invites;
   }
 
   static Future<void> acceptInvite(Invitation invite) async {
-    invite.docRef.delete();
+    await invite.docRef.delete();
     addConferenceToModerator(invite.conference, _currentMod);
+    _myInvitations.remove(invite);
+    _myConferences.add(invite.conference);
+    _myConferences.sort();
   }
 
   static Future<void> rejectInvite(Invitation invite) async {
-    invite.docRef.delete();
+    await invite.docRef.delete();
+    _myInvitations.remove(invite);
+  }
+
+  static Future<Moderator> getModeratorByMail(String email) async {
+    email.trim();
+    QuerySnapshot snapshot = await firebase.collection('moderators').where('email', isEqualTo: email).limit(1).get();
+
+    if (snapshot.docs.isEmpty) return null;
+
+    Map<String, dynamic> data = snapshot.docs[0].data();
+    if (data == null) return null;
+    return Moderator(data["username"], data["email"], snapshot.docs[0].reference);
   }
 
   static Future<Moderator> getModerator(String uid) async {
-    DocumentReference modDocRef = firebase.collection("moderators").doc(uid);
-    Map<String, dynamic> data = (await modDocRef.get()).data();
+    return await getModeratorFromDoc(firebase.collection("moderators").doc(uid));
+  }
+
+  static Future<Moderator> getModeratorFromDoc(DocumentReference doc) async {
+    Map<String, dynamic> data = (await doc.get()).data();
 
     if (data == null) return null;
-    return Moderator(data["username"], data["email"], modDocRef);
+    return Moderator(data["username"], data["email"], doc);
   }
 
   static Future<List<Conference>> getModeratorConferences(Moderator moderator) async {
     QuerySnapshot snapshot = await moderator.docRef.collection("conferences").get();
     List<Conference> result = [];
 
-    snapshot.docs.forEach((doc) async => result.add(await getConference(doc.id)));
+    await Future.forEach(snapshot.docs, (doc) async => result.add(await getConference(doc.id)));
     result?.sort();
 
     return result;
@@ -231,6 +283,11 @@ class FirebaseController {
   static Future<void> logout() async {
     await FBAuthenticator.signOut();
     _currentMod = null;
+    _conferenceQuestions = null;
+    _myInvitations = null;
+    _conferenceIndex = null;
+    _conferenceQuestionsLoadedIndex = null;
+    _myConferences = null;
     listeners.forEach((FirebaseListener listener) => listener.onLogout());
   }
 
@@ -274,24 +331,26 @@ class FirebaseController {
 
   static Future<bool> updateLoginInfo() async {
     User moderator = FBAuthenticator.getCurrentUser();
+
     if (moderator == null) {
       _currentMod = null;
       return false;
     }
     if (_currentMod == null || moderator.uid != _currentMod.docRef.id) {
       _currentMod = await getModerator(moderator.uid);
-      _conferenceIndex = null;
-      getModeratorConferences(_currentMod).then((res) {
-        _myConferences = res;
-      });
     }
 
-    // if (_currentMod == null) {
-    //   await FBAuthenticator.signOut();
-    //   listeners.forEach((FirebaseListener listener) => listener.onLogout());
-    //   return false;
-    // }
-    // listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
+    _conferenceIndex = null;
+    getModeratorConferences(_currentMod).then((res) {
+      _myConferences = res;
+    });
+
+    if (_currentMod == null) {
+      await logout();
+      return false;
+    }
+
+    listeners.forEach((FirebaseListener listener) => listener.onLoginSuccess());
     return true;
   }
 
@@ -301,6 +360,7 @@ class FirebaseController {
 
   static Future<void> forceReloadInvitations(void Function(List<Invitation>) onReload) async {
     _myInvitations = await getInvitations();
+    if (_myInvitations != null) print(_myInvitations.length);
     onReload(_myInvitations);
   }
 }
