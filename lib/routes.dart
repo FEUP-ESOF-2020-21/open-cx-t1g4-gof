@@ -5,3 +5,4 @@ const String routeAddConference = '/conference/create';
 const String routeConferences = '/conference/myConferences';
 const String routeInvites = '/invites';
 const String routePostQuestion = '/conference/postQuestion';
+const String routeProfile = '/profile';

@@ -5,6 +5,7 @@ import 'package:inquirescape/pages/ConferenceFullPage.dart';
 import 'package:inquirescape/pages/InvitationsPage.dart';
 import 'package:inquirescape/pages/MyConferencesPage.dart';
 import 'package:inquirescape/pages/PostQuestionPage.dart';
+import 'package:inquirescape/pages/ProfilePage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
 import 'package:inquirescape/routes/SlideAnimationRoute.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
@@ -65,6 +66,8 @@ class _MyAppState extends State<MyApp> {
         return SlideAnimationRoute(builder: (_) => InvitationsPage());
       case routePostQuestion:
         return SlideAnimationRoute(builder: (_) => PostQuestionPage());
+      case routeProfile:
+        return SlideAnimationRoute(builder: (_) => ProfilePage());
       default:
         return SlideAnimationRoute(
             builder: (_) => Scaffold(

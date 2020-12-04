@@ -38,7 +38,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
 
   Widget _conferenceList(BuildContext context, List<Conference> conferences) {
     return ListView.builder(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(5),
       itemCount: conferences.length,
       itemBuilder: (BuildContext context, int index) => ConferenceCard(
         conference: conferences[index],

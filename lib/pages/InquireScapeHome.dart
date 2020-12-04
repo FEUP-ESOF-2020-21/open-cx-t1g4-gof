@@ -70,9 +70,12 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
   // }
 
   Widget _homePage(BuildContext context) {
-    return (FirebaseController.currentConference == null || FirebaseController.conferenceQuestions == null)
-        ? _homePageWithoutConference(context)
-        : _homePageWithConference(context);
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: (FirebaseController.currentConference == null || FirebaseController.conferenceQuestions == null)
+          ? _homePageWithoutConference(context)
+          : _homePageWithConference(context),
+    );
   }
 
   Widget _homePageWithoutConference(BuildContext context) {
@@ -236,7 +239,9 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
       icon: Icons.library_books_rounded,
       text: "Post",
       fontSize: 14,
-      onTap: () => Navigator.pushNamed(context, routePostQuestion).then((updated) {if (updated != null && updated) this.setState(() {});}),
+      onTap: () => Navigator.pushNamed(context, routePostQuestion).then((updated) {
+        if (updated != null && updated) this.setState(() {});
+      }),
     );
   }
 

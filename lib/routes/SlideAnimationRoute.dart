@@ -14,17 +14,21 @@ class SlideAnimationRoute<T> extends MaterialPageRoute<T> {
         );
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 250);
+  Duration get transitionDuration => const Duration(milliseconds: 350);
 
   @override
   Widget buildTransitions(
       BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0.0, 1.0),
-        end: Offset.zero,
-      ).animate(animation),
-      child: child, // child is th// e value returned by pageBuilder
-    );
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+    // return SlideTransition(
+    //   position: Tween<Offset>(
+    //     begin: const Offset(0.0, 1.0),
+    //     end: Offset.zero,
+    //   ).animate(animation),
+    //   child: child, // child is th// e value returned by pageBuilder
+    // );
   }
 }

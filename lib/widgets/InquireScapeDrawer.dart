@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:inquirescape/config.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Moderator.dart';
+import 'package:inquirescape/routes.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
 
 // ---------------
@@ -130,7 +131,10 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
                     ],
                   ),
                 ),
-                _DrawerEntry(Icons.account_circle_rounded, "Profile", () => {}),
+                _DrawerEntry(Icons.account_circle_rounded, "Profile", () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, routeProfile);
+                }),
                 _DrawerEntry(Icons.logout, "Log Out", () {
                   Navigator.pop(context);
                   FirebaseController.logout();
