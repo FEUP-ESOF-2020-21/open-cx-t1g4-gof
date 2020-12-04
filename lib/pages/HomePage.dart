@@ -306,8 +306,8 @@ class _HomePageState extends State<HomePage> implements FirebaseListener {
 }
 
 class _HomeCard extends StatelessWidget {
-  Widget child;
-  void Function() onTap;
+  final Widget child;
+  final void Function() onTap;
 
   _HomeCard({@required this.child, this.onTap});
 
@@ -332,10 +332,10 @@ class _HomeCard extends StatelessWidget {
 }
 
 class _HomeButton extends StatelessWidget {
-  void Function() onTap;
-  IconData icon;
-  String text;
-  double fontSize;
+  final void Function() onTap;
+  final IconData icon;
+  final String text;
+  final double fontSize;
 
   _HomeButton({@required this.icon, @required this.text, @required this.onTap, this.fontSize = 16});
 
