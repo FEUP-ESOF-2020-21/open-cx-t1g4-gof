@@ -236,7 +236,7 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
       icon: Icons.library_books_rounded,
       text: "Post",
       fontSize: 14,
-      onTap: () => Navigator.pushNamed(context, routePostQuestion),
+      onTap: () => Navigator.pushNamed(context, routePostQuestion).then((updated) {if (updated != null && updated) this.setState(() {});}),
     );
   }
 

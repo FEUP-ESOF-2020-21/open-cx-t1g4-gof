@@ -58,6 +58,7 @@ class FirebaseController {
   static Future<Question> addQuestionAndUpdate(Conference conference, Question question) async {
     Question q = await addQuestion(conference, question);
     conferenceQuestions.add(q);
+    conferenceQuestions.sort();
     return q;
   }
 

@@ -123,7 +123,7 @@ class _PostQuestionPage extends State<PostQuestionPage> {
           Question question = new Question.withoutRef(
               textController.text, postDate, widget._mod.docRef.id, widget._mod.username, "InquireScape");
 
-          await FirebaseController.addQuestionAndUpdate(widget._conference, question);
+          await FirebaseController.addQuestionAndUpdate(widget._conference, question).then((_) => Navigator.pop(context, true));
         }
       },
       child: Icon(Icons.save),
