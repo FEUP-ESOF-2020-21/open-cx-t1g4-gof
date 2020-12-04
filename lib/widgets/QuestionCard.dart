@@ -113,7 +113,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           Row(
             children: [
               Text(
-                "Author: ",
+                "Author:      ",
                 style: headerStyle,
               ),
               Text(widget.question.authorDisplayName, style: infoStyle),
@@ -122,7 +122,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           Row(
             children: [
               Text(
-                "Platform: ",
+                "Platform:   ",
                 style: headerStyle,
               ),
               Text(widget.question.authorPlatform, style: infoStyle),
@@ -131,7 +131,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           Row(
             children: [
               Text(
-                "Posted: ",
+                "Posted:      ",
                 style: headerStyle,
               ),
               Text(this.parseDateTime(widget.question.postDate), style: infoStyle),
@@ -183,11 +183,11 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
   }
 
   String parseDateTime(DateTime d) {
-    return d.day.toString().padLeft(2) +
+    return d.day.toString().padLeft(2, "0") +
         "/" +
-        d.month.toString().padLeft(2) +
+        d.month.toString().padLeft(2, "0") +
         "/" +
-        d.year.toString().padLeft(4) +
+        d.year.toString().padLeft(4, "0") +
         "      " +
         d.hour.toString().padLeft(2, "0") +
         ":" +
