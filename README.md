@@ -245,6 +245,21 @@ As a user, I should be prevented from creating a conference before today, so tha
 ![My Conferences Page](docs/increment_2_conferences_page.png)
 ![Add Conference Page](docs/increment_2_add_conference_page.png)
 
+
+## Project Iteration 3
+**Changelog:**
+- Added sorting by Date, Rating, Author, Platform to QuestionsListPage
+- Added ascending and descending sorting of questions
+- Added new page for managing user invites to new events
+- Added home page and improved UX by changing the navigation focus away from the drawer and into the more intuitive home screen
+- Added firebase support for event invitations
+- Implemented a new gherkin test for user login scenario
+- Added light theme and dark theme
+- Fixed bugs regarding widget states after data changes
+
+
+**Screenshots:**
+
 ---
 
 # Test
