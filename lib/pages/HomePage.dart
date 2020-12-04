@@ -12,14 +12,14 @@ import 'package:inquirescape/widgets/SuchEmpty.dart';
 import 'package:inquirescape/routes.dart';
 import 'package:inquirescape/pages/LoginPage.dart';
 
-class InquireScapeHome extends StatefulWidget {
-  InquireScapeHome({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
 
   @override
-  _InquireScapeHomeState createState() => _InquireScapeHomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _InquireScapeHomeState extends State<InquireScapeHome> implements FirebaseListener {
+class _HomePageState extends State<HomePage> implements FirebaseListener {
   @override
   void initState() {
     super.initState();

@@ -146,7 +146,14 @@ class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
           Column(
             children: [
               _toggleTheme(),
-              _DrawerEntry(Icons.settings, "Settings", () {}),
+              _DrawerEntry(Icons.settings, "Settings", () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, routeSettings);
+              }),
+              _DrawerEntry(Icons.help_outline, "About", () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, routeAbout);
+              }),
             ],
           ),
         ],
