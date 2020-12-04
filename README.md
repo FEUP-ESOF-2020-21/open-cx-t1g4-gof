@@ -260,6 +260,12 @@ As a user, I should be prevented from creating a conference before today, so tha
 
 **Screenshots:**
 
+![Home Page](docs/increment_3_homepage.png)
+![Light Theme](docs/increment_3_light_theme.png)
+![Drawer](docs/increment_3_drawer.png)
+![Invites Page](docs/increment_3_invitesPage.png)
+![Sorted Questions](docs/increment_3_sort_questions.png)
+
 ---
 
 # Test
