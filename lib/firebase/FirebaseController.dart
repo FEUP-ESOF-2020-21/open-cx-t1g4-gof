@@ -361,7 +361,6 @@ class FirebaseController {
 
   static Future<void> forceReloadInvitations(void Function(List<Invitation>) onReload) async {
     _myInvitations = await getInvitations();
-    if (_myInvitations != null) print(_myInvitations.length);
     onReload(_myInvitations);
   }
 }

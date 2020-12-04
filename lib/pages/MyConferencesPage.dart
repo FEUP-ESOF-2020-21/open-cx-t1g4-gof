@@ -17,7 +17,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Conferences"),
+        title: Text("My Talks"),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -31,7 +31,7 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
   Widget _noConferences(BuildContext context) {
     return Center(
         child: SuchEmpty(
-      extraText: "No Conferences",
+      extraText: "No Talks",
       sizeFactor: 0.5,
     ));
   }

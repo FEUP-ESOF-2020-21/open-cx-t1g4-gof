@@ -21,7 +21,7 @@ class ConferenceFullPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Current Conference"),
+        title: Text("Current Talk"),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -126,11 +126,11 @@ class ConferenceFullPage extends StatelessWidget {
         }
 
         if (await FirebaseController.isInConference(recipient, FirebaseController.currentConference)) {
-          return [false, "Moderator " + recipient.username + " is already in that conference"];
+          return [false, "Moderator " + recipient.username + " is already in that talk"];
         }
 
         if (await FirebaseController.isInvitedTo(recipient, FirebaseController.currentConference)) {
-          return [false, "Moderator " + recipient.username + " is already invited to that conference"];
+          return [false, "Moderator " + recipient.username + " is already invited to that talk"];
         }
 
         if (await FirebaseController.inviteModerator(

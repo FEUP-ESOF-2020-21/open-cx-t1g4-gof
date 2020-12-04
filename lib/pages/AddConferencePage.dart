@@ -26,7 +26,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("New Conference"),
+        title: Text("New Talk"),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -45,7 +45,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
                           controller: titleController,
                           autofocus: false,
                           decoration: InputDecoration(
-                            hintText: 'Conference Name',
+                            hintText: 'Title',
                             border: const OutlineInputBorder(),
                           ),
                         ),
@@ -167,7 +167,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       CircularProgressIndicator(),
-                                      Text("Creating conference..."),
+                                      Text("Creating talk..."),
                                     ],
                                   ),
                                 ),

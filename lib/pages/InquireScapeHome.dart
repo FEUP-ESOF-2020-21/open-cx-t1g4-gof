@@ -261,7 +261,7 @@ class _InquireScapeHomeState extends State<InquireScapeHome> implements Firebase
   Widget _conferencesButton() {
     return _HomeButton(
       icon: Icons.format_list_bulleted,
-      text: "Conferences",
+      text: "Talks",
       fontSize: 20,
       onTap: () => Navigator.pushNamed(context, routeConferences).then((_) => this.setState(() {})),
     );
