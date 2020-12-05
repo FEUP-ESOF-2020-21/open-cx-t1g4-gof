@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:inquirescape/config.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
-import 'package:inquirescape/firebase/FirebaseListener.dart';
 import 'package:inquirescape/model/Moderator.dart';
+import 'package:inquirescape/routes.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 
 // ---------------
 //     ENTRY
@@ -19,10 +22,7 @@ class _DrawerEntry extends StatelessWidget {
       leading: Icon(this.icon),
       title: Text(
         this.text,
-        style: TextStyle(
-          fontSize: 22,
-          color: Colors.black54,
-        ),
+        style: MyTheme.theme.textTheme.headline1,
       ),
       onTap: this.onTap,
     );
@@ -33,185 +33,147 @@ class _DrawerEntry extends StatelessWidget {
 //     DRAWER
 // ---------------
 class InquireScapeDrawer extends StatefulWidget {
-  final FirebaseController _fbController;
-
-  InquireScapeDrawer(this._fbController);
-
   @override
   _InquireScapeDrawerState createState() => _InquireScapeDrawerState();
 }
 
-class _InquireScapeDrawerState extends State<InquireScapeDrawer> implements FirebaseListener {
-  static bool _expanded = false;
-
-  bool loggedIn = false;
+class _InquireScapeDrawerState extends State<InquireScapeDrawer> {
   Moderator mod;
 
   @override
   void initState() {
     super.initState();
 
-    this.widget._fbController.subscribeListener(this);
-
-    this.updateState();
-  }
-
-  Future<void> updateState() async {
-    return await this.widget._fbController.isLoggedIn().then((bool value) {
-      setState(() {
-        this.loggedIn = value;
-        this.mod = this.widget._fbController.currentMod;
-      });
+    currentTheme.addListener(() {
+      if (mounted) setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return this.loggedIn ? this.buildLoggedIn(context) : this.buildLoggedOff(context);
-  }
-
-  Widget buildLoggedOff(BuildContext context) {
+    mod = FirebaseController.currentMod;
     return Drawer(
-      key: Key("drawerLogOff"),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
+      key: Key("inquireScapeDrawer"),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            flex: 1,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(
-                  'InquireScape',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: MyTheme.theme.primaryColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 1,
+                        child: Text(
+                          'InquireScape',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Logged in as',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  this.mod.username,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                  ),
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 2,
+                                ),
+                                Text(
+                                  this.mod.email,
+                                  style: TextStyle(
+                                    color: Colors.grey[200],
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ],
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: FittedBox(
+                                fit: BoxFit.cover,
+                                child: Image(image: AssetImage('assets/InquireScapeLogo.png')),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Text(
-                  'Logged Off',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
+                _DrawerEntry(Icons.account_circle_rounded, "Profile", () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, routeProfile);
+                }),
+                _DrawerEntry(Icons.logout, "Log Out", () {
+                  Navigator.pop(context);
+                  FirebaseController.logout();
+                }),
+                // Switch(value: MyAppState.light, onChanged: widget._appState.toggleTheme),
               ],
             ),
           ),
-          _DrawerEntry(Icons.login, "Log In", () => Navigator.pushReplacementNamed(context, "/login")),
-        ],
-      ),
-    );
-  }
-
-  Widget buildLoggedIn(BuildContext context) {
-    return Drawer(
-      key: Key("drawerLogIn"),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'InquireScape',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Logged in as',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      this.mod.username,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      overflow: TextOverflow.clip,
-                      maxLines: 2,
-                    ),
-                    Text(
-                      this.mod.email,
-                      style: TextStyle(
-                        color: Colors.grey[200],
-                        fontSize: 14,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          _DrawerEntry(Icons.home, "Home", () => Navigator.pushReplacementNamed(context, "/")),
-          ExpansionTile(
-            initiallyExpanded: _InquireScapeDrawerState._expanded,
-            onExpansionChanged: (value) => _InquireScapeDrawerState._expanded = value,
-            title: _DrawerEntry(Icons.mic, "Conference", null),
+          Column(
             children: [
-              _DrawerEntry(Icons.subdirectory_arrow_right_rounded, "Current", () => Navigator.pushReplacementNamed(context, "/conference")),
-              _DrawerEntry(Icons.hourglass_empty_rounded, "Questions", () => Navigator.pushReplacementNamed(context, "/conference/questions")),
-              _DrawerEntry(Icons.note, "Post Question", () => Navigator.pushReplacementNamed(context, "/conference/postQuestion")),
-              _DrawerEntry(Icons.format_list_bulleted, "My Conferences", () => Navigator.pushReplacementNamed(context, "/conference/myConferences")),
-              _DrawerEntry(Icons.insert_invitation, "Invites", () => Navigator.pushReplacementNamed(context, "/conference/invites")),
-              _DrawerEntry(Icons.add_box_outlined, "Create New", () => Navigator.pushReplacementNamed(context, "/conference/create")),
+              _toggleTheme(),
+              _DrawerEntry(Icons.settings, "Settings", () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, routeSettings);
+              }),
+              _DrawerEntry(Icons.help_outline, "About", () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, routeAbout);
+              }),
             ],
           ),
-          _DrawerEntry(Icons.account_circle_rounded, "Profile", () => Navigator.pushReplacementNamed(context, "/profile")),
-          _DrawerEntry(Icons.logout, "Log Out", () => this.widget._fbController.logout()),
         ],
       ),
     );
   }
 
-  @override
-  void onLoginIncorrect() {}
-
-  @override
-  void onLoginSuccess() {
-    if (mounted)
-      setState(() {
-        this.loggedIn = true;
-        this.mod = this.widget._fbController.currentMod;
-      });
-  }
-
-  @override
-  void onRegisterDuplicate() {}
-
-  @override
-  void onRegisterSuccess() {}
-
-  @override
-  void onDataChanged() {}
-
-  @override
-  void onLogout() {
-    if (mounted) {
-      setState(() {
-        this.loggedIn = false;
-        this.mod = this.widget._fbController.currentMod;
-      });
-      Navigator.pushReplacementNamed(context, "/");
-    }
+  Widget _toggleTheme() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(MyTheme.isDark ? "Dark Theme" : "Light Theme"),
+          Switch(
+            value: MyTheme.isLight,
+            onChanged: currentTheme.switchTheme,
+          ),
+        ],
+      ),
+    );
   }
 }

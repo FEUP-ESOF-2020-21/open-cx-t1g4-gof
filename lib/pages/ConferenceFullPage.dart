@@ -1,102 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:inquirescape/dialog/TextInputDialog.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/widgets/TagDisplayer.dart';
+import 'package:inquirescape/model/Moderator.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
+import 'package:inquirescape/widgets/tags/TagDisplayer.dart';
 
 class ConferenceFullPage extends StatelessWidget {
-  final FirebaseController _fbController;
-  final Widget _drawer;
-
-  ConferenceFullPage(this._fbController, this._drawer);
-
-  // final Conference conference = Conference.withoutRef(
-  //     "Introdução a Flutter",
-  //     "Uma breve introdução a uma simples ferramente para criar mobile apps e com uma documentação sem paralelo",
-  //     "Ademar Aguiar",
-  //     DateTime(2020, 11, 24, 11, 30),
-  //     ["Flutter", "Widgets", "Firebase"]);
-
   @override
   Widget build(BuildContext context) {
-    TextStyle headerStyle = const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-    TextStyle infoStyle = const TextStyle(fontSize: 20);
-    Conference conference = this._fbController.currentConference;
+    const TextStyle headerStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+    const TextStyle infoStyle = TextStyle(fontSize: 20);
 
-    if (conference == null) {
-      return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Current Conference"),
-            centerTitle: true,
-          ),
-          drawer: this._drawer,
-          body: Center(
-            child: Text(
-              "No conference selected\nSelect conference in 'My Conferences' tab",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
+    Conference conference = FirebaseController.currentConference;
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Current Conference"),
-          centerTitle: true,
-        ),
-        drawer: this._drawer,
-        body: Container(
+    const Divider headerInfoDivider = Divider(
+      color: Colors.transparent,
+      height: 5,
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Current Talk"),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Container(
           padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8, bottom: 8),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   "Title",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                headerInfoDivider,
                 Text(
                   conference.title,
                   style: infoStyle,
                   maxLines: null,
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Speaker",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                headerInfoDivider,
                 Text(
                   conference.speaker,
                   style: infoStyle,
                   maxLines: null,
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Date & Time",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                headerInfoDivider,
                 Text(
                   this.fromDateTime(conference.startDate),
                   style: infoStyle,
                   maxLines: null,
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Topics",
                   style: headerStyle,
                   maxLines: null,
@@ -108,35 +79,69 @@ class ConferenceFullPage extends StatelessWidget {
                     tagSize: 18,
                   ),
                 ),
-                Divider(
-                  color: Colors.transparent,
-                ),
-                Text(
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Description",
                   style: headerStyle,
                   maxLines: null,
                 ),
+                const Divider(color: Colors.transparent, height: 5),
                 Text(
-                  conference.description,
+                  conference.description == "" ? "(no description added)" : conference.description,
                   style: infoStyle,
                 ),
               ],
             ),
           ),
         ),
-        persistentFooterButtons: [
-          FlatButton(
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(10.0),
-              ),
-              child: Text(
-                "Invite Moderators",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              color: Colors.blue,
-              onPressed: () => {}),
-        ],
       ),
+      persistentFooterButtons: [
+        FlatButton(
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+          ),
+          child: Text(
+            "Invite Moderator",
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          color: MyTheme.theme.primaryColor,
+          onPressed: () => _inviteModerator(context),
+        ),
+      ],
+    );
+  }
+
+  void _inviteModerator(BuildContext context) async {
+    textInputDialog(
+      context,
+      query: "Invite Moderator",
+      hintText: "eg. moderator@gmail.com",
+      buttonText: "Invite",
+      label: "Email",
+      dismissable: false,
+      action: (String value) async {
+        Moderator recipient = await FirebaseController.getModeratorByMail(value);
+        if (recipient == null) {
+          return [false, "Moderator with email '" + value + "' not found"];
+        }
+
+        if (await FirebaseController.isInConference(recipient, FirebaseController.currentConference)) {
+          return [false, "Moderator " + recipient.username + " is already in that talk"];
+        }
+
+        if (await FirebaseController.isInvitedTo(recipient, FirebaseController.currentConference)) {
+          return [false, "Moderator " + recipient.username + " is already invited to that talk"];
+        }
+
+        if (await FirebaseController.inviteModerator(
+            recipient, FirebaseController.currentConference, FirebaseController.currentMod, verifiedExistance: true)) {
+          return [true, "Invite sent to " + recipient.username];
+        }
+        else {
+          return [false, "Failed to send invite to " + recipient.username];
+        }
+      },
+      inputType: TextInputType.emailAddress,
     );
   }
 

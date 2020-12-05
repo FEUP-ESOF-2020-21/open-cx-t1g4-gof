@@ -6,18 +6,26 @@ class Validators {
       r"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
   static const String _regexPassword = r"^(?=.*\d)(?=.*[\w])(?=.{1,}[^\d]).{6,20}$";
 
+  static bool validateUsername(String value) {
+    return RegExp(_regexUsername).hasMatch(value);
+  }
+
   static FormFieldValidator<String> usernameValidator() {
     return (String value) {
-      if (RegExp(_regexUsername).hasMatch(value)) {
+      if (validateUsername(value)) {
         return null;
       }
       return "Username must contain at least one letter and be between 3 and 28 characters";
     };
   }
 
+  static bool validateEmail(String value) {
+    return RegExp(_regexEmail).hasMatch(value);
+  }
+
   static FormFieldValidator<String> emailValidator() {
     return (String value) {
-      if (RegExp(_regexEmail).hasMatch(value)) {
+      if (validateEmail(value)) {
         return null;
       }
       return "Invalid email";

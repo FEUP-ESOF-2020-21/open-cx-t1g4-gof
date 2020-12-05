@@ -162,6 +162,22 @@ Scenario: Edit a question
   Then  A questionEditor should appear on screen
 ```
 
+#### **Value and Effort**
+Value: Must have
+
+Effort: L
+
+As a moderator, I should get an error message if I edit a question into an empty string, so that every question has information in it.
+
+#### **UI mockup**
+<img src="./docs/User_story_edit_empty_string_1.png" alt="UI Mockup Edit Questions Empty String"/>
+
+#### **UI mockup**
+<img src="./docs/User_story_edit_empty_string_2.png" alt="UI Mockup Edit Questions Empty String"/>
+
+#### **UI mockup**
+<img src="./docs/User_story_edit_empty_string_3.png" alt="UI Mockup Edit Questions Empty String"/>
+
 ```gherkin
 Scenario: User deletes question's description
   Given The questionEditor has been opened
@@ -169,11 +185,16 @@ Scenario: User deletes question's description
   When  I click the saveChangesButton
   Then  A warning should appear on screen
 ```
-
 #### **Value and Effort**
-Value: Must have
+Value: Optional
 
-Effort: L
+Effort: M
+
+#### **Creating a conference**
+As a user, I should be prevented from creating a conference before today, so that I notice that mistake and fix it.
+
+#### **UI mockup**
+<img src="./docs/User_story_conference_date.png" alt="UI Mockup Conference Date"/>
 
 ## Problem Domain
 
@@ -196,6 +217,7 @@ Effort: L
 - Added a page to edit a questions and locally save its changes
 
 **Screenshots:**
+
 ![Question listing page](docs/increment_1_question_list.png)
 ![Focused question page](docs/increment_1_full_page_question.png)
 ![Question editing page](docs/increment_1_edit.png)
@@ -222,6 +244,29 @@ Effort: L
 ![Question List Page](docs/increment_2_questions_list.png)
 ![My Conferences Page](docs/increment_2_conferences_page.png)
 ![Add Conference Page](docs/increment_2_add_conference_page.png)
+
+
+## Project Iteration 3
+**Changelog:**
+- Added sorting by Date, Rating, Author, Platform to QuestionsListPage
+- Added ascending and descending sorting of questions
+- Added new page for managing user invites to new events
+- Added home page and improved UX by changing the navigation focus away from the drawer and into the more intuitive home screen
+- Added firebase support for talk invitations
+- Added light theme and dark theme
+- Added profile page
+- Added about page
+- Implemented a new gherkin test for user login scenario
+- Fixed bugs regarding widget states after data changes
+
+
+**Screenshots:**
+
+![Home Page](docs/increment_3_homepage.png)
+![Light Theme](docs/increment_3_light_theme.png)
+![Drawer](docs/increment_3_drawer.png)
+![Invites Page](docs/increment_3_invitesPage.png)
+![Sorted Questions](docs/increment_3_sort_questions.png)
 
 ---
 

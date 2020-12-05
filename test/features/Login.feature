@@ -1,6 +1,7 @@
-Feature: Home Screen Drawer Navigation
-    Scenario: when I am logged out and open the drawer and click the login button, I should go to the login page
-        Given I have "drawerLogOff" and "LoginButton"
-        When I open the drawer
-        Then I tap the widget that contains the text "Log In"
-        Then I wait until the "LoginPage" is present
+Feature: Login screen Validates and then Logs In
+    Scenario: when email and password are in the specified format and login is clicked
+        Given I have "emailfield" and "passfield" and "loginButton"
+        When I fill "emailfield" field with "testemail@test.com"
+        And I fill "passfield" field with "testingPassword1"
+        Then I tap the "loginButton" button
+        Then I wait until the "HomePage" is present

@@ -9,7 +9,11 @@ Future<void> main() {
     ..defaultTimeout = new Duration(seconds: 50)
     ..features = [Glob(r"test/features/Login.feature")]
     ..reporters = [ProgressReporter()]
-    ..stepDefinitions = [CheckGivenWidgets(), ClickLoginButton()]
+    ..stepDefinitions = [
+      CheckGivenWidgets(),
+      FillFormField(),
+      ClickLoginButton()
+    ]
     ..restartAppBetweenScenarios = true
     ..targetAppPath = "test/app.dart"
     ..exitAfterTestRun = true;

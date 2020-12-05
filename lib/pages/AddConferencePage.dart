@@ -4,14 +4,10 @@ import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Conference.dart';
-import 'package:inquirescape/widgets/TagEditorWidget.dart';
+import 'package:inquirescape/widgets/tags/TagEditor.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 
 class AddConferencePage extends StatefulWidget {
-  final FirebaseController _fbController;
-  final Widget _drawer;
-
-  AddConferencePage(this._fbController, this._drawer);
-
   @override
   State<StatefulWidget> createState() => _AddConferencePageState();
 }
@@ -28,14 +24,13 @@ class _AddConferencePageState extends State<AddConferencePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("New Conference"),
-          centerTitle: true,
-        ),
-        drawer: this.widget._drawer,
-        body: Builder(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("New Talk"),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Builder(
           builder: (BuildContext context) {
             return SingleChildScrollView(
               child: Container(
@@ -50,7 +45,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
                           controller: titleController,
                           autofocus: false,
                           decoration: InputDecoration(
-                            hintText: 'Conference Name',
+                            hintText: 'Title',
                             border: const OutlineInputBorder(),
                           ),
                         ),
@@ -132,8 +127,10 @@ class _AddConferencePageState extends State<AddConferencePage> {
                         margin: EdgeInsetsDirectional.only(top: 20.0, start: 20.0, end: 20.0),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                        child: TagEditorWidget(tags: this.tags),
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TagEditor(tags: this.tags),
                       ),
                       Divider(
                         color: Colors.transparent,
@@ -145,11 +142,11 @@ class _AddConferencePageState extends State<AddConferencePage> {
                           shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(10.0),
                           ),
+                          color: MyTheme.theme.primaryColor,
                           child: Text(
                             "Create",
-                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                            style: TextStyle(fontSize: 20.0),
                           ),
-                          color: Colors.blue,
                           onPressed: () async {
                             if (titleController.text.isEmpty ||
                                 descriptionController.text.isEmpty ||
@@ -170,7 +167,7 @@ class _AddConferencePageState extends State<AddConferencePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       CircularProgressIndicator(),
-                                      Text("Creating conference..."),
+                                      Text("Creating talk..."),
                                     ],
                                   ),
                                 ),
@@ -178,21 +175,17 @@ class _AddConferencePageState extends State<AddConferencePage> {
                             );
 
                             try {
-                              Conference created = await this.widget._fbController.addConference(Conference.withoutRef(
+                              Conference created = await FirebaseController.addConference(Conference.withoutRef(
                                   titleController.text,
                                   descriptionController.text,
                                   speakerController.text,
                                   start,
                                   tags));
-                              await this
-                                  .widget
-                                  ._fbController
-                                  .addConferenceToModerator(created, this.widget._fbController.currentMod);
+                              await FirebaseController.addConferenceToModerator(created, FirebaseController.currentMod)
+                                  .then((_) { Navigator.pop(context); Navigator.pop(context); });
                             } on Exception {
                               Navigator.pop(context);
                             }
-                            Navigator.pushReplacementNamed(context, "/conference/myConferences");
-                            //TODO better error detection
                           },
                         ),
                       ),

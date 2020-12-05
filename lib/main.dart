@@ -1,65 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
+import 'package:inquirescape/pages/AboutPage.dart';
 import 'package:inquirescape/pages/AddConferencePage.dart';
 import 'package:inquirescape/pages/ConferenceFullPage.dart';
+import 'package:inquirescape/pages/InvitationsPage.dart';
 import 'package:inquirescape/pages/MyConferencesPage.dart';
-import 'package:inquirescape/pages/LoginPage.dart';
 import 'package:inquirescape/pages/PostQuestionPage.dart';
+import 'package:inquirescape/pages/ProfilePage.dart';
 import 'package:inquirescape/pages/QuestionListPage.dart';
-import 'package:inquirescape/widgets/InquireScapeDrawer.dart';
+import 'package:inquirescape/pages/SettingsPage.dart';
+import 'package:inquirescape/routes/FadeAnimationRoute.dart';
+import 'package:inquirescape/routes/SlideAnimationRoute.dart';
+import 'package:inquirescape/themes/MyTheme.dart';
 
-import 'package:inquirescape/pages/InquireScapeHome.dart';
+import 'package:inquirescape/routes.dart';
+
+import 'package:inquirescape/pages/HomePage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+
+import 'config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseController.updateLoginInfo();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  static final FirebaseController firebaseController = FirebaseController();
-  Widget drawer = InquireScapeDrawer(firebaseController);
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    currentTheme.addListener(() => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'InquireScape',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // brightness: Brightness.dark,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      themeMode: MyTheme.currentThemeMode(),
+      theme: MyTheme.lightTheme,
+      darkTheme: MyTheme.darkTheme,
       // on the FirstScreen widget.
-      initialRoute: '/',
-      routes: {
-        '/': (context) => InquireScapeHome(firebaseController, this.drawer),
-        '/login': (context) => LoginPage(
-          key: Key("LoginPage"),
-          fbController: firebaseController,
-          drawer: this.drawer,
-        ),
-        '/conference': (context) => ConferenceFullPage(firebaseController, this.drawer),
-        '/conference/questions': (context) => QuestionListPage(firebaseController, this.drawer),
-        '/conference/create': (context) => AddConferencePage(firebaseController, this.drawer),
-        '/conference/myConferences': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/invites': (context) => MyConferencesPage(firebaseController, this.drawer),
-        '/conference/postQuestion': (context) => PostQuestionPage(firebaseController, this.drawer),
-      },
+      initialRoute: routeHome,
+      onGenerateRoute: generateRoutes,
     );
+  }
+
+  static Route<dynamic> generateRoutes(RouteSettings settings) {
+    switch (settings.name) {
+      case routeHome:
+        return FadeAnimationRoute(builder: (_) => HomePage(key: Key("HomePage")));
+      case routeCurrentConference:
+        return FadeAnimationRoute(builder: (_) => ConferenceFullPage());
+      case routeConferenceQuestions:
+        return FadeAnimationRoute(builder: (_) => QuestionListPage());
+      case routeAddConference:
+        return FadeAnimationRoute(builder: (_) => AddConferencePage());
+      case routeConferences:
+        return FadeAnimationRoute(builder: (_) => MyConferencesPage());
+      case routeInvites:
+        return FadeAnimationRoute(builder: (_) => InvitationsPage());
+      case routePostQuestion:
+        return FadeAnimationRoute(builder: (_) => PostQuestionPage());
+      case routeProfile:
+        return SlideAnimationRoute(builder: (_) => ProfilePage());
+      case routeSettings:
+        return SlideAnimationRoute(builder: (_) => SettingsPage());
+      case routeAbout:
+        return SlideAnimationRoute(builder: (_) => AboutPage());
+      default:
+        return FadeAnimationRoute(
+            builder: (_) => Scaffold(
+                  body: Center(child: Text('No route defined for ${settings.name}')),
+                ));
+    }
   }
 }
