@@ -253,8 +253,10 @@ As a user, I should be prevented from creating a conference before today, so tha
 - Added new page for managing user invites to new events
 - Added home page and improved UX by changing the navigation focus away from the drawer and into the more intuitive home screen
 - Added firebase support for talk invitations
-- Implemented a new gherkin test for user login scenario
 - Added light theme and dark theme
+- Added profile page
+- Added about page
+- Implemented a new gherkin test for user login scenario
 - Fixed bugs regarding widget states after data changes
 
 
