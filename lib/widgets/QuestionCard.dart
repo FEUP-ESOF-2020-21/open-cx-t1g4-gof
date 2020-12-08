@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
 import 'package:inquirescape/routes/FadeAnimationRoute.dart';
@@ -169,8 +170,8 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
   }
 
   Widget _ratingBar(BuildContext context) {
-    return RatingBarIndicator(
-      rating: widget.question.avgRating,
+    return RatingBar.builder(
+      initialRating: widget.question.avgRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
         color: MyTheme.theme.accentColor,
@@ -179,6 +180,10 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       itemSize: 30.0,
       unratedColor: MyTheme.theme.backgroundColor.withAlpha(100),
       direction: Axis.horizontal,
+      allowHalfRating: true,
+      onRatingUpdate: (rating) {
+        FirebaseController.updateRating(widget.question, rating);
+      },
     );
   }
 

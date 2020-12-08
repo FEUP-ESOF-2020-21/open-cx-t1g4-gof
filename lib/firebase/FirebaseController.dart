@@ -95,19 +95,22 @@ class FirebaseController {
     return ratingRef;
   }
 
-  static Future<void> updateRating(Question question, Moderator moderator, double rating) async {
-    DocumentReference ratingRef = question.docRef.collection("ratings").doc(moderator.docRef.id);
+  static Future<void> updateRating(Question question, double rating) async {
+    DocumentReference ratingRef = question.docRef.collection("ratings").doc(_currentMod.docRef.id);
 
-    double oldRating;
-    await ratingRef.get().then((value) {
-      oldRating = value.data()["rating"];
-    });
+    double oldRating = question.avgRating;
+    // await ratingRef.get().then((value) {
+    //   oldRating = value.data()["rating"];
+    // });
 
     await ratingRef.set({'rating': rating}, SetOptions(merge: true));
 
+    question.totalRatings++;
     question.avgRating = (question.avgRating * question.totalRatings + (rating - oldRating)) / question.totalRatings;
 
-    await question.docRef.set({"avgRating": question.avgRating}, SetOptions(merge: true));
+    await question.docRef
+        .set({"avgRating": question.avgRating, "totalRatings": question.totalRatings}, SetOptions(merge: true));
+
     listeners.forEach((FirebaseListener listener) => listener.onDataChanged());
   }
 
@@ -153,9 +156,9 @@ class FirebaseController {
   }
 
   static Future<bool> isInvitedTo(Moderator moderator, Conference conference) async {
-    QuerySnapshot snapshot = await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
-    if (snapshot == null || snapshot.docs == null)
-        return false;
+    QuerySnapshot snapshot =
+        await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
+    if (snapshot == null || snapshot.docs == null) return false;
 
     return snapshot.docs.isNotEmpty;
   }
@@ -168,7 +171,8 @@ class FirebaseController {
     return data != null;
   }
 
-  static Future<bool> inviteModerator(Moderator recipient, Conference conference, Moderator sender, {bool verifiedExistance: false}) async {
+  static Future<bool> inviteModerator(Moderator recipient, Conference conference, Moderator sender,
+      {bool verifiedExistance: false}) async {
     if (!verifiedExistance) {
       if (await isInConference(recipient, conference) || await isInvitedTo(recipient, conference)) {
         return false;
