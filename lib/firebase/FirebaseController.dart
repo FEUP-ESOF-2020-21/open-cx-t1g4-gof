@@ -66,7 +66,7 @@ class FirebaseController {
     question.docRef = await conference.docRef.collection("questions").add({
       'content': question.content,
       'postDate': question.postDate,
-      'avgRating': 2.5,
+      'avgRating': 0,
       'totalRatings': 0,
       'authorID': question.authorId,
       'authorDisplayName': question.authorDisplayName,
@@ -98,14 +98,21 @@ class FirebaseController {
   static Future<void> updateRating(Question question, double rating) async {
     DocumentReference ratingRef = question.docRef.collection("ratings").doc(_currentMod.docRef.id);
 
-    double oldRating = question.avgRating;
-    // await ratingRef.get().then((value) {
-    //   oldRating = value.data()["rating"];
-    // });
+    bool alreadyRated = false;
+
+    double oldRating = 0;
+    await ratingRef.get().then((value) {
+      if (value.data() != null) {
+        oldRating = value.data()["rating"];
+        alreadyRated = true;
+      }
+    });
 
     await ratingRef.set({'rating': rating}, SetOptions(merge: true));
+    question.myRating = rating;
 
-    question.totalRatings++;
+    if (!alreadyRated)
+      question.totalRatings++;
     question.avgRating = (question.avgRating * question.totalRatings + (rating - oldRating)) / question.totalRatings;
 
     await question.docRef
@@ -118,22 +125,31 @@ class FirebaseController {
     List<Question> questions = [];
     QuerySnapshot snapshot = await conference.docRef.collection("questions").get();
 
-    snapshot.docs.forEach((result) {
+    await Future.forEach(snapshot.docs, (result) async {
       Map<String, dynamic> data = result.data();
       if (data == null) return null;
 
-      Question q = Question(
-        data["content"],
-        DateTime.fromMicrosecondsSinceEpoch(data["postDate"].microsecondsSinceEpoch),
-        data["avgRating"].toDouble(),
-        data["totalRatings"],
-        data["authorID"],
-        data["authorDisplayName"],
-        data["authorPlatform"],
-        result.reference,
-      );
-      questions.add(q);
-    });
+      DocumentReference myRatingDoc = await result.reference.collection("ratings").doc(_currentMod.docRef.id);
+      Map<String, dynamic> myRatingData = (await myRatingDoc.get()).data();
+      double myRating;
+      if (myRatingData != null) {
+        myRating = myRatingData["rating"];
+      }
+
+        Question q = Question(
+          data["content"],
+          DateTime.fromMicrosecondsSinceEpoch(data["postDate"].microsecondsSinceEpoch),
+          data["avgRating"].toDouble(),
+          data["totalRatings"],
+          myRating,
+          data["authorID"],
+          data["authorDisplayName"],
+          data["authorPlatform"],
+          result.reference,
+        );
+        questions.add(q);
+      }
+    );
     return questions;
   }
 

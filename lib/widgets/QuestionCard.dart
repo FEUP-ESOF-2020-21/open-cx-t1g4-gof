@@ -149,7 +149,13 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           ),
           Divider(
             color: Colors.transparent,
+            height: widget.question.myRating == null ? 30 : null,
           ),
+          if (widget.question.myRating == null)
+            Text(
+              "Rate this Question",
+              style: TextStyle(fontSize: 12),
+            ),
           Row(
             children: [
               _ratingBar(context),
@@ -171,7 +177,7 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
 
   Widget _ratingBar(BuildContext context) {
     return RatingBar.builder(
-      initialRating: widget.question.avgRating,
+      initialRating: widget.question.myRating == null ? 0 : widget.question.myRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
         color: MyTheme.theme.accentColor,
@@ -181,8 +187,9 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       unratedColor: MyTheme.theme.backgroundColor.withAlpha(100),
       direction: Axis.horizontal,
       allowHalfRating: true,
-      onRatingUpdate: (rating) {
-        FirebaseController.updateRating(widget.question, rating);
+      onRatingUpdate: (rating) async {
+        await FirebaseController.updateRating(widget.question, rating);
+        setState(() {});
       },
     );
   }
