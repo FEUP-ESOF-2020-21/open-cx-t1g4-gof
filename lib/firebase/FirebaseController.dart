@@ -302,9 +302,9 @@ class FirebaseController {
 
   static List<Invitation> get myInvitations => _myInvitations;
 
-  static set conferenceIndex(int value) {
+  static Future<void> setConferenceIndex(int value) async {
     _conferenceIndex = value;
-    reloadQuestions((_) {});
+    await reloadQuestions((_) {});
   }
 
   static List<Question> get conferenceQuestions => _conferenceQuestions;
@@ -342,7 +342,7 @@ class FirebaseController {
     }
 
     _conferenceIndex = null;
-    getModeratorConferences(_currentMod).then((res) {
+    await getModeratorConferences(_currentMod).then((res) {
       _myConferences = res;
     });
 
