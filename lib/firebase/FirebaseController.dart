@@ -111,9 +111,10 @@ class FirebaseController {
     await ratingRef.set({'rating': rating}, SetOptions(merge: true));
     question.myRating = rating;
 
+    int oldTotal = question.totalRatings;
     if (!alreadyRated)
       question.totalRatings++;
-    question.avgRating = (question.avgRating * question.totalRatings + (rating - oldRating)) / question.totalRatings;
+    question.avgRating = (question.avgRating * oldTotal + (rating - oldRating)) / question.totalRatings;
 
     await question.docRef
         .set({"avgRating": question.avgRating, "totalRatings": question.totalRatings}, SetOptions(merge: true));
