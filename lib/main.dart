@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
       theme: MyTheme.lightTheme,
       darkTheme: MyTheme.darkTheme,
       // on the FirstScreen widget.
+      debugShowCheckedModeBanner: false,
       initialRoute: routeHome,
       onGenerateRoute: generateRoutes,
     );
