@@ -6,17 +6,15 @@ class Question implements Comparable<Question> {
   String content;
   DateTime postDate;
   double avgRating;
-  double myRating;
   int totalRatings;
   String authorId, authorDisplayName, authorPlatform;
 
-  Question(this.content, this.postDate, this.avgRating, this.totalRatings, this.myRating, this.authorId, this.authorDisplayName,
+  Question(this.content, this.postDate, this.avgRating, this.totalRatings, this.authorId, this.authorDisplayName,
       this.authorPlatform, this.docRef);
 
   Question.withoutRef(this.content, this.postDate, this.authorId, this.authorDisplayName, this.authorPlatform) {
-    this.avgRating = 0;
+    this.avgRating = 2.5;
     this.totalRatings = 0;
-    this.myRating = null;
   }
 
   @override
