@@ -7,15 +7,11 @@ import 'steps/test_steps.dart';
 Future<void> main() {
   final config = FlutterTestConfiguration()
     ..defaultTimeout = new Duration(seconds: 50)
-    ..features = [Glob(r"test/features/Login.feature")]
+    ..features = [Glob(r"test/test_driver/features/Login.feature")]
     ..reporters = [ProgressReporter()]
-    ..stepDefinitions = [
-      CheckGivenWidgets(),
-      FillFormField(),
-      ClickLoginButton()
-    ]
+    ..stepDefinitions = [CheckGivenWidgets(), FillFormField(), ClickLoginButton()]
     ..restartAppBetweenScenarios = true
-    ..targetAppPath = "test/app.dart"
+    ..targetAppPath = "test/test_driver/app.dart"
     ..exitAfterTestRun = true;
 
   return GherkinRunner().execute(config);

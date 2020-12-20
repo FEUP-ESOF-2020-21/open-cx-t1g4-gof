@@ -44,9 +44,11 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
         conference: conferences[index],
         index: index,
         highlighted: FirebaseController.conferenceIndex == index,
-        onTap: (i) {
-          FirebaseController.conferenceIndex = i;
-          setState(() {});
+        onTap: (i) async {
+          showDialog(context: context, child: SizedBox(width: 60, height: 60, child: Center(child: CircularProgressIndicator())));
+          await FirebaseController.setConferenceIndex(i);
+          Navigator.pop(context);
+          Navigator.pop(context);
         },
       ),
     );
