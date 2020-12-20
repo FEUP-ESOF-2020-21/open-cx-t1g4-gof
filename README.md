@@ -81,6 +81,7 @@ Lots of speakers in conferences have a hard time managing the questions asked by
     3. The moderator presses the cancel button;
     4. A confirmation prompt is opened to confirm the cancellation;
     5. If confirmed, the question is discarded and returns to the question list page, otherwise it stays on the page to add question.
+
 **Ban User from posting**:
   - **Actor**: Moderator.
   - **Description**: Allows the moderator to ban a user from posting questions on the conference.
