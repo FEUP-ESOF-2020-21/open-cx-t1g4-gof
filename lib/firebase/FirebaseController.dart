@@ -66,7 +66,7 @@ class FirebaseController {
     question.docRef = await conference.docRef.collection("questions").add({
       'content': question.content,
       'postDate': question.postDate,
-      'avgRating': 0,
+      'avgRating': 2.5,
       'totalRatings': 0,
       'authorID': question.authorId,
       'authorDisplayName': question.authorDisplayName,
@@ -95,30 +95,19 @@ class FirebaseController {
     return ratingRef;
   }
 
-  static Future<void> updateRating(Question question, double rating) async {
-    DocumentReference ratingRef = question.docRef.collection("ratings").doc(_currentMod.docRef.id);
+  static Future<void> updateRating(Question question, Moderator moderator, double rating) async {
+    DocumentReference ratingRef = question.docRef.collection("ratings").doc(moderator.docRef.id);
 
-    bool alreadyRated = false;
-
-    double oldRating = 0;
+    double oldRating;
     await ratingRef.get().then((value) {
-      if (value.data() != null) {
-        oldRating = value.data()["rating"];
-        alreadyRated = true;
-      }
+      oldRating = value.data()["rating"];
     });
 
     await ratingRef.set({'rating': rating}, SetOptions(merge: true));
-    question.myRating = rating;
 
-    int oldTotal = question.totalRatings;
-    if (!alreadyRated)
-      question.totalRatings++;
-    question.avgRating = (question.avgRating * oldTotal + (rating - oldRating)) / question.totalRatings;
+    question.avgRating = (question.avgRating * question.totalRatings + (rating - oldRating)) / question.totalRatings;
 
-    await question.docRef
-        .set({"avgRating": question.avgRating, "totalRatings": question.totalRatings}, SetOptions(merge: true));
-
+    await question.docRef.set({"avgRating": question.avgRating}, SetOptions(merge: true));
     listeners.forEach((FirebaseListener listener) => listener.onDataChanged());
   }
 
@@ -126,31 +115,22 @@ class FirebaseController {
     List<Question> questions = [];
     QuerySnapshot snapshot = await conference.docRef.collection("questions").get();
 
-    await Future.forEach(snapshot.docs, (result) async {
+    snapshot.docs.forEach((result) {
       Map<String, dynamic> data = result.data();
       if (data == null) return null;
 
-      DocumentReference myRatingDoc = await result.reference.collection("ratings").doc(_currentMod.docRef.id);
-      Map<String, dynamic> myRatingData = (await myRatingDoc.get()).data();
-      double myRating;
-      if (myRatingData != null) {
-        myRating = myRatingData["rating"];
-      }
-
-        Question q = Question(
-          data["content"],
-          DateTime.fromMicrosecondsSinceEpoch(data["postDate"].microsecondsSinceEpoch),
-          data["avgRating"].toDouble(),
-          data["totalRatings"],
-          myRating,
-          data["authorID"],
-          data["authorDisplayName"],
-          data["authorPlatform"],
-          result.reference,
-        );
-        questions.add(q);
-      }
-    );
+      Question q = Question(
+        data["content"],
+        DateTime.fromMicrosecondsSinceEpoch(data["postDate"].microsecondsSinceEpoch),
+        data["avgRating"].toDouble(),
+        data["totalRatings"],
+        data["authorID"],
+        data["authorDisplayName"],
+        data["authorPlatform"],
+        result.reference,
+      );
+      questions.add(q);
+    });
     return questions;
   }
 
@@ -173,9 +153,9 @@ class FirebaseController {
   }
 
   static Future<bool> isInvitedTo(Moderator moderator, Conference conference) async {
-    QuerySnapshot snapshot =
-        await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
-    if (snapshot == null || snapshot.docs == null) return false;
+    QuerySnapshot snapshot = await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
+    if (snapshot == null || snapshot.docs == null)
+        return false;
 
     return snapshot.docs.isNotEmpty;
   }
@@ -188,8 +168,7 @@ class FirebaseController {
     return data != null;
   }
 
-  static Future<bool> inviteModerator(Moderator recipient, Conference conference, Moderator sender,
-      {bool verifiedExistance: false}) async {
+  static Future<bool> inviteModerator(Moderator recipient, Conference conference, Moderator sender, {bool verifiedExistance: false}) async {
     if (!verifiedExistance) {
       if (await isInConference(recipient, conference) || await isInvitedTo(recipient, conference)) {
         return false;
@@ -323,9 +302,9 @@ class FirebaseController {
 
   static List<Invitation> get myInvitations => _myInvitations;
 
-  static Future<void> setConferenceIndex(int value) async {
+  static set conferenceIndex(int value) {
     _conferenceIndex = value;
-    await reloadQuestions((_) {});
+    reloadQuestions((_) {});
   }
 
   static List<Question> get conferenceQuestions => _conferenceQuestions;
@@ -363,7 +342,7 @@ class FirebaseController {
     }
 
     _conferenceIndex = null;
-    await getModeratorConferences(_currentMod).then((res) {
+    getModeratorConferences(_currentMod).then((res) {
       _myConferences = res;
     });
 

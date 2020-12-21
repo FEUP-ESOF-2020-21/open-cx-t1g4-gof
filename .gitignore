@@ -41,6 +41,7 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+<<<<<<< HEAD
 
 
 # Discord bot

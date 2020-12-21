@@ -27,10 +27,11 @@ class Tag extends StatelessWidget {
             if (this.onTap != null)
               IconButton(
                 padding: EdgeInsets.only(right: 4),
-                iconSize: 22,
+                iconSize: 23,
                 constraints: BoxConstraints(),
                 icon: Icon(
                   Icons.close,
+                  color: Colors.grey[700],
                 ),
                 onPressed: onTap,
               ),
