@@ -41,3 +41,9 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+<<<<<<< HEAD
+
+
+# Discord bot
+*/__pycache__
+discord-bot/token.txt

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
@@ -20,17 +22,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> implements FirebaseListener {
+  Timer timer;
+
   @override
   void initState() {
     super.initState();
-
+    timer = Timer.periodic(Duration(seconds: 15), (Timer t) => { if (mounted) FirebaseController.reloadQuestions((_) { this.setState(() {}); }) });
     FirebaseController.subscribeListener(this);
   }
 
   @override
   void dispose() {
     super.dispose();
-
+    timer?.cancel();
     FirebaseController.unsubscribeListener(this);
   }
 
