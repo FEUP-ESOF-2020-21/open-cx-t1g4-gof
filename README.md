@@ -283,6 +283,7 @@ As a user, I should be prevented from creating a conference before today, so tha
 
 **Screenshots:**
 
+![Discord Bot](docs/increment_4_discord_bot.png)
 
 ---
 
