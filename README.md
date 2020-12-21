@@ -455,15 +455,17 @@ The features we chose to test are the following:
  + Question card widget
 
 ## Test cases specifications
-**Acceptance tests**
+**Acceptance tests**  
 Tested with flutter_gherkin package:
  + [Login feature](test/test_driver/features/Login.feature)
 
-**Unit tests**
-For each widget we tested if they were being displayed with the currect data and for the validators
-we checked if they were validating emails as intended:
+**Widget tests**  
+For each widget we tested if they were being displayed with the correct data:
  + [Talk Card](test/tests/conferenceCard_test.dart)
  + [Question Card](test/tests/questionCard_test.dart)
+
+**Unit tests**  
+For the validators we checked if they were validating emails as intended:
  + [Validators](test/tests/validators_test.dart)
 
 ---
