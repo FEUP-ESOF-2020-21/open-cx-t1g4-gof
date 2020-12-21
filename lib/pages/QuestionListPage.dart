@@ -89,7 +89,7 @@ class QuestionListPageState extends State<QuestionListPage> {
   }
 
   Future<void> _onRefresh() async {
-    FirebaseController.reloadQuestions((_) {this.setState(() {});});
+    FirebaseController.reloadQuestions((_) {if (mounted) this.setState(() {});});
   }
 
   Widget _sortButton(BuildContext context) {

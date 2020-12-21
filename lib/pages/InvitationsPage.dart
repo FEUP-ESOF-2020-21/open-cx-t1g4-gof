@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Invitation.dart';
@@ -37,7 +36,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
   }
 
   Future<void> _onRefresh() async {
-    FirebaseController.reloadInvites((_) => setState(() {}));
+    FirebaseController.reloadInvites((_) { if (mounted) setState(() {}); });
   }
 
   Widget _noInvites(BuildContext context) {

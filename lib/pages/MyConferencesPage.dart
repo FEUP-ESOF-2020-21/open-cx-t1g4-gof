@@ -21,9 +21,14 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: (conferences == null || conferences.isEmpty)
-            ? _noConferences(context)
-            : _conferenceList(context, conferences),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            FirebaseController.getModeratorConferences(FirebaseController.currentMod).then((_) { if (mounted) this.setState(() {}); });
+          },
+          child: (conferences == null || conferences.isEmpty)
+              ? _noConferences(context)
+              : _conferenceList(context, conferences),
+        ),
       ),
     );
   }
