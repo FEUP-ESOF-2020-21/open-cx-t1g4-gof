@@ -427,9 +427,9 @@ To help on validating all the architectural, design and technological decisions 
 - Implemented refresh for talk list, question list and invites pages
 - Implemented periodic updates to guarantee lastest questions are shown on the Home Page
 - Added discord bot integration
-  - $$setTalk talkID ~ Sets the channel to track the given talk
-  - $$unsetTalk ~ Removes a talk previously bound to the channel
-  - $q question ~ Automatically adds the question to InquireScape (if used in a channel previously bound with $$setTalk)
+  - `$$setTalk talkID` ~ Sets the channel to track the given talk
+  - `$$unsetTalk` ~ Removes a talk previously bound to the channel
+  - `$q question` ~ Automatically adds the question to InquireScape (if used in a channel previously bound with $$setTalk)
   - All commands with the prefix $$ are for exclusive use by server members with admin level permissions
 - Fixed bugs related to the app loading too fast and the firebase data hadn't been parsed obtained yet
 - Implemented unit tests for talkCard
