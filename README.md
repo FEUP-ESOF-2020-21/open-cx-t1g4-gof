@@ -187,9 +187,7 @@ Scenario: Sorting an empty list of questions
 
 #### UI mockups
 
-<img src="./docs/UI_mockup_View-Sort_Questions.png" alt="UI Mockup Edit Questions 1" height="300"/>
-
-<img src="./docs/UI_mockup_Sort_Questions_2.png" alt="UI Mockup Edit Questions 2" height="300"/>
+<img src="./docs/UI_mockup_View-Sort_Questions.png" alt="UI Mockup Edit Questions 1" height="300"/> <img src="./docs/UI_mockup_Sort_Questions_2.png" alt="UI Mockup Edit Questions 2" height="300"/>
 
 ---
 
@@ -390,9 +388,7 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 **Screenshots:**
 
-<img src="Question listing page" alt="docs/increment_1_question_list.png" height="300">
-<img src="Focused question page" alt="docs/increment_1_full_page_question.png" height="300">
-<img src="Question editing page" alt="docs/increment_1_edit.png" height="300">
+<img src="docs/increment_1_question_list.png" alt="Question listing page" height="300"> <img src="docs/increment_1_full_page_question.png" alt="Focused question page" height="300">  <img src="docs/increment_1_edit.png" alt="Question editing page" height="300">
 
 ## Project Iteration 2
 **Changelog:**
@@ -411,11 +407,7 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 **Screenshots:**
 
-<img src="Login Page" alt="docs/increment_2_login_page.png" height="300">
-<img src="Navigation Drawer" alt="docs/increment_2_app_drawer.png" height="300">
-<img src="Question List Page" alt="docs/increment_2_questions_list.png" height="300">
-<img src="My talks Page" alt="docs/increment_2_talks_page.png" height="300">
-<img src="Add talk Page" alt="docs/increment_2_add_talk_page.png" height="300">
+<img src="docs/increment_2_login_page.png" alt="Login Page" height="300"> <img src="docs/increment_2_app_drawer.png" alt="Navigation Drawer" height="300"> <img src="docs/increment_2_questions_list.png" alt="Question List Page" height="300"> <img src="docs/increment_2_conferences_page.png" alt="My talks Page" height="300"> <img src="docs/increment_2_add_conference_page.png" alt="Add talk Page" height="300">
 
 
 ## Project Iteration 3
@@ -434,11 +426,8 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 **Screenshots:**
 
-<img src="docs/increment_3_homepage.png" alt="Home Page" height="300">
-<img src="docs/increment_3_light_theme.png" alt="Light Theme" height="300">
-<img src="docs/increment_3_drawer.png" alt="Drawer" height="300">
-<img src="docs/increment_3_invitesPage.png" alt="Invites Page" height="300">
-<img src="docs/increment_3_sort_questions.png" alt="Sorted Questions" height="300">
+<img src="docs/increment_3_homepage.png" alt="Home Page" height="300"> <img src="docs/increment_3_light_theme.png" alt="Light Theme" height="300"> <img src="docs/increment_3_drawer.png" alt="Drawer" height="300"> <img src="docs/increment_3_invitesPage.png" alt="Invites Page" height="300"> <img src="docs/increment_3_sort_questions.png" alt="Sorted Questions" height="300">
+
 
 ## Project Iteration 4
 **Changelog:**
@@ -458,11 +447,8 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 **Final version:**
 
 #### InquireScape App
-<img src="docs/questions.gif" alt="Questions Page" height="300">
-<img src="docs/talk_selection.gif" alt="Talk Selection" height="300">
-<img src="docs/invites.gif" alt="Invites Page" height="300">
-<img src="docs/create_talk.gif" alt="Create Talk Page" height="300">
-<img src="docs/dark_vs_light.gif" alt="App Themes" height="300">
+
+<img src="docs/questions.gif" alt="Questions Page" height="300"> <img src="docs/talk_selection.gif" alt="Talk Selection" height="300"> <img src="docs/invites.gif" alt="Invites Page" height="300"> <img src="docs/create_talk.gif" alt="Create Talk Page" height="300"> <img src="docs/dark_vs_light.gif" alt="App Themes" height="300">
 
 #### Discord Integration Bot
 ![Discord Bot](docs/InquireScape_discord_integration.gif)
