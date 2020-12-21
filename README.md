@@ -366,7 +366,7 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 ## Prototype
 
-During the development of iteration 0 and 1, we had a small app that implemented the user story [View all Questions](#view-all-questions). This served as the prototype for the features that would be implemented further on.
+To help on validating all the architectural, design and technological decisions made, we implemented a vertical prototype, a thin vertical slice of the system during the development of iteration 0 and 1, in which we developed a small app that implemented the user story [View all Questions](#view-all-questions). This served as the prototype for the features that would be implemented further on.
 
 ---
 
@@ -462,7 +462,7 @@ Tested with flutter_gherkin package:
 **Unit tests**
 For each widget we tested if they were being displayed with the currect data and for the validators
 we checked if they were validating emails as intended:
- + [talk Card](test/tests/talkCard_test.dart)
+ + [Talk Card](test/tests/conferenceCard_test.dart)
  + [Question Card](test/tests/questionCard_test.dart)
  + [Validators](test/tests/validators_test.dart)
 
