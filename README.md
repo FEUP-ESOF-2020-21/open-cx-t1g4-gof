@@ -282,9 +282,18 @@ As a user, I should be prevented from creating a conference before today, so tha
 - Implemented unit tests for QuestionCard
 - Implemented unit tests for Login Validators
 
-**Screenshots:**
+**Final version:**
 
-![Discord Bot](docs/increment_4_discord_bot.png)
+![Discord Bot](docs/InquireScape_discord_integration.gif)
+
+[Discord InquireScape Bot Demo](docs/InquireScape_discord_integration_demo.mp4)
+
+![Questions Page](docs/questions.gif)
+![Talk Selection](docs/talk_selection.gif)
+![Invites Page](docs/invites.gif)
+![Create Talk Page](docs/create_talk.gif)
+![App Themes](docs/dark_vs_light.gif)
+
 
 ---
 
