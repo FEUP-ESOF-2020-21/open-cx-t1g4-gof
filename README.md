@@ -269,14 +269,61 @@ As a user, I should be prevented from creating a conference before today, so tha
 ![Invites Page](docs/increment_3_invitesPage.png)
 ![Sorted Questions](docs/increment_3_sort_questions.png)
 
+## Project Iteration 4
+**Changelog:**
+- Moderator can now rate a question and change their previous ratings
+- Added discord bot integration
+  - $$setTalk talkID ~ Sets the channel to track the given talk
+  - $$unsetTalk ~ Removes a talk previously bound to the channel
+  - $q question ~ Automatically adds the question to InquireScape (if used in a channel previously bound with $$setTalk)
+  - All commands with the prefix $$ are for exclusive use by server members with admin level permissions
+- Fixed bugs related to the app loading too fast and the firebase data hadn't been parsed obtained yet
+- Implemented unit tests for Conference
+- Implemented unit tests for QuestionCard
+- Implemented unit tests for Login Validators
+
+**Final version:**
+
+![Discord Bot](docs/InquireScape_discord_integration.gif)
+
+[Discord InquireScape Bot Demo](docs/InquireScape_discord_integration_demo.mp4)
+
+![Questions Page](docs/questions.gif)
+![Talk Selection](docs/talk_selection.gif)
+![Invites Page](docs/invites.gif)
+![Create Talk Page](docs/create_talk.gif)
+![App Themes](docs/dark_vs_light.gif)
+
+
 ---
 
 # Test
+The features we chose to test are the following:
+ + Login feature
+ + Login field validators
+ + Conference card widget
+ + Question card widget
+
+## Test cases specifications
+**Acceptance tests**
+Tested with flutter_gherkin package:
+ + [Login feature](test/test_driver/features/Login.feature)
+
+**Unit tests**
+For each widget we tested if they were being displayed with the currect data and for the validators
+we checked if they were validating emails as intended:
+ + [Conference Card](test/tests/conferenceCard_test.dart)
+ + [Question Card](test/tests/questionCard_test.dart)
+ + [Validators](test/tests/validators_test.dart)
 
 ---
 
 # Configuration and Change Management
-
+During the development of our project we followed all the GitHub conventions by using descriptive commit messages, tags, branches and issues. 
+ + [GitHub Pulse](https://github.com/FEUP-ESOF-2020-21/open-cx-t1g4-gof/pulse/monthly)
+ + [GitHub Network](https://github.com/FEUP-ESOF-2020-21/open-cx-t1g4-gof/network)
+ + [GitHub Issues](https://github.com/FEUP-ESOF-2020-21/open-cx-t1g4-gof/issues?q=is%3Aissue+is%3Aclosed)
+ 
 ---
 
 # Project Management
