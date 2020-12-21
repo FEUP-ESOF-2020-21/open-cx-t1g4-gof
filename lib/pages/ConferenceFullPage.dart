@@ -68,6 +68,18 @@ class ConferenceFullPage extends StatelessWidget {
                 ),
                 const Divider(color: Colors.transparent),
                 const Text(
+                  "Identifier",
+                  style: headerStyle,
+                  maxLines: null,
+                ),
+                headerInfoDivider,
+                Text(
+                  conference.docRef.id,
+                  style: infoStyle,
+                  maxLines: null,
+                ),
+                const Divider(color: Colors.transparent),
+                const Text(
                   "Topics",
                   style: headerStyle,
                   maxLines: null,

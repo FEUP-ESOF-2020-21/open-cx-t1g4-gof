@@ -42,4 +42,7 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-/test/widgetT.dart
+
+# Discord bot
+*/__pycache__
+discord-bot/token.txt
