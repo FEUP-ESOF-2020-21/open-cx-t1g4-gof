@@ -5,6 +5,7 @@ import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
 import 'package:inquirescape/routes/FadeAnimationRoute.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -148,7 +149,13 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
           ),
           Divider(
             color: Colors.transparent,
+            height: widget.question.myRating == null ? 30 : null,
           ),
+          if (widget.question.myRating == null)
+            Text(
+              "Rate this Question",
+              style: TextStyle(fontSize: 12),
+            ),
           Row(
             children: [
               _ratingBar(context),
@@ -169,8 +176,8 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
   }
 
   Widget _ratingBar(BuildContext context) {
-    return RatingBarIndicator(
-      rating: widget.question.avgRating,
+    return RatingBar.builder(
+      initialRating: widget.question.myRating == null ? 0 : widget.question.myRating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
         color: MyTheme.theme.accentColor,
@@ -179,6 +186,11 @@ class _ExpandableQuestionCardState extends State<ExpandableQuestionCard> {
       itemSize: 30.0,
       unratedColor: MyTheme.theme.backgroundColor.withAlpha(100),
       direction: Axis.horizontal,
+      allowHalfRating: true,
+      onRatingUpdate: (rating) async {
+        await FirebaseController.updateRating(widget.question, rating);
+        setState(() {});
+      },
     );
   }
 
