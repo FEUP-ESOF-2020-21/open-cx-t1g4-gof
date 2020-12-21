@@ -28,7 +28,7 @@ class Participants(commands.Cog, name="Participants"):
         
         talk_id = talk_id[0]
 
-        question = Question(" ".join(args), ctx.message.author.display_name, ctx.message.author.id, datetime.now())
+        question = Question(" ".join(args), ctx.message.author.display_name, str(ctx.message.author.id), datetime.now())
 
         FB.addQuestion(talk_id, question)
 
