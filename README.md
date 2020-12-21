@@ -292,7 +292,11 @@ we checked if they were validating emails as intended:
 ---
 
 # Configuration and Change Management
-
+During the development of our project we followed all the GitHub conventions by using descriptive commit messages, tags, branches and issues. 
+ + [GitHub Pulse](https://github.com/FEUP-ESOF-2020-21/open-cx-t1g4-gof/pulse/monthly)
+ + [GitHub Network](https://github.com/FEUP-ESOF-2020-21/open-cx-t1g4-gof/network)
+ + [GitHub Issues](https://github.com/FEUP-ESOF-2020-21/open-cx-t1g4-gof/issues?q=is%3Aissue+is%3Aclosed)
+ 
 ---
 
 # Project Management
