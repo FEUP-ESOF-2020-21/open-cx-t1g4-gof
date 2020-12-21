@@ -41,16 +41,17 @@ class _MyConferencesPageState extends State<MyConferencesPage> {
       padding: const EdgeInsets.all(5),
       itemCount: conferences.length,
       itemBuilder: (BuildContext context, int index) => ConferenceCard(
-        conference: conferences[index],
-        index: index,
-        highlighted: FirebaseController.conferenceIndex == index,
-        onTap: (i) async {
-          showDialog(context: context, child: SizedBox(width: 60, height: 60, child: Center(child: CircularProgressIndicator())));
-          await FirebaseController.setConferenceIndex(i);
-          Navigator.pop(context);
-          Navigator.pop(context);
-        },
-      ),
+          conference: conferences[index],
+          index: index,
+          highlighted: FirebaseController.conferenceIndex == index,
+          onTap: (i) async {
+            showDialog(
+                context: context,
+                child: SizedBox(width: 60, height: 60, child: Center(child: CircularProgressIndicator())));
+            await FirebaseController.setConferenceIndex(i);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }),
     );
   }
 }

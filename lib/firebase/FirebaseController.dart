@@ -108,12 +108,10 @@ class FirebaseController {
       }
     });
 
-    await ratingRef.set({'rating': rating}, SetOptions(merge: true));
     question.myRating = rating;
 
     int oldTotal = question.totalRatings;
-    if (!alreadyRated)
-      question.totalRatings++;
+    if (!alreadyRated) question.totalRatings++;
     question.avgRating = (question.avgRating * oldTotal + (rating - oldRating)) / question.totalRatings;
 
     await question.docRef
@@ -137,20 +135,19 @@ class FirebaseController {
         myRating = myRatingData["rating"];
       }
 
-        Question q = Question(
-          data["content"],
-          DateTime.fromMicrosecondsSinceEpoch(data["postDate"].microsecondsSinceEpoch),
-          data["avgRating"].toDouble(),
-          data["totalRatings"],
-          myRating,
-          data["authorID"],
-          data["authorDisplayName"],
-          data["authorPlatform"],
-          result.reference,
-        );
-        questions.add(q);
-      }
-    );
+      Question q = Question(
+        data["content"],
+        DateTime.fromMicrosecondsSinceEpoch(data["postDate"].microsecondsSinceEpoch),
+        data["avgRating"].toDouble(),
+        data["totalRatings"],
+        myRating,
+        data["authorID"],
+        data["authorDisplayName"],
+        data["authorPlatform"],
+        result.reference,
+      );
+      questions.add(q);
+    });
     return questions;
   }
 
@@ -174,7 +171,7 @@ class FirebaseController {
 
   static Future<bool> isInvitedTo(Moderator moderator, Conference conference) async {
     QuerySnapshot snapshot =
-        await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
+    await moderator.docRef.collection("invites").where('conference', isEqualTo: conference.docRef).limit(1).get();
     if (snapshot == null || snapshot.docs == null) return false;
 
     return snapshot.docs.isNotEmpty;

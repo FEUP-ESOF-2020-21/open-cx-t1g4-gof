@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:inquirescape/firebase/FirebaseController.dart';
 import 'package:inquirescape/model/Question.dart';
 import 'package:inquirescape/pages/EditQuestionPage.dart';
 import 'package:inquirescape/routes/FadeAnimationRoute.dart';
 import 'package:inquirescape/themes/MyTheme.dart';
+import 'package:inquirescape/firebase/FirebaseController.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 
