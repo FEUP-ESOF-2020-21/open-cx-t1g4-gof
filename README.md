@@ -10,6 +10,7 @@
 - [Architecture and design](#architecture-and-design)
   - [Logical Architecture](#logical-architecture)
   - [Physical Architecture](#physical-architecture)
+  - [Prototype](#prototype)
 - [Implementation](#implementation)
 - [Test](#test)
 - [Configuration and Change management](#configuration-and-change-management)
@@ -365,16 +366,7 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 ## Prototype
 
-### View All Questions
-### Editing Questions
-### Sorting Questions
-### Recent Questions
-### Uploading a question as a moderator
-### Uploading a Question as a User
-### Create a talk
-### Focusing a Talk
-### Invite Moderator into Talk
-### Accept Talk Invitation
+During the development of iteration 0 and 1, we had a small app that implemented the user story [View all Questions](#view-all-questions). This served as the prototype for the features that would be implemented further on.
 
 ---
 
