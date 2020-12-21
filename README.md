@@ -271,6 +271,23 @@ As a user, I should be prevented from creating a conference before today, so tha
 ---
 
 # Test
+The features we chose to test are the following:
+ + Login feature
+ + Login field validators
+ + Conference card widget
+ + Question card widget
+
+## Test cases specifications
+**Acceptance tests**
+Tested with flutter_gherkin package:
+ + [Login feature](test/test_driver/features/Login.feature)
+
+**Unit tests**
+For each widget we tested if they were being displayed with the currect data and for the validators
+we checked if they were validating emails as intended:
+ + [Conference Card](test/tests/conferenceCard_test.dart)
+ + [Question Card](test/tests/questionCard_test.dart)
+ + [Validators](test/tests/validators_test.dart)
 
 ---
 
