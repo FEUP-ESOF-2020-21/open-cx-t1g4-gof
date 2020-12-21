@@ -336,9 +336,22 @@ Every question has, besides the attributes present in the UML, a collection of p
 
 ## Logical Architecture
 
+![Package Diagram](docs/logical_architecture.svg)
+
+Our project is structured under the MVC (Mode View Controller) model. Within the View, we structure our code following a Widget oriented perspective.
+
+- `model`    - Stubs for data stored in the database
+- `firebase` - Interface for authentication and database services
+- `widgets`  - Custom widgets used in multiple screens or with sufficient complexity
+- `pages`    - Every page is individually represented here
+- `routes`   - The various routes of the app and the animations between pages
+- `themes`   - Theme data for the custom light and dark theme
+- `dialog`   - Dialogues used in the app (pop ups/modals)
+
+
 ## Physical Architecture
 
-![Physical Architecture diagram](docs/physical_architecture.svg)
+![Component Diagram](docs/physical_architecture.svg)
 
 Our project can be divided in the following parts:
 - A Flutter app that runs on the moderator's smartphone.
@@ -354,20 +367,16 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 ## Prototype
 
-#### View All Questions
-#### Sorting Questions
-#### Editing Questions
-#### Creating a Talk
-
---- NEW ---
-#### Uploading a Question
-#### Inviting another Moderator to a Talk
-#### Focusing a Talk
-#### Recent Questions
-#### 
-#### 
-#### 
-
+### View All Questions
+### Editing Questions
+### Sorting Questions
+### Recent Questions
+### Uploading a question as a moderator
+### Uploading a Question as a User
+### Create a talk
+### Focusing a Talk
+### Invite Moderator into Talk
+### Accept Talk Invitation
 
 ---
 
@@ -381,9 +390,9 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 **Screenshots:**
 
-![Question listing page](docs/increment_1_question_list.png)
-![Focused question page](docs/increment_1_full_page_question.png)
-![Question editing page](docs/increment_1_edit.png)
+<img src="Question listing page" alt="docs/increment_1_question_list.png" height="300">
+<img src="Focused question page" alt="docs/increment_1_full_page_question.png" height="300">
+<img src="Question editing page" alt="docs/increment_1_edit.png" height="300">
 
 ## Project Iteration 2
 **Changelog:**
@@ -402,11 +411,11 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 **Screenshots:**
 
-![Login Page](docs/increment_2_login_page.png)
-![Navigation Drawer](docs/increment_2_app_drawer.png)
-![Question List Page](docs/increment_2_questions_list.png)
-![My talks Page](docs/increment_2_talks_page.png)
-![Add talk Page](docs/increment_2_add_talk_page.png)
+<img src="Login Page" alt="docs/increment_2_login_page.png" height="300">
+<img src="Navigation Drawer" alt="docs/increment_2_app_drawer.png" height="300">
+<img src="Question List Page" alt="docs/increment_2_questions_list.png" height="300">
+<img src="My talks Page" alt="docs/increment_2_talks_page.png" height="300">
+<img src="Add talk Page" alt="docs/increment_2_add_talk_page.png" height="300">
 
 
 ## Project Iteration 3
@@ -425,11 +434,11 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 **Screenshots:**
 
-![Home Page](docs/increment_3_homepage.png)
-![Light Theme](docs/increment_3_light_theme.png)
-![Drawer](docs/increment_3_drawer.png)
-![Invites Page](docs/increment_3_invitesPage.png)
-![Sorted Questions](docs/increment_3_sort_questions.png)
+<img src="docs/increment_3_homepage.png" alt="Home Page" height="300">
+<img src="docs/increment_3_light_theme.png" alt="Light Theme" height="300">
+<img src="docs/increment_3_drawer.png" alt="Drawer" height="300">
+<img src="docs/increment_3_invitesPage.png" alt="Invites Page" height="300">
+<img src="docs/increment_3_sort_questions.png" alt="Sorted Questions" height="300">
 
 ## Project Iteration 4
 **Changelog:**
@@ -448,16 +457,15 @@ From all available streaming platforms, [Youtube](https://developers.google.com/
 
 **Final version:**
 
+#### InquireScape App
+<img src="docs/questions.gif" alt="Questions Page" height="300">
+<img src="docs/talk_selection.gif" alt="Talk Selection" height="300">
+<img src="docs/invites.gif" alt="Invites Page" height="300">
+<img src="docs/create_talk.gif" alt="Create Talk Page" height="300">
+<img src="docs/dark_vs_light.gif" alt="App Themes" height="300">
+
+#### Discord Integration Bot
 ![Discord Bot](docs/InquireScape_discord_integration.gif)
-
-[Discord InquireScape Bot Demo](docs/InquireScape_discord_integration_demo.mp4)
-
-![Questions Page](docs/questions.gif)
-![Talk Selection](docs/talk_selection.gif)
-![Invites Page](docs/invites.gif)
-![Create Talk Page](docs/create_talk.gif)
-![App Themes](docs/dark_vs_light.gif)
-
 
 ---
 
