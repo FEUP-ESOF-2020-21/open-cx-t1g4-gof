@@ -323,7 +323,7 @@ We have two main collections:
 - Moderators
 - Conferences (analogous to talks)
 
-Every moderator has, besides the attributes present in the UML, a collection of references to the conferences the moderator is in. This collection is represented as an association in the UML.
+Every moderator has, besides the attributes present in the UML, a collection of references to the conferences the moderator is in. This collection is represented as an association in the UML. Each moderator also has a collection of invites to other conferences, which save the conference he was invited to and who invited him.
 
 Every conference has, besides the attributes present in the UML, a list of topics, represented as an aggregation and a collection of questions, represented as a composition.
 
